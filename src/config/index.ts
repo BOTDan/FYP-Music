@@ -11,7 +11,7 @@ const missingVariables: string[] = [];
  * @param variable The name of the environment variable
  * @returns The value if exists, otherwise empty string
  */
-function checkSet(variable: string): string {
+function checkSet(variable: string, fallback: string = ''): string {
   const variableUpper = variable.toUpperCase();
   if (process.env[variableUpper] !== undefined) {
     return process.env[variableUpper] as string;
@@ -20,7 +20,7 @@ function checkSet(variable: string): string {
   if (!missingVariables.includes(variableUpper)) {
     missingVariables.push(variableUpper);
   }
-  return '';
+  return fallback;
 }
 
 /**
@@ -31,7 +31,7 @@ export function outputConfigWarnings(): void {
   if (missingVariables.length === 0) { return; }
   let text = '⚠ The following environment variables are unset:\n';
   text += missingVariables.reduce((acc, name) => `${acc}\t${name}\n`, '');
-  text += 'Some functionality may not work without these being set.';
+  text += 'Default values will be used. This may lead to errors.';
   console.error(text);
 }
 
@@ -39,7 +39,7 @@ export function outputConfigWarnings(): void {
  * Config/environment variables
  */
 export const config = {
-  PORT: checkSet('PORT'),
+  PORT: checkSet('PORT', '8080'),
 };
 
 export default config;
