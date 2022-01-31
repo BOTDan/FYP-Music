@@ -40,6 +40,12 @@ export function outputConfigWarnings(): void {
  */
 export const config = {
   PORT: checkSet('PORT', '8080'),
+  // Database variables
+  DB_HOST: checkSet('DB_HOST', 'localhost'),
+  DB_PORT: checkSet('DB_PORT', '5432'),
+  DB_DATABASE: checkSet('DB_DATABASE', 'music'),
+  DB_USERNAME: checkSet('DB_USERNAME', 'music'),
+  DB_PASSWORD: checkSet('DB_PASSWORD', 'music'),
 };
 
 export default config;
