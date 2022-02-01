@@ -1,11 +1,22 @@
 import express from 'express';
+import { config, outputConfigWarnings } from './config';
 
-const app = express();
+import { setupDatabase } from './database';
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
+outputConfigWarnings();
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log('Server running!');
-});
+setupDatabase()
+  .then(() => {
+    const app = express();
+
+    app.get('/', (req, res) => {
+      res.send('Hello, world!');
+    });
+
+    app.listen(config.PORT || 8080, async () => {
+      console.log('Server running!');
+    });
+  })
+  .catch((error) => {
+    console.error(error);
+  });
