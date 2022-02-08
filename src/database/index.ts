@@ -27,7 +27,7 @@ function getConnectionOptions(): PostgresConnectionOptions {
     password: config.DB_PASSWORD,
     database: config.DB_DATABASE,
     entities: getEntities(),
-    logging: true,
+    logging: false,
     synchronize: true,
   };
 }
