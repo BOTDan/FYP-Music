@@ -46,6 +46,9 @@ export const config = {
   DB_DATABASE: checkSet('DB_DATABASE', 'music'),
   DB_USERNAME: checkSet('DB_USERNAME', 'music'),
   DB_PASSWORD: checkSet('DB_PASSWORD', 'music'),
+  // Google variables
+  GOOGLE_CLIENT_ID: checkSet('GOOGLE_CLIENT_ID'),
+  GOOGLE_CLIENT_SECRET: checkSet('GOOGLE_CLIENT_SECRET'),
 };
 
 export default config;
