@@ -1,7 +1,9 @@
 import { createConnection } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { config } from '../config';
-import { Test } from '../entities/Test';
+import { AuthAccount } from '../entities/AuthAccount';
+import { User } from '../entities/User';
+import { UserToken } from '../entities/UserToken';
 
 /**
  * Returns a list of entities the database needs to handle
@@ -9,7 +11,9 @@ import { Test } from '../entities/Test';
  */
 function getEntities() {
   return [
-    Test,
+    User,
+    UserToken,
+    AuthAccount,
   ];
 }
 
