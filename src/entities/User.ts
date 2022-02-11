@@ -6,6 +6,6 @@ import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
  */
 @Entity()
 export class User extends DatabaseEntityWithID {
-  @Column({ type: 'varchar', length: 32 })
-    username!: string;
+  @Column({ type: 'varchar', length: 64 })
+    displayName!: string;
 }
