@@ -1,9 +1,9 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { AbstractRepository, EntityRepository } from 'typeorm';
 import { AuthAccount, AuthProvider } from '../entities/AuthAccount';
 import { User } from '../entities/User';
 
 @EntityRepository(AuthAccount)
-export class AuthAccountRepository extends Repository<AuthAccount> {
+export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
   /**
    * Returns the account with given id and provider, if eists
    * @param provider The enum of the auth rpovider
@@ -11,7 +11,7 @@ export class AuthAccountRepository extends Repository<AuthAccount> {
    * @returns An account if found, else undefined
    */
   findByAuthId(provider: AuthProvider, authId: string) {
-    return this.findOne({ provider, authId });
+    return this.repository.findOne({ where: { provider, authId }, relations: ['user'] });
   }
 
   /**
@@ -26,7 +26,7 @@ export class AuthAccountRepository extends Repository<AuthAccount> {
     authAccount.provider = provider;
     authAccount.authId = authId;
     authAccount.user = user;
-    return this.manager.save(authAccount);
+    return this.repository.save(authAccount);
   }
 
   /**
