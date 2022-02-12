@@ -23,4 +23,13 @@ export class UserTokenRepository extends AbstractRepository<UserToken> {
     userToken.user = user;
     return this.repository.save(userToken);
   }
+
+  /**
+   * Deletes a toke from the database, if possible
+   * @param token The token to delete
+   * @returns The deleted token, if deleted
+   */
+  deleteToken(token: UserToken) {
+    return this.repository.remove(token);
+  }
 }
