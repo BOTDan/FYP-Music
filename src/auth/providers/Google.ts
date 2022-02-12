@@ -1,7 +1,10 @@
-import { Router } from 'express';
+import {
+  NextFunction, Request, Response, Router,
+} from 'express';
 import passport from 'passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { getConnection, getCustomRepository } from 'typeorm';
+import { issueToken } from '..';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
 import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
@@ -58,39 +61,61 @@ async function verifyUser(
 ) {
   const { id, displayName } = profile;
   const account = await getAuthAccount(id);
+  const tokens = {
+    accessToken, refreshToken,
+  };
   if (account) {
     // Account with given Google ID was found
-    done(null, account, 'Found');
+    done(null, account.user, tokens);
   } else {
     // No account was found with this Google ID, create a new user with account attached
     const newAccount = await createAccountAndUser(id, displayName);
-    done(null, newAccount, 'Created');
+    done(null, newAccount.user, tokens);
   }
 }
 
+// Create a new Google auth strategy
 const strategy = new Strategy({
   clientID: config.GOOGLE_CLIENT_ID,
   clientSecret: config.GOOGLE_CLIENT_SECRET,
   callbackURL: callbackUrl,
   scope: scopes,
 }, verifyUser);
-
 passport.use(strategy);
 
+// Set up the router
 const router = Router();
 
+/**
+ * Route for redirecting users to the Google login page
+ */
 router.get(
   '/',
-  passport.authenticate('google', { session: false }),
+  passport.authenticate('google', { session: false, failWithError: true }),
 );
 
+/**
+ * Callback route for when a user has gone through the auth steps.
+ */
 router.get(
   '/callback',
-  passport.authenticate('google', { session: false }),
-  (request, response) => {
-    console.log(request.authInfo);
-    console.log(request.user);
-    response.send(request.user);
+  // Do google authentication
+  passport.authenticate('google', { session: false, failWithError: true }),
+  // Handle what happens when the user has successfully gone through authentication
+  // TODO: Move to own function
+  async (request: Request, response: Response) => {
+    if (request.user) {
+      // We have a user, create a token for them
+      const token = await issueToken(request.user);
+      response.send(token);
+    } else {
+      response.send('Failed');
+    }
+  },
+  // Handles what happens when a user fails to get through authentication
+  // TODO: Move to own function
+  (err: string, request: Request, response: Response, _next: NextFunction) => {
+    response.send('An error occured');
   },
 );
 
