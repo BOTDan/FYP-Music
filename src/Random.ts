@@ -12,13 +12,13 @@ export function createRandomID() {
 }
 
 // The length of tokens generated, by default
-export const TOKEN_LENGTH = 64;
+export const TOKEN_LENGTH = 128;
 /**
  * Generates a random token.
  * @param length The length of the token. Should be left default.
  * @returns A random token
  */
-export function createRandomToken(length = TOKEN_LENGTH) {
+export function createRandomToken(length = TOKEN_LENGTH / 2) {
   const token = randomBytes(length).toString('hex');
   return token;
 }
