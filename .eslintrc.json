@@ -19,6 +19,14 @@
       {
         "argsIgnorePattern": "^_"
       }
+    ],
+    "max-classes-per-file": "off",
+    "@typescript-eslint/lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
     ]
   }
 }
