@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
+import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
 import { UserTokenRepository } from '../repositories/UserTokenRepository';
 
 /**
@@ -46,8 +47,8 @@ export async function deleteToken(token: UserToken) {
  */
 export function extractBearerToken(header: string) {
   const parts = header.split(' ');
-  if (parts.length !== 2) { throw new Error('String is not in \'Bearer xyz\' format.'); }
-  if (parts[0] !== 'Bearer') { throw new Error('String is not in \'Bearer xyz\' format.'); }
+  if (parts.length !== 2) { throw new BadRequestError('Authorization header is not in \'Bearer xyz\' format.'); }
+  if (parts[0] !== 'Bearer') { throw new BadRequestError('Authorization header is not in \'Bearer xyz\' format.'); }
   // Can do checks in the future here for if the token is the right size
   return parts[1];
 }
@@ -65,7 +66,7 @@ export async function requireAuthentication(
 ) {
   try {
     const authHeader = request.headers.authorization;
-    if (!authHeader) { throw new Error('No auth headers sent'); }
+    if (!authHeader) { throw new NotAuthenticatedError(); }
     const token = extractBearerToken(authHeader);
     const foundToken = await validateToken(token);
     if (foundToken) {
@@ -73,9 +74,9 @@ export async function requireAuthentication(
       request.user = foundToken.user;
       next();
     } else {
-      response.send('Unauthorized scrub');
+      next(new NotAuthenticatedError());
     }
   } catch (e) {
-    response.send(`Auth failed with the following error: ${e}`);
+    next(e);
   }
 }

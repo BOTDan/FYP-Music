@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { deleteToken, requireAuthentication } from '.';
+import { NotAuthenticatedError } from '../errors/httpstatus';
 import googleAuthRouter from './providers/Google';
 
 const authRouter = Router();
@@ -21,13 +22,13 @@ authRouter.get('/test', requireAuthentication, (request, response) => {
 });
 
 // Route to delete the token in the auth header
-authRouter.post('/logout', requireAuthentication, async (request, response) => {
+authRouter.post('/logout', requireAuthentication, async (request, response, next) => {
   if (request.token) {
     const token = await deleteToken(request.token);
     console.log(token);
     response.send('Logged out');
   } else {
-    response.send('Failed to log out, no token to delete');
+    next(new NotAuthenticatedError());
   }
 });
 
