@@ -21,7 +21,7 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
    * @param user The user to attach the account to
    * @returns An AuthAccount
    */
-  createAccount(provider: AuthProvider, authId: string, user: User) {
+  createAuthAccount(provider: AuthProvider, authId: string, user?: User) {
     const authAccount = new AuthAccount();
     authAccount.provider = provider;
     authAccount.authId = authId;
@@ -35,8 +35,8 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
    * @param user The user to attach the account to
    * @returns An AuthAccount
    */
-  createSpotifyAccount(spotifyId: string, user: User) {
-    return this.createAccount(AuthProvider.Spotify, spotifyId, user);
+  createSpotifyAccount(spotifyId: string, user?: User) {
+    return this.createAuthAccount(AuthProvider.Spotify, spotifyId, user);
   }
 
   /**
@@ -45,7 +45,19 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
   * @param user The user to attach the account to
   * @returns An AuthAccount
   */
-  createGoogleAccount(googleId: string, user: User) {
-    return this.createAccount(AuthProvider.Google, googleId, user);
+  createGoogleAccount(googleId: string, user?: User) {
+    return this.createAuthAccount(AuthProvider.Google, googleId, user);
+  }
+
+  /**
+   * Updates an auth account, setting which user it belongs to
+   * @param authAccount The auth account to link
+   * @param user The user to link to it
+   * @returns The updated authAccount
+   */
+  linkAuthAccountToUser(authAccount: AuthAccount, user: User) {
+    // eslint-disable-next-line no-param-reassign
+    authAccount.user = user;
+    return this.repository.save(authAccount);
   }
 }

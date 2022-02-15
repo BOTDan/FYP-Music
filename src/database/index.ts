@@ -2,6 +2,7 @@ import { createConnection } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { config } from '../config';
 import { AuthAccount } from '../entities/AuthAccount';
+import { AuthAccountLinkToken } from '../entities/AuthAccountLinkToken';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 
@@ -14,6 +15,7 @@ function getEntities() {
     User,
     UserToken,
     AuthAccount,
+    AuthAccountLinkToken,
   ];
 }
 

@@ -24,5 +24,5 @@ export class AuthAccount extends DatabaseEntityWithID {
   @Unique(['provider', 'authId'])
 
   @ManyToOne(() => User)
-    user!: User;
+    user?: User;
 }
