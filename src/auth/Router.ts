@@ -1,12 +1,16 @@
 import { Router } from 'express';
 import { deleteToken, requireAuthentication } from '.';
 import { NotAuthenticatedError } from '../errors/httpstatus';
-import googleAuthRouter from './providers/Google';
+// import googleAuthRouter from './providers/Google';
+import { GoogleAuthProvider } from './providers/Google2';
 
 const authRouter = Router();
 
 // Include Google auth routes
-authRouter.use('/google', googleAuthRouter);
+// authRouter.use('/google', googleAuthRouter);
+
+const googleAuthProvider = new GoogleAuthProvider();
+authRouter.use('/google', googleAuthProvider.router);
 
 // Home route, goes nowhere
 authRouter.get('/', (request, response) => {
