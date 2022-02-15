@@ -6,11 +6,11 @@ export class ReturnableError extends Error {
   description: string;
   details?: string;
 
-  constructor(message: string = '') {
+  constructor(message: string = 'Generic error') {
     super(message);
     this.statusCode = 500;
     this.name = 'ReturnableError';
-    this.description = 'Generic error';
+    this.description = message;
   }
 
   json() {
