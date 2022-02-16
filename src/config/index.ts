@@ -49,6 +49,9 @@ export const config = {
   // Google variables
   GOOGLE_CLIENT_ID: checkSet('GOOGLE_CLIENT_ID'),
   GOOGLE_CLIENT_SECRET: checkSet('GOOGLE_CLIENT_SECRET'),
+  // Spotify variables
+  SPOTIFY_CLIENT_ID: checkSet('SPOTIFY_CLIENT_ID'),
+  SPOTIFY_CLIENT_SECRET: checkSet('SPOTIFY_CLIENT_SECRET'),
 };
 
 export default config;
