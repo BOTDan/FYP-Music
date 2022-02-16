@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getConnection, getCustomRepository } from 'typeorm';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
+import { AuthAccountLinkTokenRepository } from '../repositories/AuthAccountLinkTokenRepository';
+import { AuthAccountRepository } from '../repositories/AuthAccountRepository';
 import { UserTokenRepository } from '../repositories/UserTokenRepository';
 
 /**
@@ -71,7 +73,6 @@ export async function requireAuthentication(
     const foundToken = await validateToken(token);
     if (foundToken) {
       request.token = foundToken;
-      request.user = foundToken.user;
       next();
     } else {
       next(new NotAuthenticatedError());
@@ -79,4 +80,29 @@ export async function requireAuthentication(
   } catch (e) {
     next(e);
   }
+}
+
+/**
+ * Links an auth account to a user based on the link token given.
+ * @param user The user to link the account to
+ * @param linkToken The token
+ * @returns The auth account that was linked
+ */
+export async function linkAccount(user: User, linkToken: string) {
+  // TODO: Token checks
+  const connection = getConnection();
+  return connection.transaction(async (entityManager) => {
+    const linkTokenRepo = getCustomRepository(AuthAccountLinkTokenRepository);
+    const token = await linkTokenRepo.findByToken(linkToken);
+
+    if (!token) { throw new BadRequestError('Link token is not valid'); }
+    if (token.authAccount.user) { throw new BadRequestError('Account is already registered'); }
+
+    const authAccountRepo = getCustomRepository(AuthAccountRepository);
+    const authAccount = await authAccountRepo.linkAuthAccountToUser(token.authAccount, user);
+
+    await linkTokenRepo.deleteToken(token);
+
+    return authAccount;
+  });
 }

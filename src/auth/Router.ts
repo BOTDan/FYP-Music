@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { deleteToken, requireAuthentication } from '.';
-import { NotAuthenticatedError } from '../errors/httpstatus';
+import { deleteToken, linkAccount, requireAuthentication } from '.';
+import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
 // import googleAuthRouter from './providers/Google';
 import { GoogleAuthProvider } from './providers/Google2';
 
@@ -33,6 +33,19 @@ authRouter.post('/logout', requireAuthentication, async (request, response, next
     response.send('Logged out');
   } else {
     next(new NotAuthenticatedError());
+  }
+});
+
+// Route to link an account to another account
+authRouter.post('/link', requireAuthentication, async (request, response, next) => {
+  try {
+    if (!request.token || !request.token.user) { throw new NotAuthenticatedError(); }
+    const { token } = request.body;
+    if (!token) { throw new BadRequestError('Parameter \'token\' is missing from JSON post body.'); }
+    const authAccount = await linkAccount(request.token?.user, token);
+    response.send(authAccount);
+  } catch (e) {
+    next(e);
   }
 });
 

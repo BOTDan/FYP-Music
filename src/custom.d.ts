@@ -5,7 +5,7 @@ import { UserToken } from './entities/UserToken';
 declare module 'express-serve-static-core' {
   export interface Request {
     user?: AuthUserInfo,
-    token?: UserToken,
     authInfo?: AuthInfo,
+    token?: UserToken,
   }
 }
