@@ -244,7 +244,7 @@ export class BaseAuthProvider {
       if (account instanceof AuthAccount) {
         await authRepo.linkAuthAccountToUser(account, user);
       } else {
-        await authRepo.createAuthAccount(this.provider, account);
+        await authRepo.createAuthAccount(this.provider, account, user);
       }
 
       return user;
