@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getConnection, getCustomRepository } from 'typeorm';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
+import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
+import { AuthAccountLinkTokenRepository } from '../repositories/AuthAccountLinkTokenRepository';
+import { AuthAccountRepository } from '../repositories/AuthAccountRepository';
 import { UserTokenRepository } from '../repositories/UserTokenRepository';
 
 /**
@@ -46,8 +49,8 @@ export async function deleteToken(token: UserToken) {
  */
 export function extractBearerToken(header: string) {
   const parts = header.split(' ');
-  if (parts.length !== 2) { throw new Error('String is not in \'Bearer xyz\' format.'); }
-  if (parts[0] !== 'Bearer') { throw new Error('String is not in \'Bearer xyz\' format.'); }
+  if (parts.length !== 2) { throw new BadRequestError('Authorization header is not in \'Bearer xyz\' format.'); }
+  if (parts[0] !== 'Bearer') { throw new BadRequestError('Authorization header is not in \'Bearer xyz\' format.'); }
   // Can do checks in the future here for if the token is the right size
   return parts[1];
 }
@@ -65,17 +68,41 @@ export async function requireAuthentication(
 ) {
   try {
     const authHeader = request.headers.authorization;
-    if (!authHeader) { throw new Error('No auth headers sent'); }
+    if (!authHeader) { throw new NotAuthenticatedError(); }
     const token = extractBearerToken(authHeader);
     const foundToken = await validateToken(token);
     if (foundToken) {
       request.token = foundToken;
-      request.user = foundToken.user;
       next();
     } else {
-      response.send('Unauthorized scrub');
+      next(new NotAuthenticatedError());
     }
   } catch (e) {
-    response.send(`Auth failed with the following error: ${e}`);
+    next(e);
   }
+}
+
+/**
+ * Links an auth account to a user based on the link token given.
+ * @param user The user to link the account to
+ * @param linkToken The token
+ * @returns The auth account that was linked
+ */
+export async function linkAccount(user: User, linkToken: string) {
+  // TODO: Token checks
+  const connection = getConnection();
+  return connection.transaction(async (entityManager) => {
+    const linkTokenRepo = getCustomRepository(AuthAccountLinkTokenRepository);
+    const token = await linkTokenRepo.findByToken(linkToken);
+
+    if (!token) { throw new BadRequestError('Link token is not valid'); }
+    if (token.authAccount.user) { throw new BadRequestError('Account is already registered'); }
+
+    const authAccountRepo = getCustomRepository(AuthAccountRepository);
+    const authAccount = await authAccountRepo.linkAuthAccountToUser(token.authAccount, user);
+
+    await linkTokenRepo.deleteToken(token);
+
+    return authAccount;
+  });
 }

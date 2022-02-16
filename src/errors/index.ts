@@ -20,6 +20,7 @@ export function handleErrorMiddleware(
   response: Response,
   _next: NextFunction,
 ) {
+  console.error(err);
   if (err instanceof ReturnableError) {
     response.statusCode = err.statusCode;
     response.send(err.json());

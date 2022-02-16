@@ -14,6 +14,7 @@ export enum AuthProvider {
  * Linked to the user who owns the account.
  */
 @Entity()
+@Unique('UQ_ACCOUNTS', ['provider', 'authId'])
 export class AuthAccount extends DatabaseEntityWithID {
   @Column({ type: 'enum', enum: AuthProvider })
     provider!: AuthProvider;
@@ -21,8 +22,6 @@ export class AuthAccount extends DatabaseEntityWithID {
   @Column({ type: 'varchar', length: 128 })
     authId!: string;
 
-  @Unique(['provider', 'authId'])
-
   @ManyToOne(() => User)
-    user!: User;
+    user?: User;
 }
