@@ -3,6 +3,7 @@ import { deleteToken, linkAccount, requireAuthentication } from '.';
 import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
 // import googleAuthRouter from './providers/Google';
 import { GoogleAuthProvider } from './providers/Google2';
+import { SpotifyAuthProvider } from './providers/Spotify';
 
 const authRouter = Router();
 
@@ -11,6 +12,9 @@ const authRouter = Router();
 
 const googleAuthProvider = new GoogleAuthProvider();
 authRouter.use('/google', googleAuthProvider.router);
+
+const spotifyAuthProvider = new SpotifyAuthProvider();
+authRouter.use('/spotify', spotifyAuthProvider.router);
 
 // Home route, goes nowhere
 authRouter.get('/', (request, response) => {
