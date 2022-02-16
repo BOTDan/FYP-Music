@@ -1,8 +1,6 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { Profile } from 'passport';
-import { VerifyCallback } from 'passport-google-oauth20';
 import { getConnection, getCustomRepository } from 'typeorm';
 import { issueToken } from '..';
 import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
@@ -287,7 +285,7 @@ export class BaseAuthProvider {
    * @param profile The profile returned from Passport
    * @returns The info from the profile
    */
-  extractUserInfo(profile: Profile): AuthUserInfo {
+  extractUserInfo(profile: any): AuthUserInfo {
     return {
       id: profile.id,
       displayName: profile.displayName,
@@ -296,27 +294,13 @@ export class BaseAuthProvider {
 
   /**
    * Processes user information after they've completed oauth login
-   * @param request The Express request object
-   * @param accessToken The access token from oauth
-   * @param refreshToken The refresh token from oauth
-   * @param profile User information
-   * @param done Callback function
+   * This should be overwritten by the provider and call done(
+   *  null,
+   *  AuthUserInfo,
+   *  AuthInfo
+   * );
    */
-  processAuthInfo(
-    request: Request,
-    accessToken: string,
-    refreshToken: string,
-    profile: Profile,
-    done: VerifyCallback,
-  ) {
-    const userInfo = this.extractUserInfo(profile);
-    const tokens = { accessToken, refreshToken };
-    const info = {
-      provider: this.provider,
-      id: userInfo.id,
-      tokens,
-      userInfo,
-    } as AuthInfo;
-    done(null, userInfo, info);
+  processAuthInfo(...args: any) {
+    // Overwrite me
   }
 }

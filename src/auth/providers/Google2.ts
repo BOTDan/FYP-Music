@@ -1,8 +1,9 @@
 import passport from 'passport';
-import { Strategy } from 'passport-google-oauth20';
+import { Request } from 'express';
+import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
-import { BaseAuthProvider } from './base';
+import { AuthInfo, BaseAuthProvider } from './base';
 
 /**
  * Provides logins for Google auth.
@@ -31,5 +32,31 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     this.handleLoginCallback = passport.authenticate('google', { session: false, failWithError: true, state: 'login' });
     this.handleLinkRequest = passport.authenticate('google', { session: false, failWithError: true, state: 'link' });
     this.handleLinkCallback = passport.authenticate('google', { session: false, failWithError: true, state: 'link' });
+  }
+
+  /**
+   * Processes user information after they've completed oauth login
+   * @param request The Express request object
+   * @param accessToken The access token from oauth
+   * @param refreshToken The refresh token from oauth
+   * @param profile User information
+   * @param done Callback function
+   */
+  override processAuthInfo(
+    request: Request,
+    accessToken: string,
+    refreshToken: string,
+    profile: Profile,
+    done: VerifyCallback,
+  ) {
+    const userInfo = this.extractUserInfo(profile);
+    const tokens = { accessToken, refreshToken };
+    const info = {
+      provider: this.provider,
+      id: userInfo.id,
+      tokens,
+      userInfo,
+    } as AuthInfo;
+    done(null, userInfo, info);
   }
 }
