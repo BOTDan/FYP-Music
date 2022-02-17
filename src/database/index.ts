@@ -39,10 +39,36 @@ function getConnectionOptions(): PostgresConnectionOptions {
 }
 
 /**
- * Sets up the connection to the database.
+ * Returns connection options for connecting to the test database
+ * @returns Connection options
  */
-export async function setupDatabase() {
-  await createConnection(getConnectionOptions());
+function getTestConnectionOptions(dropSchema: boolean = false): PostgresConnectionOptions {
+  return {
+    name: 'test',
+    type: 'postgres',
+    host: config.DB_HOST,
+    port: Number(config.DB_PORT),
+    username: config.DB_USERNAME,
+    password: config.DB_PASSWORD,
+    database: config.DB_DATABASE,
+    entities: getEntities(),
+    logging: false,
+    synchronize: true,
+    dropSchema,
+  };
+}
+
+/**
+ * Sets up the connection to the database.
+ * @param dropSchema If the schema should be dropped on connect.
+ *  Can only be true in test environment
+ */
+export async function setupDatabase(dropSchema: boolean = false) {
+  if (process.env.NODE_ENV === 'test') {
+    await createConnection(getTestConnectionOptions(dropSchema));
+  } else {
+    await createConnection(getConnectionOptions());
+  }
 }
 
 export default { setupDatabase };
