@@ -15,7 +15,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: music_test
+          POSTGRES_DB: music
           POSTGRES_PASSWORD: music
           POSTGRES_PORT: 5432
           POSTGRES_USER: music
