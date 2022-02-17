@@ -1,6 +1,15 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+switch (process.env.NODE_ENV) {
+  case 'test':
+    dotenv.config({ path: '.env.test' });
+    break;
+  case 'dev':
+    dotenv.config({ path: '.env.dev' });
+    break;
+  default:
+    dotenv.config();
+}
 
 // Stores a list of missing env variables
 const missingVariables: string[] = [];
