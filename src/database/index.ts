@@ -1,8 +1,10 @@
 import { createConnection } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { config } from '../config';
+import { Artist } from '../entities/Artist';
 import { AuthAccount } from '../entities/AuthAccount';
 import { AuthAccountLinkToken } from '../entities/AuthAccountLinkToken';
+import { Song } from '../entities/Song';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 
@@ -16,6 +18,8 @@ function getEntities() {
     UserToken,
     AuthAccount,
     AuthAccountLinkToken,
+    Artist,
+    Song,
   ];
 }
 
