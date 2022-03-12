@@ -160,18 +160,18 @@ export class BaseAuthProvider {
       if (authAccount.user) {
         // Auth account linked to a user
         const token = await this.issueToken(authAccount.user);
-        response.send(token);
+        response.send({ token, oauth: request.authInfo.tokens });
       } else {
         // Auth account is not linked to a user
         const user = await this.createUser(authAccount, userInfo.displayName);
         const token = await this.issueToken(user);
-        response.send(token);
+        response.send({ token, oauth: request.authInfo.tokens });
       }
     } else {
       // Create a new account
       const user = await this.createUser(id, userInfo.displayName);
       const token = await this.issueToken(user);
-      response.send(token);
+      response.send({ token, oauth: request.authInfo.tokens });
     }
   }
 
