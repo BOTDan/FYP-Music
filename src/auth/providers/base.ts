@@ -2,7 +2,7 @@ import {
   NextFunction, Request, Response, Router,
 } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
-import { issueToken } from '..';
+import { issueToken, updateStoredTokens } from '..';
 import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestError, InternalServerError } from '../../errors/httpstatus';
@@ -153,26 +153,29 @@ export class BaseAuthProvider {
 
     const { id } = request.authInfo;
     const { userInfo } = request.authInfo;
-    const authAccount = await this.findAuthAccount(id);
+    let authAccount = await this.findAuthAccount(id);
 
+    let user;
     if (authAccount) {
       // Log user in and return a token
       if (authAccount.user) {
         // Auth account linked to a user
-        const token = await this.issueToken(authAccount.user);
-        response.send({ token, oauth: request.authInfo.tokens });
+        user = authAccount.user;
       } else {
         // Auth account is not linked to a user
-        const user = await this.createUser(authAccount, userInfo.displayName);
-        const token = await this.issueToken(user);
-        response.send({ token, oauth: request.authInfo.tokens });
+        const createdUser = await this.createUser(authAccount, userInfo.displayName);
+        user = createdUser.user;
       }
     } else {
       // Create a new account
-      const user = await this.createUser(id, userInfo.displayName);
-      const token = await this.issueToken(user);
-      response.send({ token, oauth: request.authInfo.tokens });
+      const createdUser = await this.createUser(id, userInfo.displayName);
+      user = createdUser.user;
+      authAccount = createdUser.authAccount;
     }
+    const { tokens } = request.authInfo;
+    await updateStoredTokens(authAccount, tokens.accessToken, tokens.refreshToken);
+    const token = await this.issueToken(user);
+    response.send({ token });
   }
 
   /**
@@ -186,8 +189,9 @@ export class BaseAuthProvider {
     if (request.authInfo.provider !== this.provider) { next(new InternalServerError('Auth provider mismatch')); return; }
 
     const { id } = request.authInfo;
-    const authAccount = await this.findAuthAccount(id);
+    let authAccount = await this.findAuthAccount(id);
 
+    let linkToken;
     if (authAccount) {
       // Auth account is already registered with us in some way
       if (authAccount.user) {
@@ -195,14 +199,18 @@ export class BaseAuthProvider {
         next(new BadRequestError('Account is already linked to a user'));
       } else {
         // Account isn't linked, give a token to allow linking
-        const linkToken = await this.issueLinkToken(authAccount);
-        response.send(linkToken);
+        const createdToken = await this.issueLinkToken(authAccount);
+        linkToken = createdToken.linkToken;
       }
     } else {
       // Auth account unregistered, register it and create link token
-      const linkToken = await this.issueLinkToken(id);
-      response.send(linkToken);
+      const createdToken = await this.issueLinkToken(id);
+      linkToken = createdToken.linkToken;
+      authAccount = createdToken.authAccount;
     }
+    const { tokens } = request.authInfo;
+    await updateStoredTokens(authAccount, tokens.accessToken, tokens.refreshToken);
+    response.send(linkToken);
   }
 
   /**
@@ -230,7 +238,7 @@ export class BaseAuthProvider {
    * Creates a new user linked to the given auth account or id
    * @param account The auth account, or ID of one to register
    * @param displayName The display name of the new user
-   * @returns A user, if created
+   * @returns A user and the attached auth account, if created
    */
   async createUser(account: AuthAccount | string, displayName: string) {
     const connection = getConnection();
@@ -239,13 +247,15 @@ export class BaseAuthProvider {
       const user = await userRepo.createUser(displayName);
 
       const authRepo = entityManager.getCustomRepository(AuthAccountRepository);
+      let authAccount;
       if (account instanceof AuthAccount) {
+        authAccount = account;
         await authRepo.linkAuthAccountToUser(account, user);
       } else {
-        await authRepo.createAuthAccount(this.provider, account, user);
+        authAccount = await authRepo.createAuthAccount(this.provider, account, user);
       }
 
-      return user;
+      return { user, authAccount };
     });
   }
 
@@ -266,7 +276,8 @@ export class BaseAuthProvider {
   async issueLinkToken(account: AuthAccount | string) {
     if (account instanceof AuthAccount) {
       const linkTokenRepo = getCustomRepository(AuthAccountLinkTokenRepository);
-      return linkTokenRepo.createToken(account);
+      const linkToken = await linkTokenRepo.createToken(account);
+      return { linkToken, authAccount: account };
     }
     const connection = getConnection();
     return connection.transaction(async (entityManager) => {
@@ -276,7 +287,7 @@ export class BaseAuthProvider {
       const linkTokenRepo = entityManager.getCustomRepository(AuthAccountLinkTokenRepository);
       const linkToken = await linkTokenRepo.createToken(authAccount);
 
-      return linkToken;
+      return { linkToken, authAccount };
     });
   }
 

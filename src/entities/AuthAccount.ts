@@ -22,6 +22,12 @@ export class AuthAccount extends DatabaseEntityWithID {
   @Column({ type: 'varchar', length: 128 })
     authId!: string;
 
+  @Column({ type: 'varchar', nullable: true })
+    accessToken?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+    refreshToken?: string;
+
   @ManyToOne(() => User)
     user?: User;
 }

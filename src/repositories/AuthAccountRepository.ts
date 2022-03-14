@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { AbstractRepository, EntityRepository } from 'typeorm';
 import { AuthAccount, AuthProvider } from '../entities/AuthAccount';
 import { User } from '../entities/User';
@@ -26,6 +27,19 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
     authAccount.provider = provider;
     authAccount.authId = authId;
     authAccount.user = user;
+    return this.repository.save(authAccount);
+  }
+
+  /**
+   * Updates the stored access/refresh tokens against an auth account
+   * @param authAccount The auth account to save to
+   * @param accessToken The access token to store
+   * @param refreshToken The refresh token to store
+   * @returns The updated auth account
+   */
+  updateTokens(authAccount: AuthAccount, accessToken: string, refreshToken?: string) {
+    authAccount.accessToken = accessToken;
+    authAccount.refreshToken = refreshToken;
     return this.repository.save(authAccount);
   }
 

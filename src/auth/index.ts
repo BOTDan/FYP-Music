@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
+import { AuthAccount } from '../entities/AuthAccount';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
@@ -38,6 +39,22 @@ export async function deleteToken(token: UserToken) {
   const tokenRepo = getCustomRepository(UserTokenRepository);
   const deletedToken = await tokenRepo.deleteToken(token);
   return deletedToken;
+}
+
+/**
+ * Updates the stored access/refresh tokens against an auth account
+ * @param authAccount The auth account to save to
+ * @param accessToken The access token to store
+ * @param refreshToken The refresh token to store
+ * @returns The updated account
+ */
+export async function updateStoredTokens(
+  account: AuthAccount,
+  accessToken: string,
+  refreshToken?: string,
+) {
+  const authAccountRepo = getCustomRepository(AuthAccountRepository);
+  return authAccountRepo.updateTokens(account, accessToken, refreshToken);
 }
 
 /**
