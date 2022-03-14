@@ -54,3 +54,14 @@ export class NotFoundError extends ReturnableError {
     this.name = 'NotFoundError';
   }
 }
+
+/**
+ * Temporary placeholder error for returning 405 - Method not allowed
+ */
+export class NotImplementedError extends ReturnableError {
+  constructor(message: string = 'Not yet implemented') {
+    super(message);
+    this.statusCode = 405;
+    this.name = 'NotImplementedError';
+  }
+}
