@@ -28,10 +28,18 @@ export class GoogleAuthProvider extends BaseAuthProvider {
 
     passport.use(strategy);
 
-    this.handleLoginRequest = passport.authenticate('google', { session: false, failWithError: true, state: 'login' });
-    this.handleLoginCallback = passport.authenticate('google', { session: false, failWithError: true, state: 'login' });
-    this.handleLinkRequest = passport.authenticate('google', { session: false, failWithError: true, state: 'link' });
-    this.handleLinkCallback = passport.authenticate('google', { session: false, failWithError: true, state: 'link' });
+    this.handleLoginRequest = passport.authenticate('google', {
+      accessType: 'offline', session: false, failWithError: true, state: 'login',
+    });
+    this.handleLoginCallback = passport.authenticate('google', {
+      accessType: 'offline', session: false, failWithError: true, state: 'login',
+    });
+    this.handleLinkRequest = passport.authenticate('google', {
+      accessType: 'offline', session: false, failWithError: true, state: 'link',
+    });
+    this.handleLinkCallback = passport.authenticate('google', {
+      accessType: 'offline', session: false, failWithError: true, state: 'link',
+    });
   }
 
   /**
