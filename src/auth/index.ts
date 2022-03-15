@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
+import { AuthAccount } from '../entities/AuthAccount';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
@@ -41,6 +42,22 @@ export async function deleteToken(token: UserToken) {
 }
 
 /**
+ * Updates the stored access/refresh tokens against an auth account
+ * @param authAccount The auth account to save to
+ * @param accessToken The access token to store
+ * @param refreshToken The refresh token to store
+ * @returns The updated account
+ */
+export async function updateStoredTokens(
+  account: AuthAccount,
+  accessToken: string,
+  refreshToken?: string,
+) {
+  const authAccountRepo = getCustomRepository(AuthAccountRepository);
+  return authAccountRepo.updateTokens(account, accessToken, refreshToken);
+}
+
+/**
  * Attempts to extract a token from the given auth header.
  * Requires the header to be in the format ```'Bearer xyz'```
  * Throws an error if the token is not in the correct format
@@ -75,6 +92,35 @@ export async function requireAuthentication(
       request.token = foundToken;
       next();
     } else {
+      next(new NotAuthenticatedError());
+    }
+  } catch (e) {
+    next(e);
+  }
+}
+
+/**
+ * Middleware to attempt to authenticate users before proceeding
+ * @param request Express request object
+ * @param response Express response object
+ * @param next Express next function
+ */
+export async function preferAuthentication(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) { next(); return; }
+    const token = extractBearerToken(authHeader);
+    const foundToken = await validateToken(token);
+    if (foundToken) {
+      request.token = foundToken;
+      next();
+    } else {
+      // If someone is trying to authenticate, but has failed,
+      // We should still return the error to them
       next(new NotAuthenticatedError());
     }
   } catch (e) {

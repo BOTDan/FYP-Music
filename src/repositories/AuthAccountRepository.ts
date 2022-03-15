@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { AbstractRepository, EntityRepository } from 'typeorm';
 import { AuthAccount, AuthProvider } from '../entities/AuthAccount';
 import { User } from '../entities/User';
@@ -26,6 +27,19 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
     authAccount.provider = provider;
     authAccount.authId = authId;
     authAccount.user = user;
+    return this.repository.save(authAccount);
+  }
+
+  /**
+   * Updates the stored access/refresh tokens against an auth account
+   * @param authAccount The auth account to save to
+   * @param accessToken The access token to store
+   * @param refreshToken The refresh token to store
+   * @returns The updated auth account
+   */
+  updateTokens(authAccount: AuthAccount, accessToken: string, refreshToken?: string) {
+    authAccount.accessToken = accessToken;
+    authAccount.refreshToken = refreshToken;
     return this.repository.save(authAccount);
   }
 
@@ -59,5 +73,15 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
     // eslint-disable-next-line no-param-reassign
     authAccount.user = user;
     return this.repository.save(authAccount);
+  }
+
+  /**
+   * Finds the first auth account of a user matching the given provider type
+   * @param user The user
+   * @param provider The provider ID of the account to find
+   * @returns The found account, if it exists
+   */
+  findAuthAccountOfUser(user: User, provider: AuthProvider) {
+    return this.repository.findOne({ where: { user, provider }, order: { dateUpdated: 'DESC' } });
   }
 }

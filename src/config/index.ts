@@ -61,6 +61,8 @@ export const config = {
   // Spotify variables
   SPOTIFY_CLIENT_ID: checkSet('SPOTIFY_CLIENT_ID'),
   SPOTIFY_CLIENT_SECRET: checkSet('SPOTIFY_CLIENT_SECRET'),
+  // YouTube variables
+  YOUTUBE_API_KEY: checkSet('YOUTUBE_API_KEY'),
 };
 
 export default config;
