@@ -74,4 +74,14 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
     authAccount.user = user;
     return this.repository.save(authAccount);
   }
+
+  /**
+   * Finds the first auth account of a user matching the given provider type
+   * @param user The user
+   * @param provider The provider ID of the account to find
+   * @returns The found account, if it exists
+   */
+  findAuthAccountOfUser(user: User, provider: AuthProvider) {
+    return this.repository.findOne({ where: { user, provider }, order: { dateUpdated: 'DESC' } });
+  }
 }

@@ -3,6 +3,7 @@ import {
 } from 'express';
 import { param, query, validationResult } from 'express-validator';
 import { preferAuthentication } from '../../auth';
+import { User } from '../../entities/User';
 import { BadRequestValidationError } from '../../errors/api';
 
 export enum MediaProvider {
@@ -99,8 +100,9 @@ export abstract class ExternalAPI {
         q: q as string,
         page: Number(page),
       } as TrackSearchParams;
+      const user = request.token?.user;
 
-      const results = await this.searchTracks(params);
+      const results = await this.searchTracks(params, user);
       response.send(results);
     } catch (e) {
       next(e);
@@ -117,8 +119,9 @@ export abstract class ExternalAPI {
   async handleGetTrack(request: Request, response: Response, next: NextFunction) {
     try {
       const { id } = request.params;
+      const user = request.token?.user;
 
-      const result = await this.getTrack(id);
+      const result = await this.getTrack(id, user);
       response.send(result);
     } catch (e) {
       next(e);
@@ -130,17 +133,17 @@ export abstract class ExternalAPI {
    * @param params The search params to use for finding the tracks
    * @returns A list of found tracks
    */
-  abstract searchTracks(params: TrackSearchParams): Promise<ExternalTrack[]>;
+  abstract searchTracks(params: TrackSearchParams, user?: User): Promise<ExternalTrack[]>;
 
   /**
    * Finds a single track from the API based on its ID from that API
    * @param id The id of the track to find
    */
-  abstract getTrack(id: string): Promise<ExternalTrack>;
+  abstract getTrack(id: string, user?: User): Promise<ExternalTrack>;
 
   /**
    * Finds a list of tracks from the API based on its ID from that API
    * @param ids The id of the tracks to find
    */
-  abstract getTracks(ids: string[]): Promise<ExternalTrack[]>;
+  abstract getTracks(ids: string[], user?: User): Promise<ExternalTrack[]>;
 }
