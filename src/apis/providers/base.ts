@@ -1,8 +1,9 @@
 import {
   Router, Request, Response, NextFunction,
 } from 'express';
-import { param, query } from 'express-validator';
+import { param, query, validationResult } from 'express-validator';
 import { preferAuthentication } from '../../auth';
+import { BadRequestValidationError } from '../../errors/api';
 
 export enum MediaProvider {
   Spotify = 'spotify',
@@ -51,10 +52,18 @@ export abstract class ExternalAPI {
     this.router.get(
       '/tracks',
       preferAuthentication,
-      query('q').isString().notEmpty(),
+      query('q').isString(),
       query('page').isNumeric().optional().default(0),
       async (req: Request, res: Response, next: NextFunction) => {
-        await this.handleSearchTracks(req, res, next);
+        try {
+          const errors = validationResult(req);
+          if (!errors.isEmpty()) {
+            throw new BadRequestValidationError(errors.array());
+          }
+          await this.handleSearchTracks(req, res, next);
+        } catch (e) {
+          next(e);
+        }
       },
     );
 
@@ -63,7 +72,15 @@ export abstract class ExternalAPI {
       preferAuthentication,
       param('id').isString(),
       async (req: Request, res: Response, next: NextFunction) => {
-        await this.handleGetTrack(req, res, next);
+        try {
+          const errors = validationResult(req);
+          if (!errors.isEmpty()) {
+            throw new BadRequestValidationError(errors.array());
+          }
+          await this.handleGetTrack(req, res, next);
+        } catch (e) {
+          next(e);
+        }
       },
     );
   }

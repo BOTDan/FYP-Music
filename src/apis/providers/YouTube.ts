@@ -30,7 +30,6 @@ export class YouTubeAPI extends ExternalAPI {
       duration: duration(video.contentDetails?.duration).asMilliseconds(),
       image: video.snippet?.thumbnails?.default?.url,
     } as ExternalTrack;
-    console.log(video.contentDetails?.duration);
     return data;
   }
 
