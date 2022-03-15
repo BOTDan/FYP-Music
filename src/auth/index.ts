@@ -100,6 +100,35 @@ export async function requireAuthentication(
 }
 
 /**
+ * Middleware to attempt to authenticate users before proceeding
+ * @param request Express request object
+ * @param response Express response object
+ * @param next Express next function
+ */
+export async function preferAuthentication(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) { next(); return; }
+    const token = extractBearerToken(authHeader);
+    const foundToken = await validateToken(token);
+    if (foundToken) {
+      request.token = foundToken;
+      next();
+    } else {
+      // If someone is trying to authenticate, but has failed,
+      // We should still return the error to them
+      next(new NotAuthenticatedError());
+    }
+  } catch (e) {
+    next(e);
+  }
+}
+
+/**
  * Links an auth account to a user based on the link token given.
  * @param user The user to link the account to
  * @param linkToken The token
