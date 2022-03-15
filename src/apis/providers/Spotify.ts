@@ -95,7 +95,6 @@ export class SpotifyAPI extends ExternalAPI {
       api.setAccessToken(authAccount.accessToken!);
       const results = await api.searchTracks(params.q);
       if (results.body && results.body.tracks) {
-        console.log(results.body.tracks.items[0]);
         return results.body.tracks.items.map((track) => this.formatTrack(track));
       }
     } finally {
