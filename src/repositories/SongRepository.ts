@@ -1,5 +1,5 @@
 import { AbstractRepository, EntityRepository } from 'typeorm';
-import { MediaProvider } from '../apis';
+import { MediaProvider } from '../apis/providers/base';
 import { Artist } from '../entities/Artist';
 import { Song } from '../entities/Song';
 

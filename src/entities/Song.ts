@@ -1,7 +1,7 @@
 import {
   Column, Entity, JoinTable, ManyToMany, Unique,
 } from 'typeorm';
-import { MediaProvider } from '../apis';
+import { MediaProvider } from '../apis/providers/base';
 import { Artist } from './Artist';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 

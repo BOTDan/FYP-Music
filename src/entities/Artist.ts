@@ -1,5 +1,5 @@
 import { Column, Entity, Unique } from 'typeorm';
-import { MediaProvider } from '../apis';
+import { MediaProvider } from '../apis/providers/base';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 
 @Entity()
