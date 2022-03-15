@@ -19,6 +19,7 @@
     "express": "^4.17.2",
     "express-validator": "^6.14.0",
     "googleapis": "^94.0.0",
+    "moment": "^2.29.1",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
     "passport-spotify": "^2.0.0",
