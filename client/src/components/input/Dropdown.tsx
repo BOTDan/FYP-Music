@@ -28,16 +28,19 @@ export function Dropdown({ children, options }: DropdownProps) {
 
   return (
     <div className={`Dropdown ${expanded ? 'expanded' : ''}`}>
-      <Button onClick={() => toggleDropdown()}>
+      <Button onClick={() => toggleDropdown()} className="text-left">
         {selected?.content ?? children}
         <span className="Dropdown__Chevron">^</span>
       </Button>
       <div className={`Dropdown__Options ${expanded ? '' : 'hidden'}`}>
-        {options.map((option) => (
-          <Button onClick={() => setOption(option)} key={option.name} className={selected === option ? 'selected' : ''}>
-            {option.content}
-          </Button>
-        ))}
+        {options.map((option) => {
+          const selectedClass = (option === selected) ? 'selected' : '';
+          return (
+            <Button onClick={() => setOption(option)} key={option.name} className={`block text-left ${selectedClass}`}>
+              {option.content}
+            </Button>
+          );
+        })}
       </div>
     </div>
   );

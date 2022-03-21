@@ -1,6 +1,8 @@
 @import '../../styles/shared.scss';
 
 .Input {
+  display: inline-block; 
+  
   > .Input__Entry {
     input[type=text],
     input[type=number] {
