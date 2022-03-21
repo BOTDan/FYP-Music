@@ -1,0 +1,17 @@
+@import '../../styles/shared.scss';
+
+.Input {
+  > .Input__Entry {
+    input[type=text],
+    input[type=number] {
+      border: none;
+      border-radius: $border-radius;
+      background-color: $input-bg;
+      color: $input-fg;
+      font-size: 1em;
+      padding: 0.5em;
+      display: inline-block;
+      outline: none;
+    }
+  }
+}

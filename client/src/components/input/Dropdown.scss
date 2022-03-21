@@ -1,0 +1,13 @@
+.Dropdown {
+  position: relative;
+
+  .Dropdown__Options {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    
+    &.hidden {
+      display: none;
+    }
+  }
+}
