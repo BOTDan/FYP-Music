@@ -1,12 +1,11 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import './App.scss';
+import { MainDesktop } from './layouts/MainDesktop';
 
 function App() {
   return (
     <div className="App">
-      <p>FYP Music</p>
-      <Outlet />
+      <MainDesktop />
     </div>
   );
 }
