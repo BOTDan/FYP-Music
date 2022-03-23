@@ -1,6 +1,8 @@
 import React, {
   PropsWithChildren, ReactNode, useState,
 } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './Button';
 import './Dropdown.scss';
 
@@ -26,17 +28,20 @@ export function Dropdown({ children, options }: DropdownProps) {
     setExpanded((cur) => !cur);
   }
 
+  const chevronIcon = expanded ? faChevronUp : faChevronDown;
+  const chevronElem = <FontAwesomeIcon icon={chevronIcon} />;
+
   return (
     <div className={`Dropdown ${expanded ? 'expanded' : ''}`}>
       <Button onClick={() => toggleDropdown()} className="text-left">
         {selected?.content ?? children}
-        <span className="Dropdown__Chevron">^</span>
+        <span className="Dropdown__Chevron">{chevronElem}</span>
       </Button>
       <div className={`Dropdown__Options ${expanded ? '' : 'hidden'}`}>
         {options.map((option) => {
           const selectedClass = (option === selected) ? 'selected' : '';
           return (
-            <Button onClick={() => setOption(option)} key={option.name} className={`block text-left ${selectedClass}`}>
+            <Button onClick={() => setOption(option)} key={option.name} className={`Dropdown__Option block text-left ${selectedClass}`}>
               {option.content}
             </Button>
           );

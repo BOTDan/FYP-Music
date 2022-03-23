@@ -4,14 +4,32 @@
   position: relative;
   display: inline-block;
 
+  &.expanded {
+    > button {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .Dropdown__Chevron {
+    margin-left: 0.5em;
+  }
+
   .Dropdown__Options {
     position: absolute;
     left: 0;
     top: 100%;
     min-width: 100%;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    overflow: hidden;
     
     &.hidden {
       display: none;
+    }
+
+    .Dropdown__Option {
+      border-radius: 0;
     }
   }
 }
