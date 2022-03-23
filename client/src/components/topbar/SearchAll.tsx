@@ -1,29 +1,58 @@
-import React, { useCallback, useState } from 'react';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { MediaProvider } from '../../types';
+import { MediaProviderIcon } from '../icons/MediaProviderIcon';
 import { Dropdown, DropdownOption } from '../input/Dropdown';
 import { StringInput } from '../input/StringInput';
+import './SearchAll.scss';
 
+const searchProviders: DropdownOption[] = [
+  {
+    name: 'YouTube',
+    content: (
+      <span>
+        <MediaProviderIcon provider={MediaProvider.YouTube} fgColour />
+        <span> YouTube</span>
+      </span>
+    ),
+  },
+  {
+    name: 'Spotify',
+    content: (
+      <span>
+        <MediaProviderIcon provider={MediaProvider.Spotify} fgColour />
+        <span> Spotify</span>
+      </span>
+    ),
+  },
+];
+
+/**
+ * A search bar for searching content from media providers
+ * @returns A search bar for searching media providers
+ */
 export function SearchAll() {
   const [value, setValue] = useState('');
+  const [searchProvider, setSearchProvider] = useState(searchProviders[0]);
 
-  const onSearchChanged = useCallback((newValue: string) => {
+  function onSearchChanged(newValue: string) {
     setValue(newValue);
-  }, []);
+  }
 
-  const searchProviders: DropdownOption[] = [
-    {
-      name: 'youtube',
-      content: 'YouTube',
-    },
-    {
-      name: 'spotify',
-      content: 'Spotify',
-    },
-  ];
+  function onProviderChanged(newProvider: DropdownOption) {
+    setSearchProvider(newProvider);
+  }
+
+  const placeholderText = `Search ${searchProvider.name}...`;
 
   return (
     <div className="SearchAll">
-      <Dropdown options={searchProviders} />
-      <StringInput value={value} onChange={onSearchChanged} autoComplete="off" />
+      <Dropdown value={searchProvider} options={searchProviders} onChange={onProviderChanged} />
+      <StringInput value={value} onChange={onSearchChanged} autoComplete="off" placeholder={placeholderText} />
+      <span className="SearchAll__Icon">
+        <FontAwesomeIcon icon={faSearch} />
+      </span>
     </div>
   );
 }
