@@ -15,7 +15,7 @@ export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputEle
  * @returns An input
  */
 export function GenericInput({
-  label, type, value, error, after, onChange, ...remaining
+  label, type, value, error, after, onChange, size, ...remaining
 }: GenericInputProps) {
   /**
    * Handles running the callback for when the value of this input changes
@@ -28,7 +28,16 @@ export function GenericInput({
   }
 
   const labelElem = (label) ? (<label htmlFor="entry">{label}</label>) : undefined;
-  const inputElem = (<input id="entry" type={type ?? 'text'} value={value} onChange={handleOnChange} {...remaining} />);
+  const inputElem = (
+    <input
+      id="entry"
+      type={type ?? 'text'}
+      value={value}
+      onChange={handleOnChange}
+      size={size ?? 1}
+      {...remaining}
+    />
+  );
   const afterElem = after ?? undefined;
   const errorElem = (error) ? (<p className="Input__Error">{error}</p>) : undefined;
 
