@@ -21,6 +21,8 @@
     .MainLayout__Content {
       flex: 1;
       overflow-y: auto;
+      display: flex;
+      flex-flow: column nowrap;
     }
   }
 }
