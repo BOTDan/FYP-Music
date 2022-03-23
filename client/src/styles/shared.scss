@@ -1,7 +1,8 @@
 @import './helper.scss';
 
 // Main app
-$background: #333;
+$background: #111;
+$text-colour: #fff;
 
 $border-radius: 0.25rem;
 
@@ -10,3 +11,7 @@ $input-fg: #333;
 $input-bg: #fff;
 $input-bg-hover: #eee;
 $input-bg-active: #ddd;
+
+$youtube-colour: #FF0000;
+$spotify-colour: #1DB954;
+$soundcloud-colour: #FE5000;
