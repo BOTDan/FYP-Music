@@ -1,6 +1,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import { MediaProvider } from '../../types';
 import { MediaProviderIcon } from '../icons/MediaProviderIcon';
 import { Dropdown, DropdownOption } from '../input/Dropdown';
@@ -33,8 +34,17 @@ const searchProviders: DropdownOption[] = [
  * @returns A search bar for searching media providers
  */
 export function SearchAll() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [value, setValue] = useState('');
   const [searchProvider, setSearchProvider] = useState(searchProviders[0]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function gotoSearchPage() {
+    if (value || location.pathname.startsWith('/search')) {
+      navigate(`/search/${searchProvider.name.toLowerCase()}/${value}`);
+    }
+  }
 
   function onSearchChanged(newValue: string) {
     setValue(newValue);
@@ -43,6 +53,10 @@ export function SearchAll() {
   function onProviderChanged(newProvider: DropdownOption) {
     setSearchProvider(newProvider);
   }
+
+  useEffect(() => {
+    gotoSearchPage();
+  }, [value, searchProvider]);
 
   const placeholderText = `Search ${searchProvider.name}...`;
 
