@@ -30,6 +30,7 @@ module.exports = {
     'react/jsx-no-bind': ['off', {
       allowFunctions: true,
     }],
+    'react/jsx-one-expression-per-line': 'off',
   },
   settings: {
     'import/resolver': {
