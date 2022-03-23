@@ -12,16 +12,21 @@ export interface DropdownOption {
 }
 
 export interface DropdownProps extends PropsWithChildren<any> {
+  value: DropdownOption;
   options: DropdownOption[];
+  onChange?: (option: DropdownOption) => void;
 }
 
-export function Dropdown({ children, options }: DropdownProps) {
-  const [selected, setSelected] = useState<DropdownOption>();
+export function Dropdown({
+  value, children, options, onChange,
+}: DropdownProps) {
   const [expanded, setExpanded] = useState(false);
 
   function setOption(option: DropdownOption) {
-    setSelected(option);
     setExpanded(false);
+    if (onChange) {
+      onChange(option);
+    }
   }
 
   function toggleDropdown() {
@@ -33,13 +38,13 @@ export function Dropdown({ children, options }: DropdownProps) {
 
   return (
     <div className={`Dropdown ${expanded ? 'expanded' : ''}`}>
-      <Button onClick={() => toggleDropdown()} className="text-left">
-        {selected?.content ?? children}
+      <Button onClick={toggleDropdown} className="text-left">
+        {value.content ?? children}
         <span className="Dropdown__Chevron">{chevronElem}</span>
       </Button>
       <div className={`Dropdown__Options ${expanded ? '' : 'hidden'}`}>
         {options.map((option) => {
-          const selectedClass = (option === selected) ? 'selected' : '';
+          const selectedClass = (option === value) ? 'selected' : '';
           return (
             <Button onClick={() => setOption(option)} key={option.name} className={`Dropdown__Option block text-left ${selectedClass}`}>
               {option.content}
@@ -50,3 +55,7 @@ export function Dropdown({ children, options }: DropdownProps) {
     </div>
   );
 }
+
+Dropdown.defaultProps = {
+  onChange: () => {},
+};

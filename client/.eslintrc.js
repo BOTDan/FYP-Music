@@ -27,6 +27,9 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/jsx-props-no-spreading': 'off',
+    'react/jsx-no-bind': ['off', {
+      allowFunctions: true,
+    }],
   },
   settings: {
     'import/resolver': {

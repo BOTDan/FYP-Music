@@ -7,11 +7,11 @@ interface StringInputProps extends Omit<GenericInputProps, 'type'> {
 }
 
 export function StringInput({ onChange, ...remainingProps }: StringInputProps) {
-  const handleOnChange = (value: string | number) => {
+  function handleOnChange(value: string | number) {
     if (onChange) {
       onChange(value.toString());
     }
-  };
+  }
 
   return (<GenericInput type="text" onChange={handleOnChange} {...remainingProps} />);
 }
