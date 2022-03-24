@@ -1,9 +1,49 @@
 import React from 'react';
+import { TrackCardList } from '../../components/cards/TrackCardList';
 import { MediaProviderIcon } from '../../components/icons/MediaProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
-import { MediaProvider } from '../../types';
+import { ExternalTrack, MediaProvider } from '../../types';
 import './SearchPageResults.scss';
+
+const testData: ExternalTrack[] = [
+  {
+    name: 'A song name',
+    artists: [
+      {
+        name: 'Artist #1',
+        provider: MediaProvider.YouTube,
+        providerId: '',
+      },
+    ],
+    duration: 1000,
+    provider: MediaProvider.YouTube,
+    providerId: '',
+  },
+  {
+    name: 'Another great song name',
+    artists: [
+      {
+        name: 'Random artist',
+        provider: MediaProvider.YouTube,
+        providerId: '',
+      },
+      {
+        name: 'Someone else',
+        provider: MediaProvider.YouTube,
+        providerId: '',
+      },
+      {
+        name: '1 more guy',
+        provider: MediaProvider.YouTube,
+        providerId: '',
+      },
+    ],
+    duration: 1000,
+    provider: MediaProvider.YouTube,
+    providerId: '',
+  },
+];
 
 export interface SearchPageResultsProps {
   q: string;
@@ -27,6 +67,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
         >
           {q}
         </TopHeading>
+        <TrackCardList tracks={testData} />
       </GeneralContent>
     );
   }

@@ -1,0 +1,34 @@
+.TrackCard {
+  padding: 0.5rem;
+  display: flex;
+  flex-flow: row nowrap;
+
+  > * {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .TrackCard__Number {
+    padding: 0.25em 0.5em;
+  }
+
+  .TrackCard__Image {
+    padding: 0.25 0.5em;
+  }
+
+  .TrackCard__Main {
+    align-items: flex-start;
+  }
+
+  .TrackCard__Name {
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .TrackCard__Artists {
+    font-weight: normal;
+    margin: 0;
+  }
+}
