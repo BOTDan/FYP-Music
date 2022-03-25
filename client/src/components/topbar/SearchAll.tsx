@@ -1,7 +1,9 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { mediaProviderFromString } from '../../helper';
+import { useAppDispatch, useAppSelector } from '../../store/helper';
+import { updateProvider, updateSearchTerm } from '../../store/reducers/search';
 import { MediaProvider } from '../../types';
 import { MediaProviderIcon } from '../icons/MediaProviderIcon';
 import { Dropdown, DropdownOption } from '../input/Dropdown';
@@ -27,43 +29,63 @@ const searchProviders: DropdownOption[] = [
       </span>
     ),
   },
+  {
+    name: 'SoundCloud',
+    content: (
+      <span>
+        <MediaProviderIcon provider={MediaProvider.SoundCloud} fgColour />
+        <span> SoundCloud</span>
+      </span>
+    ),
+  },
 ];
+
+const searchProvidersMapping = {
+  [MediaProvider.YouTube]: searchProviders[0],
+  [MediaProvider.Spotify]: searchProviders[1],
+  [MediaProvider.SoundCloud]: searchProviders[2],
+};
 
 /**
  * A search bar for searching content from media providers
  * @returns A search bar for searching media providers
  */
 export function SearchAll() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [value, setValue] = useState('');
-  const [searchProvider, setSearchProvider] = useState(searchProviders[0]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function gotoSearchPage() {
-    if (value || location.pathname.startsWith('/search')) {
-      navigate(`/search/${searchProvider.name.toLowerCase()}/${value}`);
-    }
-  }
+  const searchValue = useAppSelector((state) => state.search.q);
+  const searchProvider = useAppSelector((state) => state.search.provider);
+  const dispatch = useAppDispatch();
+  const [searchProviderOption, setSearchProviderOption] = useState(searchProviders[0]);
 
   function onSearchChanged(newValue: string) {
-    setValue(newValue);
+    dispatch(updateSearchTerm(newValue));
   }
 
   function onProviderChanged(newProvider: DropdownOption) {
-    setSearchProvider(newProvider);
+    const provider = mediaProviderFromString(newProvider.name);
+    if (provider) {
+      dispatch(updateProvider(provider));
+    }
   }
 
   useEffect(() => {
-    gotoSearchPage();
-  }, [value, searchProvider]);
+    setSearchProviderOption(searchProvidersMapping[searchProvider]);
+  }, [searchProvider]);
 
-  const placeholderText = `Search ${searchProvider.name}...`;
+  const placeholderText = `Search ${searchProviderOption.name}...`;
 
   return (
     <div className="SearchAll">
-      <Dropdown value={searchProvider} options={searchProviders} onChange={onProviderChanged} />
-      <StringInput value={value} onChange={onSearchChanged} autoComplete="off" placeholder={placeholderText} />
+      <Dropdown
+        value={searchProviderOption}
+        options={searchProviders}
+        onChange={onProviderChanged}
+      />
+      <StringInput
+        value={searchValue}
+        onChange={onSearchChanged}
+        autoComplete="off"
+        placeholder={placeholderText}
+      />
       <span className="SearchAll__Icon">
         <FontAwesomeIcon icon={faSearch} />
       </span>

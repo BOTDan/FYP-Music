@@ -4,25 +4,29 @@ import {
   BrowserRouter, Route, Routes,
 } from 'react-router-dom';
 import './index.scss';
+import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { InputTestPage } from './pages/InputTestPage';
 import { SearchPage } from './pages/search/SearchPage';
+import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<App />}>
-          {/* Search routing */}
-          <Route path="search/*" element={<SearchPage />} />
-          {/* Testing router */}
-          <Route path="test">
-            <Route path="inputs" element={<InputTestPage />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<App />}>
+            {/* Search routing */}
+            <Route path="search/*" element={<SearchPage />} />
+            {/* Testing router */}
+            <Route path="test">
+              <Route path="inputs" element={<InputTestPage />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

@@ -18,7 +18,7 @@ const testData: ExternalTrack[] = [
     ],
     duration: 1000,
     provider: MediaProvider.YouTube,
-    providerId: '',
+    providerId: 'fds',
   },
   {
     name: 'Another great song name',
@@ -41,7 +41,7 @@ const testData: ExternalTrack[] = [
     ],
     duration: 1000,
     provider: MediaProvider.YouTube,
-    providerId: '',
+    providerId: 'gfdgfd',
   },
 ];
 
@@ -58,7 +58,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
 
   if (finalProvider) {
     return (
-      <GeneralContent className="SearchPageResults">
+      <GeneralContent className="SearchPageResults" padTop padBottom>
         <TopHeading subheading={(
           <span>
             <MediaProviderIcon provider={finalProvider} /> Search
