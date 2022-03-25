@@ -29,14 +29,14 @@ export function SearchManager() {
         dispatch(updateProvider(provider));
       }
       if (q) {
-        dispatch(updateSearchTerm(q));
+        dispatch(updateSearchTerm(decodeURI(q)));
       }
     }
   }, []);
 
   useEffect(() => {
     if (searchValue || location.pathname.startsWith('/search')) {
-      navigate(`/search/${searchProvider.toLowerCase()}/${searchValue}`);
+      navigate(`/search/${searchProvider.toLowerCase()}/${encodeURI(searchValue)}`);
     }
   }, [searchValue, searchProvider]);
   return (null);
