@@ -1,11 +1,17 @@
-import React from 'react';
+import debounce from 'debounce';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
+import { searchForTrack } from '../../apis/search';
 import { TrackCardList } from '../../components/cards/TrackCardList';
 import { MediaProviderIcon } from '../../components/icons/MediaProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
+import { mediaProviderFromString } from '../../helper';
 import { ExternalTrack, MediaProvider } from '../../types';
 import './SearchPageResults.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const testData: ExternalTrack[] = [
   {
     name: 'A song name',
@@ -51,11 +57,44 @@ export interface SearchPageResultsProps {
 }
 
 export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
-  const lower = provider.toLowerCase();
-  const finalProvider = (Object.values(MediaProvider).includes(lower as MediaProvider))
-    ? lower as MediaProvider
-    : undefined;
+  const finalProvider = mediaProviderFromString(provider);
+  const [results, setResults] = useState<ExternalTrack[]>([]);
+  const isMounted = useRef(false);
 
+  const updateSearch = (newProvider: string, newQ: string) => {
+    const finalNewProvider = mediaProviderFromString(newProvider);
+
+    if (finalNewProvider) {
+      searchForTrack(finalNewProvider, newQ)
+        .then((r) => {
+          if (isMounted.current) {
+            console.log(r);
+            setResults(r);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
+  const updateResults = useMemo(() => debounce(updateSearch, 250), []);
+
+  // Keep track of if we're mounted
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+      updateResults.clear();
+    };
+  });
+
+  // Update search results when term changes
+  useEffect(() => {
+    updateResults(provider, q);
+  }, [q, provider]);
+
+  // Render
   if (finalProvider) {
     return (
       <GeneralContent className="SearchPageResults" padTop padBottom>
@@ -67,7 +106,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
         >
           {q}
         </TopHeading>
-        <TrackCardList tracks={testData} />
+        <TrackCardList tracks={results} />
       </GeneralContent>
     );
   }
