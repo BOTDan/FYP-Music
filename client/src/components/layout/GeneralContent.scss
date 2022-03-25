@@ -1,6 +1,14 @@
-$padding: 1rem;
+$padding: 2rem;
 
 .GeneralContent {
   padding-left: $padding;
   padding-right: $padding;
+
+  &.pad-top {
+    padding-top: $padding / 2;
+  }
+
+  &.pad-bottom {
+    padding-bottom: $padding / 2;
+  }
 }
