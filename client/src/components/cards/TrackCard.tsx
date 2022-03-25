@@ -21,6 +21,9 @@ export function TrackCard({ track }: TrackCardProps) {
         <p className="TrackCard__Name">{ track.name }</p>
         <p className="TrackCard__Artists">{ artists }</p>
       </span>
+      <span className="TrackCard__Duration">
+        { track.duration }
+      </span>
     </div>
   );
 }

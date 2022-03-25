@@ -1,7 +1,17 @@
+@import '../../styles/shared.scss';
+
+$padding: 0.25em 0.5em;
+
 .TrackCard {
   padding: 0.5rem;
   display: flex;
   flex-flow: row nowrap;
+  cursor: pointer;
+  border-radius: $border-radius;
+
+  &:hover {
+    background: black;
+  }
 
   > * {
     display: flex;
@@ -11,24 +21,38 @@
   }
 
   .TrackCard__Number {
-    padding: 0.25em 0.5em;
+    padding: $padding;
   }
 
   .TrackCard__Image {
-    padding: 0.25 0.5em;
+    padding: $padding;
   }
 
   .TrackCard__Main {
+    flex: 1;
     align-items: flex-start;
+    padding-left: 0.25em;
+    overflow: hidden;
+
+    .TrackCard__Name {
+      font-weight: bold;
+      margin: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  
+    .TrackCard__Artists {
+      font-weight: normal;
+      margin: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
-  .TrackCard__Name {
-    font-weight: bold;
-    margin: 0;
-  }
 
-  .TrackCard__Artists {
-    font-weight: normal;
-    margin: 0;
+  .TrackCard__Duration {
+    padding: $padding;
+    text-align: right;
   }
 }
