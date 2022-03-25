@@ -45,7 +45,7 @@ export class YouTubeAPI extends ExternalAPI {
     const result = await api.videos.list({
       part: ['snippet', 'contentDetails'],
       id: ids,
-      auth: apiKey,
+      key: apiKey,
     });
     if (result.data.items && result.data.items.length > 0) {
       return result.data.items.map((video) => this.formatTrack(video));
@@ -57,7 +57,8 @@ export class YouTubeAPI extends ExternalAPI {
     const result = await api.search.list({
       part: ['snippet'],
       q: params.q,
-      auth: apiKey,
+      key: apiKey,
+      maxResults: 10,
     });
     if (result.data.items && result.data.items.length > 0) {
       const ids = result.data.items.map((video) => video.id?.videoId as string);
