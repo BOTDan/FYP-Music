@@ -22,9 +22,22 @@ $padding: 0.25em 0.5em;
 
   .TrackCard__Number {
     padding: $padding;
+    width: 2em;
+    box-sizing: content-box;
   }
 
   .TrackCard__Image {
+    padding: $padding;
+    box-sizing: content-box;
+    width: 4em;
+
+    img {
+      max-width: 3em;
+      max-height: 3em;
+    }
+  }
+
+  .TrackCard__Provider {
     padding: $padding;
   }
 
@@ -39,6 +52,9 @@ $padding: 0.25em 0.5em;
       margin: 0;
       white-space: nowrap;
       text-overflow: ellipsis;
+      overflow: hidden;
+      min-width: 0;
+      width: 100%;
     }
   
     .TrackCard__Artists {
@@ -47,6 +63,8 @@ $padding: 0.25em 0.5em;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      min-width: 0;
+      width: 100%;
     }
   }
 

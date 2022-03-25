@@ -9,7 +9,13 @@ export interface TrackCardListProps {
 export function TrackCardList({ tracks }: TrackCardListProps) {
   return (
     <div>
-      {tracks.map((track) => (<TrackCard track={track} key={track.providerId} />))}
+      {tracks.map((track, i) => (
+        <TrackCard
+          track={track}
+          number={i + 1}
+          key={track.providerId}
+        />
+      ))}
     </div>
   );
 }
