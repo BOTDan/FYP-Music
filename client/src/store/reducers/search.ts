@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MediaProvider } from '../../types';
 
 interface SearchState {
-  provider: MediaProvider,
+  provider: MediaProvider;
   q: string;
 }
 

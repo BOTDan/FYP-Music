@@ -4,6 +4,11 @@ export enum MediaProvider {
   SoundCloud = 'soundcloud',
 }
 
+export enum AuthProvider {
+  Spotify = 'spotify',
+  Google = 'Google',
+}
+
 export interface ExternalArtist {
   name: string;
   image?: string;
@@ -18,4 +23,20 @@ export interface ExternalTrack {
   image?: string;
   provider: MediaProvider;
   providerId: string;
+}
+
+export interface DatabaseEntityDTO {
+  dateCreated: Date;
+  dateUpdated: Date;
+}
+
+export interface DatabaseEntityWithIDDTO extends DatabaseEntityDTO {
+  id: string;
+}
+export interface UserDTO extends DatabaseEntityWithIDDTO {
+  displayName: string;
+}
+export interface UserTokenDTO extends DatabaseEntityWithIDDTO {
+  user: UserDTO;
+  token: string;
 }
