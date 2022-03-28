@@ -8,6 +8,7 @@ function App() {
     <div className="App">
       <MainDesktop />
       <SearchManager />
+      <div id="Modals" />
     </div>
   );
 }
