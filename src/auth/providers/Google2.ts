@@ -12,7 +12,8 @@ export class GoogleAuthProvider extends BaseAuthProvider {
   constructor() {
     super('google', AuthProvider.Google);
 
-    const callbackUrl = 'http://localhost:8080/auth/google/callback';
+    // const callbackUrl = 'http://localhost:8080/auth/google/callback';
+    const callbackUrl = 'http://localhost:3000/callback/google';
     const scopes = [
       'https://www.googleapis.com/auth/youtube.readonly',
       'https://www.googleapis.com/auth/userinfo.profile',
