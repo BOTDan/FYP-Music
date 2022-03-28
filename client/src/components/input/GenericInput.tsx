@@ -34,7 +34,7 @@ export function GenericInput({
       type={type ?? 'text'}
       value={value}
       onChange={handleOnChange}
-      size={size ?? 1}
+      size={size}
       {...remaining}
     />
   );
