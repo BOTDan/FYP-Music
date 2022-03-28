@@ -12,3 +12,17 @@ export function mediaProviderFromString(provider: string) {
     : undefined;
   return finalProvider;
 }
+
+const prettyNames: { [provider in MediaProvider]: string } = {
+  [MediaProvider.YouTube]: 'YouTube',
+  [MediaProvider.Spotify]: 'Spotify',
+  [MediaProvider.SoundCloud]: 'SoundCloud',
+};
+/**
+ * Returns the pretty string version of the given provider enum
+ * @param provider The provider enum
+ * @returns A pretty string version of the provider
+ */
+export function mediaProviderPrettyPrint(provider: MediaProvider) {
+  return prettyNames[provider];
+}
