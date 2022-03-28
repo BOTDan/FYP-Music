@@ -8,6 +8,7 @@ import { MediaProviderIcon } from '../../components/icons/MediaProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
+import { useAppSelector } from '../../store/helper';
 import { ExternalTrack, MediaProvider } from '../../types';
 import './SearchPageResults.scss';
 
@@ -59,13 +60,15 @@ export interface SearchPageResultsProps {
 export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
   const finalProvider = mediaProviderFromString(provider);
   const [results, setResults] = useState<ExternalTrack[]>([]);
+  const userToken = useAppSelector((state) => state.auth.token);
   const isMounted = useRef(false);
 
   const updateSearch = (newProvider: string, newQ: string) => {
     const finalNewProvider = mediaProviderFromString(newProvider);
+    setResults([]);
 
     if (finalNewProvider) {
-      searchForTrack(finalNewProvider, newQ)
+      searchForTrack(finalNewProvider, newQ, userToken)
         .then((r) => {
           if (isMounted.current) {
             console.log(r);
@@ -78,7 +81,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
     }
   };
 
-  const updateResults = useMemo(() => debounce(updateSearch, 250), []);
+  const updateResults = useMemo(() => debounce(updateSearch, 500), []);
 
   // Keep track of if we're mounted
   useEffect(() => {

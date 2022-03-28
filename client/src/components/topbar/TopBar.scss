@@ -3,4 +3,10 @@ $background: #222;
 .TopBar {
   background: $background;
   padding: 0.5em;
+  display: flex;
+  flex-flow: row nowrap;
+
+  > .SearchAll {
+    margin-right: auto;
+  }
 }
