@@ -10,7 +10,7 @@ import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
 import { useAppSelector } from '../../store/helper';
-import { ExternalTrack, MediaProvider } from '../../types';
+import { ExternalTrack, MediaProvider, UserTokenDTO } from '../../types';
 import './SearchPageResults.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -65,13 +65,18 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
 
-  const updateSearch = (newProvider: string, newQ: string) => {
+  const updateSearch = (
+    newProvider: string,
+    newQ: string,
+    newUserToken: UserTokenDTO | undefined,
+  ) => {
     const finalNewProvider = mediaProviderFromString(newProvider);
     setResults([]);
 
     if (finalNewProvider) {
       setLoading(true);
-      searchForTrack(finalNewProvider, newQ, userToken)
+
+      searchForTrack(finalNewProvider, newQ, newUserToken)
         .then((r) => {
           if (isMounted.current) {
             console.log(r);
@@ -99,7 +104,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
 
   // Update search results when term changes
   useEffect(() => {
-    updateResults(provider, q);
+    updateResults(provider, q, userToken);
   }, [q, provider]);
 
   // Render
