@@ -8,6 +8,7 @@ export interface LoadingSpinnerProps extends PropsWithChildren<{}> {
   fillWidth?: boolean;
   fillHeight?: boolean;
   size?: SizeProp;
+  inline?: boolean;
 }
 
 /**
@@ -16,11 +17,12 @@ export interface LoadingSpinnerProps extends PropsWithChildren<{}> {
  * @returns A loading spinner
  */
 export function LoadingSpinner({
-  children, fillWidth, fillHeight, size,
+  children, fillWidth, fillHeight, size, inline,
 }: LoadingSpinnerProps) {
   const classList = ['LoadingSpinner'];
   if (fillWidth) { classList.push('fillWidth'); }
   if (fillHeight) { classList.push('fillHeight'); }
+  if (inline) { classList.push('inline'); }
 
   return (
     <div className={`${classList.join(' ')}`}>
@@ -34,4 +36,5 @@ LoadingSpinner.defaultProps = {
   fillWidth: false,
   fillHeight: false,
   size: '1x',
+  inline: false,
 };

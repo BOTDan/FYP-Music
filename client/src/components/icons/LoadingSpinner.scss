@@ -11,4 +11,8 @@
   &.fillHeight {
     height: 100%;
   }
+
+  &.inline {
+    display: inline-block;
+  }
 }
