@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { login } from '../../auth';
+import { authProviderPrettyPrint } from '../../helper';
 import { useAppDispatch } from '../../store/helper';
 import { updateToken } from '../../store/reducers/auth';
 // import { mediaProviderPrettyPrint } from '../../helper';
 import { AuthProvider } from '../../types';
-// import { MediaProviderIcon } from '../icons/MediaProviderIcon';
+import { LoadingSpinner } from '../icons/LoadingSpinner';
+import { ProviderIcon } from '../icons/ProviderIcon';
 import { Button } from '../input/Button';
 import './LoginButton.scss';
 import { LoginPopup } from './LoginPopup';
@@ -33,15 +35,16 @@ export function LoginButton({ provider }: LoginButtonProps) {
         dispatch(updateToken(data.token));
       });
   }
-
   return (
     <Button
       className="LoginButton block text-left"
       onClick={() => setPopupVisible(true)}
     >
-      {/* <MediaProviderIcon provider={provider} /> */}
+      {popupVisible
+        ? <LoadingSpinner inline />
+        : (<ProviderIcon provider={provider} />)}
       {' '}
-      Log In Using {provider}
+      Log In Using {authProviderPrettyPrint(provider)}
       <LoginPopup
         provider={provider}
         visible={popupVisible}

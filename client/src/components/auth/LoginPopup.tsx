@@ -23,8 +23,8 @@ export function LoginPopup({
       if (externalWindow) {
         externalWindow.focus();
       } else {
-        const width = 500;
-        const height = 400;
+        const width = 600;
+        const height = 600;
         const left = window.screenX + (window.outerWidth - width) / 2;
         const top = window.screenY + (window.outerHeight - height) / 2;
         const title = 'Log In';
