@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { searchForTrack } from '../../apis/search';
 import { TrackCardList } from '../../components/cards/TrackCardList';
+import { LoadingSpinner } from '../../components/icons/LoadingSpinner';
 import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
@@ -62,20 +63,24 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
   const [results, setResults] = useState<ExternalTrack[]>([]);
   const userToken = useAppSelector((state) => state.auth.token);
   const isMounted = useRef(false);
+  const [loading, setLoading] = useState(false);
 
   const updateSearch = (newProvider: string, newQ: string) => {
     const finalNewProvider = mediaProviderFromString(newProvider);
     setResults([]);
 
     if (finalNewProvider) {
+      setLoading(true);
       searchForTrack(finalNewProvider, newQ, userToken)
         .then((r) => {
           if (isMounted.current) {
             console.log(r);
+            setLoading(false);
             setResults(r);
           }
         })
         .catch((e) => {
+          setLoading(false);
           console.log(e);
         });
     }
@@ -109,7 +114,9 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
         >
           {q}
         </TopHeading>
-        <TrackCardList tracks={results} />
+        {loading
+          ? (<LoadingSpinner size="5x" />)
+          : (<TrackCardList tracks={results} />)}
       </GeneralContent>
     );
   }
