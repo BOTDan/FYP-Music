@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExternalTrack } from '../../types';
-import { MediaProviderIcon } from '../icons/MediaProviderIcon';
+import { ProviderIcon } from '../icons/ProviderIcon';
 import './TrackCard.scss';
 
 export interface TrackCardProps {
@@ -16,7 +16,7 @@ export function TrackCard({ track, number }: TrackCardProps) {
         { number }
       </span>
       <span className="TrackCard__Provider">
-        <MediaProviderIcon provider={track.provider} />
+        <ProviderIcon provider={track.provider} />
       </span>
       <span className="TrackCard__Image">
         <img src={track.image} alt="" />

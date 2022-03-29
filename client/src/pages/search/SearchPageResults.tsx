@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import { searchForTrack } from '../../apis/search';
 import { TrackCardList } from '../../components/cards/TrackCardList';
-import { MediaProviderIcon } from '../../components/icons/MediaProviderIcon';
+import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
@@ -103,7 +103,7 @@ export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
       <GeneralContent className="SearchPageResults" padTop padBottom>
         <TopHeading subheading={(
           <span>
-            <MediaProviderIcon provider={finalProvider} /> Search
+            <ProviderIcon provider={finalProvider} /> Search
           </span>
         )}
         >

@@ -5,7 +5,7 @@ import { mediaProviderFromString } from '../../helper';
 import { useAppDispatch, useAppSelector } from '../../store/helper';
 import { updateProvider, updateSearchTerm } from '../../store/reducers/search';
 import { MediaProvider } from '../../types';
-import { MediaProviderIcon } from '../icons/MediaProviderIcon';
+import { ProviderIcon } from '../icons/ProviderIcon';
 import { Dropdown, DropdownOption } from '../input/Dropdown';
 import { StringInput } from '../input/StringInput';
 import './SearchAll.scss';
@@ -15,7 +15,7 @@ const searchProviders: DropdownOption[] = [
     name: 'YouTube',
     content: (
       <span>
-        <MediaProviderIcon provider={MediaProvider.YouTube} fgColour />
+        <ProviderIcon provider={MediaProvider.YouTube} fgColour />
         <span> YouTube</span>
       </span>
     ),
@@ -24,7 +24,7 @@ const searchProviders: DropdownOption[] = [
     name: 'Spotify',
     content: (
       <span>
-        <MediaProviderIcon provider={MediaProvider.Spotify} fgColour />
+        <ProviderIcon provider={MediaProvider.Spotify} fgColour />
         <span> Spotify</span>
       </span>
     ),
@@ -33,7 +33,7 @@ const searchProviders: DropdownOption[] = [
     name: 'SoundCloud',
     content: (
       <span>
-        <MediaProviderIcon provider={MediaProvider.SoundCloud} fgColour />
+        <ProviderIcon provider={MediaProvider.SoundCloud} fgColour />
         <span> SoundCloud</span>
       </span>
     ),

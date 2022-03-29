@@ -1,26 +1,31 @@
 import React from 'react';
 import {
+  faGoogle,
   faSoundcloud, faSpotify, faYoutube, IconDefinition,
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MediaProvider } from '../../types';
+import { AuthProvider, MediaProvider } from '../../types';
 import './MediaProviderIcon.scss';
 
 export interface MediaProviderIconProps {
-  provider: MediaProvider;
+  provider: MediaProvider | AuthProvider;
   fgColour?: boolean;
 }
 
-const icons: { [provider in MediaProvider]: IconDefinition } = {
+const icons: { [provider in MediaProvider | AuthProvider]: IconDefinition } = {
   [MediaProvider.YouTube]: faYoutube,
   [MediaProvider.Spotify]: faSpotify,
   [MediaProvider.SoundCloud]: faSoundcloud,
+  [AuthProvider.Google]: faGoogle,
+  [AuthProvider.Spotify]: faSpotify,
 };
 
-const classes: { [provider in MediaProvider]: string } = {
+const classes: { [provider in MediaProvider | AuthProvider]: string } = {
   [MediaProvider.YouTube]: 'YouTube',
   [MediaProvider.Spotify]: 'Spotify',
   [MediaProvider.SoundCloud]: 'SoundCloud',
+  [AuthProvider.Google]: 'Google',
+  [AuthProvider.Spotify]: 'Spotify',
 };
 
 /**
@@ -28,15 +33,18 @@ const classes: { [provider in MediaProvider]: string } = {
  * @param props The props object
  * @returns An icon for the given media provider
  */
-export function MediaProviderIcon({ provider, fgColour }: MediaProviderIconProps) {
-  const fgClass = fgColour ? 'fg' : '';
+export function ProviderIcon({ provider, fgColour }: MediaProviderIconProps) {
+  const classList = ['MediaProviderIcon'];
+  classList.push(classes[provider]);
+  if (fgColour) { classList.push('fg'); }
+
   return (
-    <span className={`MediaProviderIcon ${classes[provider]} ${fgClass}`}>
+    <span className={classList.join(' ')}>
       <FontAwesomeIcon icon={icons[provider]} fixedWidth />
     </span>
   );
 }
 
-MediaProviderIcon.defaultProps = {
+ProviderIcon.defaultProps = {
   fgColour: false,
 };
