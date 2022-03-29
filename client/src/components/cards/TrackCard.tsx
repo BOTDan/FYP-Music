@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatTime } from '../../helper';
 import { ExternalTrack } from '../../types';
 import { ProviderIcon } from '../icons/ProviderIcon';
 import './TrackCard.scss';
@@ -26,7 +27,7 @@ export function TrackCard({ track, number }: TrackCardProps) {
         <p className="TrackCard__Artists">{ artists }</p>
       </span>
       <span className="TrackCard__Duration">
-        { track.duration }
+        { formatTime(track.duration) }
       </span>
     </div>
   );
