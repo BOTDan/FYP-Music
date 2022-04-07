@@ -5,7 +5,7 @@ import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalTrack, MediaProvider, TrackSearchParams,
+  ExternalAPI, ExternalPlaylist, ExternalTrack, MediaProvider, SearchParams, TrackSearchParams,
 } from './base';
 
 const api = google.youtube('v3');
@@ -36,6 +36,16 @@ export class YouTubeAPI extends ExternalAPI {
       image: video.snippet?.thumbnails?.default?.url,
     } as ExternalTrack;
     return data;
+  }
+
+  formatPlaylist(playlist: youtube_v3.Schema$SearchResult) {
+    return {
+      provider: MediaProvider.YouTube,
+      providerId: playlist.id?.playlistId,
+      name: playlist.snippet?.title,
+      description: playlist.snippet?.description,
+      image: playlist.snippet?.thumbnails?.default?.url,
+    } as ExternalPlaylist;
   }
 
   /**
@@ -79,11 +89,29 @@ export class YouTubeAPI extends ExternalAPI {
       part: ['snippet'],
       q: params.q,
       maxResults: 10,
+      type: ['video'],
       ...authParam,
     });
     if (result.data.items && result.data.items.length > 0) {
       const ids = result.data.items.map((video) => video.id?.videoId as string);
       return this.getTracks(ids, user);
+    }
+    return [];
+  }
+
+  async searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]> {
+    const authAccount = await this.tryGetUserAuthAccount(user);
+    const authParam = this.makeAuthParam(authAccount);
+    const result = await api.search.list({
+      part: ['snippet'],
+      q: params.q,
+      maxResults: 10,
+      type: ['playlist'],
+      ...authParam,
+    });
+    if (result.data.items && result.data.items.length > 0) {
+      const playlists = result.data.items.map((playlist) => this.formatPlaylist(playlist));
+      return playlists;
     }
     return [];
   }

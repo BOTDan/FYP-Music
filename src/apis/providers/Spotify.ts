@@ -4,7 +4,8 @@ import { AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalArtist, ExternalTrack, MediaProvider, TrackSearchParams,
+  ExternalAPI, ExternalArtist, ExternalPlaylist, ExternalTrack, MediaProvider, SearchParams,
+  TrackSearchParams,
 } from './base';
 
 const api = new SpotifyWebApi({
@@ -37,6 +38,16 @@ export class SpotifyAPI extends ExternalAPI {
     return data;
   }
 
+  formatPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified) {
+    return {
+      provider: MediaProvider.Spotify,
+      providerId: playlist.id,
+      name: playlist.name,
+      description: playlist.description,
+      image: playlist.images[0]?.url,
+    } as ExternalPlaylist;
+  }
+
   async getTrack(id: string, user?: User): Promise<ExternalTrack> {
     const result = await this.getTracks([id], user);
     if (result.length !== 1) {
@@ -66,6 +77,20 @@ export class SpotifyAPI extends ExternalAPI {
       const results = await api.searchTracks(params.q);
       if (results.body && results.body.tracks) {
         return results.body.tracks.items.map((track) => this.formatTrack(track));
+      }
+    } finally {
+      api.resetAccessToken();
+    }
+    return [];
+  }
+
+  async searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]> {
+    const authAccount = await this.requireAuthAccount(user);
+    try {
+      api.setAccessToken(authAccount.accessToken!);
+      const result = await api.searchPlaylists(params.q);
+      if (result.body && result.body.playlists) {
+        return result.body.playlists.items.map((playlist) => this.formatPlaylist(playlist));
       }
     } finally {
       api.resetAccessToken();

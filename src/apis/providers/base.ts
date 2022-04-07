@@ -24,24 +24,32 @@ export interface SearchParams extends Partial<PaginationParams> {
   q: string;
 }
 
-export interface TrackSearchParams extends SearchParams {
-  //
-}
+export interface TrackSearchParams extends SearchParams {}
 
-export interface ExternalArtist {
-  name: string;
-  image?: string;
+export interface PlaylistSearchParams extends SearchParams {}
+
+export interface ExternalResource {
   provider: MediaProvider;
   providerId: string;
 }
 
-export interface ExternalTrack {
+export interface ExternalArtist extends ExternalResource {
+  name: string;
+  image?: string;
+}
+
+export interface ExternalTrack extends ExternalResource {
   name: string;
   duration: number;
   artists: ExternalArtist[];
   image?: string;
-  provider: MediaProvider;
-  providerId: string;
+}
+
+export interface ExternalPlaylist extends ExternalResource {
+  name: string;
+  description: string;
+  tracks?: ExternalTrack[];
+  image?: string;
 }
 
 /**
@@ -61,12 +69,9 @@ export abstract class ExternalAPI {
       preferAuthentication,
       query('q').isString(),
       query('page').isNumeric().optional().default(0),
+      this.ensureValidRequest,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            throw new BadRequestValidationError(errors.array());
-          }
           await this.handleSearchTracks(req, res, next);
         } catch (e) {
           next(e);
@@ -78,18 +83,45 @@ export abstract class ExternalAPI {
       '/tracks/:id',
       preferAuthentication,
       param('id').isString(),
+      this.ensureValidRequest,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            throw new BadRequestValidationError(errors.array());
-          }
           await this.handleGetTrack(req, res, next);
         } catch (e) {
           next(e);
         }
       },
     );
+
+    this.router.get(
+      '/playlists',
+      preferAuthentication,
+      query('q').isString(),
+      query('page').isNumeric().optional().default(0),
+      this.ensureValidRequest,
+      async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          await this.handleSearchPlaylists(req, res, next);
+        } catch (e) {
+          next(e);
+        }
+      },
+    );
+  }
+
+  /**
+   * Middleware function to return an error to the user if their request is invalid
+   * @param request Express request object
+   * @param response Express response object
+   * @param next Express next function
+   */
+  ensureValidRequest(request: Request, response: Response, next: NextFunction) {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      next(new BadRequestValidationError(errors.array()));
+    } else {
+      next();
+    }
   }
 
   /**
@@ -179,10 +211,21 @@ export abstract class ExternalAPI {
     }
   }
 
+  async handleSearchPlaylists(request: Request, response: Response, next: NextFunction) {
+    const { q, page } = request.query;
+    const params = {
+      q: q as string,
+      page: Number(page),
+    } as TrackSearchParams;
+    const user = request.token?.user;
+
+    const results = await this.searchPlaylists(params, user);
+    response.send(results);
+  }
+
   /**
    * Finds a list of tracks from the external API based on the search params.
    * @param params The search params to use for finding the tracks
-   * @returns A list of found tracks
    */
   abstract searchTracks(params: TrackSearchParams, user?: User): Promise<ExternalTrack[]>;
 
@@ -197,4 +240,11 @@ export abstract class ExternalAPI {
    * @param ids The id of the tracks to find
    */
   abstract getTracks(ids: string[], user?: User): Promise<ExternalTrack[]>;
+
+  /**
+   * Finds a list of playlists from the external API.
+   * @param params The search params for finding the playlist
+   * @param user The user that made the request, if available
+   */
+  abstract searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]>;
 }
