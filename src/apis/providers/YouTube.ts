@@ -1,11 +1,9 @@
 import { google, youtube_v3 } from 'googleapis';
 import { duration } from 'moment';
-import { getCustomRepository } from 'typeorm';
 import { config } from '../../config';
 import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
-import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import {
   ExternalAPI, ExternalTrack, MediaProvider, TrackSearchParams,
 } from './base';
@@ -14,6 +12,9 @@ const api = google.youtube('v3');
 const apiKey = config.YOUTUBE_API_KEY;
 
 export class YouTubeAPI extends ExternalAPI {
+  name = 'YouTube';
+  authProvider = AuthProvider.Google;
+
   /**
    * Formats data from the YouTube video API to our own internal format
    * @param video The video data to format
@@ -35,31 +36,6 @@ export class YouTubeAPI extends ExternalAPI {
       image: video.snippet?.thumbnails?.default?.url,
     } as ExternalTrack;
     return data;
-  }
-
-  /**
-   * Tries to find a YouTube account attached to this User
-   * @param user The user to find the auth account of
-   * @returns The auth account for this user
-   */
-  async getUserAuthAccount(user: User) {
-    const authRepo = getCustomRepository(AuthAccountRepository);
-    const authAccount = await authRepo.findAuthAccountOfUser(user, AuthProvider.Google);
-    return authAccount;
-  }
-
-  /**
-   * Attepts to find an auth account for a user, returns null if unable
-   * @param user The user to find the auth account of
-   * @returns An auth acount if found
-   */
-  async tryGetUserAuthAccount(user?: User) {
-    if (!user) { return undefined; }
-    try {
-      return await this.getUserAuthAccount(user);
-    } catch (e) {
-      return undefined;
-    }
   }
 
   /**

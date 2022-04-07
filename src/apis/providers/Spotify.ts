@@ -1,11 +1,8 @@
 import SpotifyWebApi from 'spotify-web-api-node';
-import { getCustomRepository } from 'typeorm';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
-import { InternalServerError, NotAuthenticatedError, UnauthorizedError } from '../../errors/httpstatus';
-import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import {
   ExternalAPI, ExternalArtist, ExternalTrack, MediaProvider, TrackSearchParams,
 } from './base';
@@ -16,6 +13,9 @@ const api = new SpotifyWebApi({
 });
 
 export class SpotifyAPI extends ExternalAPI {
+  name = 'Spotify';
+  authProvider = AuthProvider.Spotify;
+
   formatArtist(artist: SpotifyApi.ArtistObjectSimplified) {
     const data = {
       provider: MediaProvider.Spotify,
@@ -35,36 +35,6 @@ export class SpotifyAPI extends ExternalAPI {
       image: track.album.images[0].url,
     } as ExternalTrack;
     return data;
-  }
-
-  /**
-   * Tries to find a Spotify account attached to this User
-   * @param user The user to find the auth account of
-   * @returns The auth account for this user
-   */
-  async getUserAuthAccount(user: User) {
-    const authRepo = getCustomRepository(AuthAccountRepository);
-    const authAccount = await authRepo.findAuthAccountOfUser(user, AuthProvider.Spotify);
-    return authAccount;
-  }
-
-  /**
-   * Helper function to return appropriate errors for attempting to get an auth account for the user
-   * @param user The user to find the auth account of
-   * @returns The auth account for this user, with access token
-   */
-  async requireAuthAccount(user?: User) {
-    if (!user) {
-      throw new NotAuthenticatedError('Spotify API requires you to be signed in');
-    }
-    const authAccount = await this.getUserAuthAccount(user);
-    if (!authAccount) {
-      throw new UnauthorizedError('A Spotify account must be linked to this account to use the Spotify API');
-    }
-    if (!authAccount.accessToken) {
-      throw new InternalServerError('Spotify account missing access tokens. Log in again.');
-    }
-    return authAccount;
   }
 
   async getTrack(id: string, user?: User): Promise<ExternalTrack> {

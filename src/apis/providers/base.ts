@@ -2,9 +2,13 @@ import {
   Router, Request, Response, NextFunction,
 } from 'express';
 import { param, query, validationResult } from 'express-validator';
+import { getCustomRepository } from 'typeorm';
 import { preferAuthentication } from '../../auth';
+import { AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestValidationError } from '../../errors/api';
+import { InternalServerError, NotAuthenticatedError, UnauthorizedError } from '../../errors/httpstatus';
+import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 
 export enum MediaProvider {
   Spotify = 'spotify',
@@ -46,6 +50,8 @@ export interface ExternalTrack {
  */
 export abstract class ExternalAPI {
   router: Router;
+  name: string = 'Misconfigured';
+  authProvider: AuthProvider | null = null;
 
   constructor() {
     this.router = Router();
@@ -84,6 +90,51 @@ export abstract class ExternalAPI {
         }
       },
     );
+  }
+
+  /**
+   * Tries to find a Spotify account attached to this User
+   * @param user The user to find the auth account of
+   * @returns The auth account for this user
+   */
+  async getUserAuthAccount(user: User) {
+    if (!this.authProvider) { throw new Error('API not configured to require authentication'); }
+    const authRepo = getCustomRepository(AuthAccountRepository);
+    const authAccount = await authRepo.findAuthAccountOfUser(user, this.authProvider);
+    return authAccount;
+  }
+
+  /**
+   * Attepts to find an auth account for a user, returns undefined if unable
+   * @param user The user to find the auth account of
+   * @returns An auth acount if found
+   */
+  async tryGetUserAuthAccount(user?: User) {
+    if (!user) { return undefined; }
+    try {
+      return await this.getUserAuthAccount(user);
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  /**
+   * Helper function to return appropriate errors for attempting to get an auth account for the user
+   * @param user The user to find the auth account of
+   * @returns The auth account for this user, with access token
+   */
+  async requireAuthAccount(user?: User) {
+    if (!user) {
+      throw new NotAuthenticatedError(`${this.name} API requires you to be signed in`);
+    }
+    const authAccount = await this.getUserAuthAccount(user);
+    if (!authAccount) {
+      throw new UnauthorizedError(`A ${this.authProvider} account must be linked to this account to use the Spotify API`);
+    }
+    if (!authAccount.accessToken) {
+      throw new InternalServerError(`${this.authProvider} account missing access tokens. Log in again.`);
+    }
+    return authAccount;
   }
 
   /**
