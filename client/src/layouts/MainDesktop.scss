@@ -1,0 +1,29 @@
+.MainLayout {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+
+  .MainLayout__Sidebar {
+    flex: 0 0 20em;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .MainLayout__Main {
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: hidden;
+
+    .MainLayout__Topbar {
+      flex: 0 0 auto;
+    }
+
+    .MainLayout__Content {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+  }
+}

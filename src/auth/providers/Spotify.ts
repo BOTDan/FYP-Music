@@ -9,7 +9,8 @@ export class SpotifyAuthProvider extends BaseAuthProvider {
   constructor() {
     super('spotify', AuthProvider.Spotify);
 
-    const callbackUrl = 'http://localhost:8080/auth/spotify/callback';
+    // const callbackUrl = 'http://localhost:8080/auth/spotify/callback';
+    const callbackUrl = 'http://localhost:3000/callback/spotify';
 
     const strategy = new Strategy({
       clientID: config.SPOTIFY_CLIENT_ID,

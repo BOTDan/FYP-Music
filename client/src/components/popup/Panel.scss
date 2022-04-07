@@ -1,0 +1,31 @@
+@import '../../styles/shared.scss';
+
+$panel-header: #222;
+$panel-body: #111;
+$panel-footer: #111;
+
+.Panel {
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: hidden;
+  border-radius: $border-radius;
+
+  .Panel__Header {
+    flex: 0 0 auto;
+    padding: 0.5em;
+    background: $panel-header;
+  }
+
+  .Panel__Body {
+    flex: 1 1 auto;
+    padding: 0.5em;
+    background: $panel-body;
+  }
+
+  .Panel__Footer {
+    flex: 0 0 auto;
+    padding: 0.5em;
+    background: $panel-footer;
+    border-top: 1px solid #333;
+  }
+}

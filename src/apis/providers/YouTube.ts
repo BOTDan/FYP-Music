@@ -1,7 +1,11 @@
 import { google, youtube_v3 } from 'googleapis';
 import { duration } from 'moment';
+import { getCustomRepository } from 'typeorm';
 import { config } from '../../config';
+import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
+import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
+import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import {
   ExternalAPI, ExternalTrack, MediaProvider, TrackSearchParams,
 } from './base';
@@ -33,19 +37,58 @@ export class YouTubeAPI extends ExternalAPI {
     return data;
   }
 
-  async getTrack(id: string): Promise<ExternalTrack> {
-    const result = await this.getTracks([id]);
+  /**
+   * Tries to find a YouTube account attached to this User
+   * @param user The user to find the auth account of
+   * @returns The auth account for this user
+   */
+  async getUserAuthAccount(user: User) {
+    const authRepo = getCustomRepository(AuthAccountRepository);
+    const authAccount = await authRepo.findAuthAccountOfUser(user, AuthProvider.Google);
+    return authAccount;
+  }
+
+  /**
+   * Attepts to find an auth account for a user, returns null if unable
+   * @param user The user to find the auth account of
+   * @returns An auth acount if found
+   */
+  async tryGetUserAuthAccount(user?: User) {
+    if (!user) { return undefined; }
+    try {
+      return await this.getUserAuthAccount(user);
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  /**
+   * Returns auth params for a YouTube query, preferring the auth account if available.
+   * @param authAccount The auth account to use
+   * @returns Params for a YouTube query
+   */
+  makeAuthParam(authAccount?: AuthAccount) {
+    if (authAccount) {
+      return { access_token: authAccount.accessToken };
+    }
+    return { key: apiKey };
+  }
+
+  async getTrack(id: string, user?: User): Promise<ExternalTrack> {
+    const result = await this.getTracks([id], user);
     if (result.length !== 1) {
       throw new ItemNotFoundError('Track');
     }
     return result[0];
   }
 
-  async getTracks(ids: string[]): Promise<ExternalTrack[]> {
+  async getTracks(ids: string[], user?: User): Promise<ExternalTrack[]> {
+    const authAccount = await this.tryGetUserAuthAccount(user);
+    const authParam = this.makeAuthParam(authAccount);
     const result = await api.videos.list({
       part: ['snippet', 'contentDetails'],
       id: ids,
-      auth: apiKey,
+      ...authParam,
     });
     if (result.data.items && result.data.items.length > 0) {
       return result.data.items.map((video) => this.formatTrack(video));
@@ -53,15 +96,18 @@ export class YouTubeAPI extends ExternalAPI {
     return [];
   }
 
-  async searchTracks(params: TrackSearchParams): Promise<ExternalTrack[]> {
+  async searchTracks(params: TrackSearchParams, user?: User): Promise<ExternalTrack[]> {
+    const authAccount = await this.tryGetUserAuthAccount(user);
+    const authParam = this.makeAuthParam(authAccount);
     const result = await api.search.list({
       part: ['snippet'],
       q: params.q,
-      auth: apiKey,
+      maxResults: 10,
+      ...authParam,
     });
     if (result.data.items && result.data.items.length > 0) {
       const ids = result.data.items.map((video) => video.id?.videoId as string);
-      return this.getTracks(ids);
+      return this.getTracks(ids, user);
     }
     return [];
   }

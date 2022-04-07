@@ -1,0 +1,18 @@
+.LoadingSpinner {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  &.fillWidth {
+    width: 100%;
+  }
+
+  &.fillHeight {
+    height: 100%;
+  }
+
+  &.inline {
+    display: inline-block;
+  }
+}

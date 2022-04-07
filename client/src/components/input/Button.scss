@@ -1,0 +1,21 @@
+@import '../../styles/shared.scss';
+
+.Button {
+  border-radius: $border-radius;
+  border: none;
+  cursor: pointer;
+  background: $input-bg;
+  color: $input-fg;
+  text-align: center;
+  font-size: inherit;
+  padding: 0.5em;
+  display: inline-block;
+
+  &:hover {
+    background: $input-bg-hover;
+  }
+
+  &:active {
+    background: $input-bg-active;
+  }
+}

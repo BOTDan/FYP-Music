@@ -1,0 +1,8 @@
+@import '../../styles/shared.scss';
+
+$background: #000;
+
+.SideBar {
+  flex: 1;
+  background: $background;
+}
