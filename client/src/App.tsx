@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import { SearchManager } from './components/managers/SearchManager';
-import { MainDesktop } from './layouts/MainDesktop';
+import { MainDesktop } from './components/layouts/MainDesktop';
 
 function App() {
   return (
