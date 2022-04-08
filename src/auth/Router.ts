@@ -2,18 +2,16 @@ import { Router } from 'express';
 import { deleteToken, linkAccount, requireAuthentication } from '.';
 import { BadRequestError, NotAuthenticatedError } from '../errors/httpstatus';
 // import googleAuthRouter from './providers/Google';
-import { GoogleAuthProvider } from './providers/Google2';
-import { SpotifyAuthProvider } from './providers/Spotify';
+import googleAuthProvider from './providers/Google2';
+import spotifyAuthProvider from './providers/Spotify';
 
 const authRouter = Router();
 
 // Include Google auth routes
 // authRouter.use('/google', googleAuthRouter);
 
-const googleAuthProvider = new GoogleAuthProvider();
 authRouter.use('/google', googleAuthProvider.router);
 
-const spotifyAuthProvider = new SpotifyAuthProvider();
 authRouter.use('/spotify', spotifyAuthProvider.router);
 
 // Home route, goes nowhere
