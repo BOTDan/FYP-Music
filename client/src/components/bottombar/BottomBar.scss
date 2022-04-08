@@ -1,0 +1,8 @@
+$background: #222;
+
+.BottomBar {
+  background: $background;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
