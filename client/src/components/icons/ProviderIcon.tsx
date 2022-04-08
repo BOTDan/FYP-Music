@@ -20,7 +20,7 @@ const icons: { [provider in MediaProvider | AuthProvider]: IconDefinition } = {
   [AuthProvider.Spotify]: faSpotify,
 };
 
-const classes: { [provider in MediaProvider | AuthProvider]: string } = {
+export const classes: { [provider in MediaProvider | AuthProvider]: string } = {
   [MediaProvider.YouTube]: 'YouTube',
   [MediaProvider.Spotify]: 'Spotify',
   [MediaProvider.SoundCloud]: 'SoundCloud',
