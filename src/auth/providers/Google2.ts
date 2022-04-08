@@ -1,18 +1,17 @@
 import passport from 'passport';
 import { Request } from 'express';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
-// import { google } from 'googleapis';
-// import { OAuth2Client } from 'googleapis-common';
+import { google } from 'googleapis';
+import { OAuth2Client } from 'googleapis-common';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
 import { AuthInfo, AuthInfoTokens, BaseAuthProvider } from './base';
-import { InternalServerError } from '../../errors/httpstatus';
 
 /**
  * Provides logins for Google auth.
  */
 export class GoogleAuthProvider extends BaseAuthProvider {
-  // api: OAuth2Client;
+  api: OAuth2Client;
 
   constructor() {
     super('google', AuthProvider.Google);
@@ -34,11 +33,11 @@ export class GoogleAuthProvider extends BaseAuthProvider {
 
     passport.use(strategy);
 
-    // this.api = new google.auth.OAuth2({
-    //   clientId: config.GOOGLE_CLIENT_ID,
-    //   clientSecret: config.GOOGLE_CLIENT_SECRET,
-    //   redirectUri: callbackUrl,
-    // });
+    this.api = new google.auth.OAuth2({
+      clientId: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
+      redirectUri: callbackUrl,
+    });
   }
 
   handleLoginRequest = passport.authenticate('google', {
@@ -84,7 +83,27 @@ export class GoogleAuthProvider extends BaseAuthProvider {
   }
 
   async getNewTokens(refreshToken: string): Promise<AuthInfoTokens> {
-    throw new InternalServerError('Unimplemented');
+    try {
+      console.log('Refreshing credentials');
+
+      this.api.setCredentials({
+        refresh_token: refreshToken,
+      });
+      const result = await this.api.refreshAccessToken();
+      if (!result.credentials.access_token) {
+        throw new Error('Tokens failed to refresh');
+      }
+      const tokens: AuthInfoTokens = {
+        accessToken: result.credentials.access_token,
+        refreshToken: result.credentials.refresh_token ?? undefined,
+      };
+      console.log('Refreshed tokens');
+      console.log(tokens);
+
+      return tokens;
+    } finally {
+      this.api.setCredentials({});
+    }
   }
 }
 

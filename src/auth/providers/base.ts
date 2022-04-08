@@ -317,6 +317,7 @@ export abstract class BaseAuthProvider {
       throw new InternalServerError('Auth account has no refresh token');
     }
     const newTokens = await this.getNewTokens(authAccount.refreshToken);
+
     await updateStoredTokens(authAccount, newTokens.accessToken, newTokens.refreshToken);
     return newTokens;
   }
