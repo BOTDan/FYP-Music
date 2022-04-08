@@ -11,6 +11,10 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     flex: 0 0 auto;
+
+    & > .Button .DropdownProviderText {
+      display: none;
+    }
   }
 
   .SearchAll__Icon {

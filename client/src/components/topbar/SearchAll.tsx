@@ -16,7 +16,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.YouTube} fgColour />
-        <span> YouTube</span>
+        <span className="DropdownProviderText"> YouTube</span>
       </span>
     ),
   },
@@ -25,7 +25,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.Spotify} fgColour />
-        <span> Spotify</span>
+        <span className="DropdownProviderText"> Spotify</span>
       </span>
     ),
   },
@@ -34,7 +34,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.SoundCloud} fgColour />
-        <span> SoundCloud</span>
+        <span className="DropdownProviderText"> SoundCloud</span>
       </span>
     ),
   },
