@@ -1,8 +1,18 @@
-$padding: 2rem;
+@import "../../styles/shared.scss";
+
+$padding: 2em;
 
 .GeneralContent {
-  padding-left: $padding;
-  padding-right: $padding;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  max-width: $size-xxl;
+  width: 100%;
+  margin: 0 auto;
+
+  @include sm {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
 
   &.pad-top {
     padding-top: $padding / 2;
