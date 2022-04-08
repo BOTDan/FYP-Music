@@ -1,6 +1,6 @@
 import React from 'react';
-import { ExternalTrack } from '../../types';
-import { TrackCard } from './TrackCard';
+import { ExternalTrack } from '../../../types';
+import { TrackCard } from '../TrackCard';
 
 export interface TrackCardListProps {
   tracks: ExternalTrack[];
