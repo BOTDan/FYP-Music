@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { InputTestPage } from './pages/InputTestPage';
 import { SearchPage } from './pages/search/SearchPage';
 import store from './store';
+import { PlaylistsPage } from './pages/playlists/PlaylistsPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,8 @@ ReactDOM.render(
           <Route path="*" element={<App />}>
             {/* Search routing */}
             <Route path="search/*" element={<SearchPage />} />
+            {/* Playlists routing */}
+            <Route path="playlists/*" element={<PlaylistsPage />} />
             {/* Testing router */}
             <Route path="test">
               <Route path="inputs" element={<InputTestPage />} />
