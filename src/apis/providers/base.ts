@@ -3,7 +3,7 @@ import {
 } from 'express';
 import { param, query, validationResult } from 'express-validator';
 import { getCustomRepository } from 'typeorm';
-import { preferAuthentication } from '../../auth';
+import { preferAuthentication, requireAuthentication } from '../../auth';
 import { AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestValidationError } from '../../errors/api';
@@ -102,6 +102,20 @@ export abstract class ExternalAPI {
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           await this.handleSearchPlaylists(req, res, next);
+        } catch (e) {
+          next(e);
+        }
+      },
+    );
+
+    this.router.get(
+      '/me/playlists',
+      requireAuthentication,
+      query('page').isNumeric().optional().default(0),
+      this.ensureValidRequest,
+      async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          await this.handleGetMyPlaylists(req, res, next);
         } catch (e) {
           next(e);
         }
@@ -223,6 +237,21 @@ export abstract class ExternalAPI {
     response.send(results);
   }
 
+  async handleGetMyPlaylists(request: Request, response: Response, next: NextFunction) {
+    const { page } = request.query;
+    const params = {
+      page: Number(page),
+    } as PaginationParams;
+
+    const user = request.token?.user;
+    if (!user) {
+      throw new NotAuthenticatedError();
+    }
+
+    const results = await this.getMyPlaylists(params, user);
+    response.send(results);
+  }
+
   /**
    * Finds a list of tracks from the external API based on the search params.
    * @param params The search params to use for finding the tracks
@@ -247,4 +276,11 @@ export abstract class ExternalAPI {
    * @param user The user that made the request, if available
    */
   abstract searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]>;
+
+  /**
+   * Finds a users playlists from their main account.
+   * @param params The pagination params
+   * @param user The user that made the request. Will be available here
+   */
+  abstract getMyPlaylists(params: PaginationParams, user: User): Promise<ExternalPlaylist[]>;
 }

@@ -5,7 +5,8 @@ import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalPlaylist, ExternalTrack, MediaProvider, SearchParams, TrackSearchParams,
+  ExternalAPI, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams, SearchParams,
+  TrackSearchParams,
 } from './base';
 
 const api = google.youtube('v3');
@@ -113,6 +114,23 @@ export class YouTubeAPI extends ExternalAPI {
       const playlists = result.data.items.map((playlist) => this.formatPlaylist(playlist));
       return playlists;
     }
+    return [];
+  }
+
+  async getMyPlaylists(params: PaginationParams, user: User): Promise<ExternalPlaylist[]> {
+    // const authAccount = await this.tryGetUserAuthAccount(user);
+    // if (!authAccount) { throw new Error('No account for this user'); }
+    // const authParam = this.makeAuthParam(authAccount);
+    // const result = await api.playlists.list({
+    //   part: ['snippet', 'contentDetails'],
+    //   maxResults: 50,
+    //   mine: true,
+    //   ...authParam,
+    // });
+    // if (result.data.items && result.data.items.length > 0) {
+    //   const playlists = result.data.items.map((playlist) => this.formatPlaylist(playlist));
+    //   return playlists;
+    // }
     return [];
   }
 }

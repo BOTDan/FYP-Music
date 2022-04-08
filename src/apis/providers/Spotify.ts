@@ -1,11 +1,12 @@
 import SpotifyWebApi from 'spotify-web-api-node';
+import spotifyAuthProvider from '../../auth/providers/Spotify';
 import { config } from '../../config';
-import { AuthProvider } from '../../entities/AuthAccount';
+import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalArtist, ExternalPlaylist, ExternalTrack, MediaProvider, SearchParams,
-  TrackSearchParams,
+  ExternalAPI, ExternalArtist, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams,
+  SearchParams, TrackSearchParams,
 } from './base';
 
 const api = new SpotifyWebApi({
@@ -48,6 +49,36 @@ export class SpotifyAPI extends ExternalAPI {
     } as ExternalPlaylist;
   }
 
+  /**
+   * Runs a spotify API function as the given auth user.
+   * Refreshes their access token if needed.
+   * @param authAccount The auth account to run as
+   * @param fn The spotify API function to run
+   * @returns The result from the API function
+   */
+  private async runAsAuthAccount<T extends (
+    ...args: any) => any>(
+    authAccount: AuthAccount,
+    fn: T,
+  )
+    : Promise<ReturnType<T>> {
+    try {
+      api.setAccessToken(authAccount.accessToken!);
+      const result = await fn();
+      return result;
+    } catch (e: any) {
+      if (e.statusCode === 401) {
+        await spotifyAuthProvider.refreshTokens(authAccount);
+        api.setAccessToken(authAccount.accessToken!);
+        const result = await fn();
+        return result;
+      }
+    } finally {
+      api.resetAccessToken();
+    }
+    throw new Error('Could not run as auth user');
+  }
+
   async getTrack(id: string, user?: User): Promise<ExternalTrack> {
     const result = await this.getTracks([id], user);
     if (result.length !== 1) {
@@ -58,42 +89,45 @@ export class SpotifyAPI extends ExternalAPI {
 
   async getTracks(ids: string[], user?: User): Promise<ExternalTrack[]> {
     const authAccount = await this.requireAuthAccount(user);
-    try {
-      api.setAccessToken(authAccount.accessToken!);
-      const result = await api.getTracks(ids);
-      if (result.body && result.body.tracks) {
-        return result.body.tracks.map((track) => this.formatTrack(track));
-      }
-    } finally {
-      api.resetAccessToken();
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      () => api.getTracks(ids),
+    );
+    if (result.body && result.body.tracks) {
+      return result.body.tracks.map((track) => this.formatTrack(track));
     }
     return [];
   }
 
   async searchTracks(params: TrackSearchParams, user?: User): Promise<ExternalTrack[]> {
     const authAccount = await this.requireAuthAccount(user);
-    try {
-      api.setAccessToken(authAccount.accessToken!);
-      const results = await api.searchTracks(params.q);
-      if (results.body && results.body.tracks) {
-        return results.body.tracks.items.map((track) => this.formatTrack(track));
-      }
-    } finally {
-      api.resetAccessToken();
+    const results = await this.runAsAuthAccount(
+      authAccount,
+      () => api.searchTracks(params.q),
+    );
+    if (results.body && results.body.tracks) {
+      return results.body.tracks.items.map((track) => this.formatTrack(track));
     }
     return [];
   }
 
   async searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]> {
     const authAccount = await this.requireAuthAccount(user);
-    try {
-      api.setAccessToken(authAccount.accessToken!);
-      const result = await api.searchPlaylists(params.q);
-      if (result.body && result.body.playlists) {
-        return result.body.playlists.items.map((playlist) => this.formatPlaylist(playlist));
-      }
-    } finally {
-      api.resetAccessToken();
+    const result = await this.runAsAuthAccount(authAccount, () => api.searchPlaylists(params.q));
+    if (result.body && result.body.playlists) {
+      return result.body.playlists.items.map((playlist) => this.formatPlaylist(playlist));
+    }
+    return [];
+  }
+
+  async getMyPlaylists(params: PaginationParams, user: User): Promise<ExternalPlaylist[]> {
+    const authAccount = await this.requireAuthAccount(user);
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      () => api.getUserPlaylists({ limit: 50 }),
+    );
+    if (result && result.body && result.body.items) {
+      return result.body.items.map((playlist) => this.formatPlaylist(playlist));
     }
     return [];
   }
