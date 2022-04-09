@@ -64,11 +64,13 @@ export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
   if (finalProvider && playlist) {
     content = (
       <>
-        <TopHeading subheading={(
-          <span>
-            <ProviderIcon provider={finalProvider} /> Playlist
-          </span>
-        )}
+        <TopHeading
+          subheading={(
+            <span>
+              <ProviderIcon provider={finalProvider} /> Playlist
+            </span>
+          )}
+          image={playlist.image}
         >
           {playlist.name}
         </TopHeading>
