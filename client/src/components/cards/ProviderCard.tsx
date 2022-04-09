@@ -20,7 +20,7 @@ export function ProviderCard({ provider }: ProviderCardProps) {
         <ProviderIcon provider={provider} />
       </div>
       <div className="ProviderCard__Center">
-        {mediaProviderPrettyPrint(provider)}
+        <p>{mediaProviderPrettyPrint(provider)}</p>
       </div>
       <div className="ProviderCard__Right">
         <FontAwesomeIcon icon={faChevronRight} />
