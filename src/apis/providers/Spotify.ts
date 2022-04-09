@@ -34,7 +34,7 @@ export class SpotifyAPI extends ExternalAPI {
       name: track.name,
       artists: track.artists.map((artist) => this.formatArtist(artist)),
       duration: track.duration_ms,
-      image: track.album.images[0].url,
+      image: track.album.images[0]?.url,
     } as ExternalTrack;
     return data;
   }
