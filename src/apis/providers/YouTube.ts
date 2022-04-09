@@ -147,6 +147,43 @@ export class YouTubeAPI extends ExternalAPI {
     return [];
   }
 
+  async getPlaylistTracks(id: string, user?: User): Promise<ExternalTrack[]> {
+    const authAccount = await this.tryGetUserAuthAccount(user);
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      (authParam) => api.playlistItems.list({
+        part: ['snippet', 'contentDetails'],
+        playlistId: id,
+        maxResults: 50,
+        ...authParam,
+      }),
+    );
+    if (result.data.items && result.data.items.length > 0) {
+      const ids = result.data.items.map((item) => item.contentDetails?.videoId ?? '');
+      return this.getTracks(ids, user);
+    }
+    return [];
+  }
+
+  async getPlaylist(id: string, user?: User): Promise<ExternalPlaylist> {
+    const authAccount = await this.tryGetUserAuthAccount(user);
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      (authParam) => api.playlists.list({
+        part: ['snippet', 'contentDetails'],
+        id,
+        maxResults: 1,
+        ...authParam,
+      }),
+    );
+    if (result.data.items && result.data.items.length > 0) {
+      const playlist = this.formatPlaylist(result.data.items[0]);
+      playlist.tracks = await this.getPlaylistTracks(id, user);
+      return playlist;
+    }
+    throw new ItemNotFoundError('Playlist');
+  }
+
   async searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]> {
     const authAccount = await this.tryGetUserAuthAccount(user);
     const result = await this.runAsAuthAccount(

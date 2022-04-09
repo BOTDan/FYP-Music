@@ -111,6 +111,32 @@ export class SpotifyAPI extends ExternalAPI {
     return [];
   }
 
+  async getPlaylistTracks(id: string, user?: User): Promise<ExternalTrack[]> {
+    const authAccount = await this.requireAuthAccount(user);
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      () => api.getPlaylistTracks(id),
+    );
+    if (result.body && result.body.items) {
+      return result.body.items.map((track) => this.formatTrack(track.track));
+    }
+    return [];
+  }
+
+  async getPlaylist(id: string, user?: User): Promise<ExternalPlaylist> {
+    const authAccount = await this.requireAuthAccount(user);
+    const result = await this.runAsAuthAccount(
+      authAccount,
+      () => api.getPlaylist(id),
+    );
+    if (result.body) {
+      const playlist = await this.formatPlaylist(result.body);
+      playlist.tracks = await this.getPlaylistTracks(id, user);
+      return playlist;
+    }
+    throw new ItemNotFoundError('Playlist');
+  }
+
   async searchPlaylists(params: SearchParams, user?: User): Promise<ExternalPlaylist[]> {
     const authAccount = await this.requireAuthAccount(user);
     const result = await this.runAsAuthAccount(authAccount, () => api.searchPlaylists(params.q));

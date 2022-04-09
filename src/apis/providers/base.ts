@@ -109,6 +109,20 @@ export abstract class ExternalAPI {
     );
 
     this.router.get(
+      '/playlists/:id',
+      preferAuthentication,
+      param('id').isString(),
+      this.ensureValidRequest,
+      async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          await this.handleGetPlaylist(req, res, next);
+        } catch (e) {
+          next(e);
+        }
+      },
+    );
+
+    this.router.get(
       '/me/playlists',
       requireAuthentication,
       query('page').isNumeric().optional().default(0),
@@ -191,19 +205,15 @@ export abstract class ExternalAPI {
    * @param next Express next function
    */
   async handleSearchTracks(request: Request, response: Response, next: NextFunction) {
-    try {
-      const { q, page } = request.query;
-      const params = {
-        q: q as string,
-        page: Number(page),
-      } as TrackSearchParams;
-      const user = request.token?.user;
+    const { q, page } = request.query;
+    const params = {
+      q: q as string,
+      page: Number(page),
+    } as TrackSearchParams;
+    const user = request.token?.user;
 
-      const results = await this.searchTracks(params, user);
-      response.send(results);
-    } catch (e) {
-      next(e);
-    }
+    const results = await this.searchTracks(params, user);
+    response.send(results);
   }
 
   /**
@@ -214,15 +224,11 @@ export abstract class ExternalAPI {
    * @param next Express next function
    */
   async handleGetTrack(request: Request, response: Response, next: NextFunction) {
-    try {
-      const { id } = request.params;
-      const user = request.token?.user;
+    const { id } = request.params;
+    const user = request.token?.user;
 
-      const result = await this.getTrack(id, user);
-      response.send(result);
-    } catch (e) {
-      next(e);
-    }
+    const result = await this.getTrack(id, user);
+    response.send(result);
   }
 
   async handleSearchPlaylists(request: Request, response: Response, next: NextFunction) {
@@ -250,6 +256,14 @@ export abstract class ExternalAPI {
 
     const results = await this.getMyPlaylists(params, user);
     response.send(results);
+  }
+
+  async handleGetPlaylist(request: Request, response: Response, next: NextFunction) {
+    const { id } = request.params;
+    const user = request.token?.user;
+
+    const result = await this.getPlaylist(id, user);
+    response.send(result);
   }
 
   /**
@@ -283,4 +297,18 @@ export abstract class ExternalAPI {
    * @param user The user that made the request. Will be available here
    */
   abstract getMyPlaylists(params: PaginationParams, user: User): Promise<ExternalPlaylist[]>;
+
+  /**
+   * Finds a playlist's tracks'
+   * @param ids The id of the playlist to find
+   * @param user The user that made the request, if available
+   */
+  abstract getPlaylistTracks(id: string, user?: User): Promise<ExternalTrack[]>;
+
+  /**
+   * Finds a playlist. Includes its tracks
+   * @param id The id of the playlist to find
+   * @param user The user that made the request, if available
+   */
+  abstract getPlaylist(id: string, user?: User): Promise<ExternalPlaylist>;
 }
