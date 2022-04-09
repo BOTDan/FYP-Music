@@ -29,7 +29,7 @@ export async function getProviderPlaylists(
 export async function getProviderPlaylist(
   provider: MediaProvider,
   id: string,
-  token: UserTokenDTO,
+  token?: UserTokenDTO,
 ): Promise<ExternalPlaylist> {
   const response = await authFetch(`/api/${provider.toLowerCase()}/playlists/${encodeURIComponent(id)}`, token);
   if (!response.ok) {
