@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalPlaylist } from '../../types';
+import { SquareImage } from '../structure/SquareImage';
 import './PlaylistCard.scss';
 
 export interface PlaylistCardProps {
@@ -11,11 +12,7 @@ export interface PlaylistCardProps {
 export function PlaylistCard({ playlist, isLink }: PlaylistCardProps) {
   const content = (
     <>
-      <div className="PlaylistCard__Image">
-        <div className="PlaylistCard__Image__Inner">
-          <img src={playlist.image} alt="" />
-        </div>
-      </div>
+      <SquareImage className="PlaylistCard__Image" src={playlist.image} />
       <div className="PlaylistCard__Main">
         <p className="PlaylistCard__Name">{ playlist.name }</p>
       </div>
