@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthActions } from '../auth/AuthActions';
+import { AuthActions } from '../../auth/AuthActions';
 import { SearchAll } from './SearchAll';
 import './TopBar.scss';
 

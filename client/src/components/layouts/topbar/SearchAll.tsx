@@ -1,13 +1,13 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { mediaProviderFromString } from '../../helper';
-import { useAppDispatch, useAppSelector } from '../../store/helper';
-import { updateProvider, updateSearchTerm } from '../../store/reducers/search';
-import { MediaProvider } from '../../types';
-import { ProviderIcon } from '../icons/ProviderIcon';
-import { Dropdown, DropdownOption } from '../input/Dropdown';
-import { StringInput } from '../input/StringInput';
+import { mediaProviderFromString } from '../../../helper';
+import { useAppDispatch, useAppSelector } from '../../../store/helper';
+import { updateProvider, updateSearchTerm } from '../../../store/reducers/search';
+import { MediaProvider } from '../../../types';
+import { ProviderIcon } from '../../icons/ProviderIcon';
+import { Dropdown, DropdownOption } from '../../input/Dropdown';
+import { StringInput } from '../../input/StringInput';
 import './SearchAll.scss';
 
 const searchProviders: DropdownOption[] = [

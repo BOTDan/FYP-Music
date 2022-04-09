@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { BottomBar } from '../bottombar/BottomBar';
-import { SideBar } from '../sidebar/SideBar';
-import { TopBar } from '../topbar/TopBar';
+import { BottomBar } from './bottombar/BottomBar';
+import { SideBar } from './sidebar/SideBar';
+import { TopBar } from './topbar/TopBar';
 import './MainDesktop.scss';
 
 /**
