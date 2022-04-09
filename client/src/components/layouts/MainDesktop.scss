@@ -7,6 +7,7 @@
     flex: 0 0 20em;
     display: flex;
     flex-flow: row nowrap;
+    display: none;
   }
 
   .MainLayout__Main {
@@ -24,6 +25,10 @@
       overflow-y: auto;
       display: flex;
       flex-flow: column nowrap;
+    }
+
+    .MainLayout__BottomBar {
+      flex: 0 0 auto;
     }
   }
 }

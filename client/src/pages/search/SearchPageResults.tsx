@@ -3,7 +3,7 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import { searchForTrack } from '../../apis/search';
-import { TrackCardList } from '../../components/cards/TrackCardList';
+import { TrackCardList } from '../../components/cards/lists/TrackCardList';
 import { LoadingSpinner } from '../../components/icons/LoadingSpinner';
 import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';

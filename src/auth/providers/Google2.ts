@@ -1,14 +1,18 @@
 import passport from 'passport';
 import { Request } from 'express';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { google } from 'googleapis';
+import { OAuth2Client } from 'googleapis-common';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
-import { AuthInfo, BaseAuthProvider } from './base';
+import { AuthInfo, AuthInfoTokens, BaseAuthProvider } from './base';
 
 /**
  * Provides logins for Google auth.
  */
 export class GoogleAuthProvider extends BaseAuthProvider {
+  api: OAuth2Client;
+
   constructor() {
     super('google', AuthProvider.Google);
 
@@ -29,19 +33,28 @@ export class GoogleAuthProvider extends BaseAuthProvider {
 
     passport.use(strategy);
 
-    this.handleLoginRequest = passport.authenticate('google', {
-      accessType: 'offline', session: false, failWithError: true, state: 'login',
-    });
-    this.handleLoginCallback = passport.authenticate('google', {
-      accessType: 'offline', session: false, failWithError: true, state: 'login',
-    });
-    this.handleLinkRequest = passport.authenticate('google', {
-      accessType: 'offline', session: false, failWithError: true, state: 'link',
-    });
-    this.handleLinkCallback = passport.authenticate('google', {
-      accessType: 'offline', session: false, failWithError: true, state: 'link',
+    this.api = new google.auth.OAuth2({
+      clientId: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
+      redirectUri: callbackUrl,
     });
   }
+
+  handleLoginRequest = passport.authenticate('google', {
+    accessType: 'offline', session: false, failWithError: true, state: 'login',
+  });
+
+  handleLoginCallback = passport.authenticate('google', {
+    accessType: 'offline', session: false, failWithError: true, state: 'login',
+  });
+
+  handleLinkRequest = passport.authenticate('google', {
+    accessType: 'offline', session: false, failWithError: true, state: 'link',
+  });
+
+  handleLinkCallback = passport.authenticate('google', {
+    accessType: 'offline', session: false, failWithError: true, state: 'link',
+  });
 
   /**
    * Processes user information after they've completed oauth login
@@ -51,7 +64,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
    * @param profile User information
    * @param done Callback function
    */
-  override processAuthInfo(
+  processAuthInfo(
     request: Request,
     accessToken: string,
     refreshToken: string,
@@ -68,4 +81,31 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     } as AuthInfo;
     done(null, userInfo, info);
   }
+
+  async getNewTokens(refreshToken: string): Promise<AuthInfoTokens> {
+    try {
+      console.log('Refreshing credentials');
+
+      this.api.setCredentials({
+        refresh_token: refreshToken,
+      });
+      const result = await this.api.refreshAccessToken();
+      if (!result.credentials.access_token) {
+        throw new Error('Tokens failed to refresh');
+      }
+      const tokens: AuthInfoTokens = {
+        accessToken: result.credentials.access_token,
+        refreshToken: result.credentials.refresh_token ?? undefined,
+      };
+      console.log('Refreshed tokens');
+      console.log(tokens);
+
+      return tokens;
+    } finally {
+      this.api.setCredentials({});
+    }
+  }
 }
+
+const googleAuthProvider = new GoogleAuthProvider();
+export default googleAuthProvider;

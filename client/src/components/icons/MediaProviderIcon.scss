@@ -1,19 +1,7 @@
 @import '../../styles/shared.scss';
 
 .MediaProviderIcon {
-  --brand-colour: green;
-
-  &.YouTube {
-    --brand-colour: #{$youtube-colour};
-  }
-
-  &.Spotify {
-    --brand-colour: #{$spotify-colour};
-  }
-
-  &.SoundCloud {
-    --brand-colour: #{$soundcloud-colour};
-  }
+  @include brand-colours;
 
   &.fg {
     color: var(--brand-colour);

@@ -1,13 +1,13 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { mediaProviderFromString } from '../../helper';
-import { useAppDispatch, useAppSelector } from '../../store/helper';
-import { updateProvider, updateSearchTerm } from '../../store/reducers/search';
-import { MediaProvider } from '../../types';
-import { ProviderIcon } from '../icons/ProviderIcon';
-import { Dropdown, DropdownOption } from '../input/Dropdown';
-import { StringInput } from '../input/StringInput';
+import { mediaProviderFromString } from '../../../helper';
+import { useAppDispatch, useAppSelector } from '../../../store/helper';
+import { updateProvider, updateSearchTerm } from '../../../store/reducers/search';
+import { MediaProvider } from '../../../types';
+import { ProviderIcon } from '../../icons/ProviderIcon';
+import { Dropdown, DropdownOption } from '../../input/Dropdown';
+import { StringInput } from '../../input/StringInput';
 import './SearchAll.scss';
 
 const searchProviders: DropdownOption[] = [
@@ -16,7 +16,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.YouTube} fgColour />
-        <span> YouTube</span>
+        <span className="DropdownProviderText"> YouTube</span>
       </span>
     ),
   },
@@ -25,7 +25,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.Spotify} fgColour />
-        <span> Spotify</span>
+        <span className="DropdownProviderText"> Spotify</span>
       </span>
     ),
   },
@@ -34,7 +34,7 @@ const searchProviders: DropdownOption[] = [
     content: (
       <span>
         <ProviderIcon provider={MediaProvider.SoundCloud} fgColour />
-        <span> SoundCloud</span>
+        <span className="DropdownProviderText"> SoundCloud</span>
       </span>
     ),
   },

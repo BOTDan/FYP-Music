@@ -1,7 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { SideBar } from '../components/sidebar/SideBar';
-import { TopBar } from '../components/topbar/TopBar';
+import { BottomBar } from './bottombar/BottomBar';
+import { SideBar } from './sidebar/SideBar';
+import { TopBar } from './topbar/TopBar';
 import './MainDesktop.scss';
 
 /**
@@ -21,6 +22,9 @@ export function MainDesktop() {
         <main className="MainLayout__Content">
           <Outlet />
         </main>
+        <div className="MainLayout__Bottombar">
+          <BottomBar />
+        </div>
       </div>
     </div>
   );

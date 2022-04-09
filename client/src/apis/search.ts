@@ -1,19 +1,5 @@
+import { authFetch } from '.';
 import { ExternalTrack, MediaProvider, UserTokenDTO } from '../types';
-
-/**
- * Makes an authenticated fetch request
- * @param url The url to fetch from
- * @param token The token to use for auth
- * @param options Any more request options
- * @returns The fetch request
- */
-function authFetch(url: string, token?: UserTokenDTO, options?: RequestInit) {
-  const headers: HeadersInit = {};
-  if (token && token.token.length > 0) {
-    headers.authorization = `Bearer ${token.token}`;
-  }
-  return fetch(url, { headers, ...options });
-}
 
 /**
  * Searches for a track from the API

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '../components/input/Button';
 // import { Dropdown } from '../components/input/Dropdown';
 import { StringInput } from '../components/input/StringInput';
-import { SearchAll } from '../components/topbar/SearchAll';
+import { SearchAll } from '../components/layouts/topbar/SearchAll';
 
 export function InputTestPage() {
   // const dropdownOptions = [

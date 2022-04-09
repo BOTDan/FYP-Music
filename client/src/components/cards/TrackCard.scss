@@ -3,15 +3,12 @@
 $padding: 0.25em 0.5em;
 
 .TrackCard {
+  @include card; 
+
   padding: 0.5rem;
   display: flex;
   flex-flow: row nowrap;
   cursor: pointer;
-  border-radius: $border-radius;
-
-  &:hover {
-    background: black;
-  }
 
   > * {
     display: flex;

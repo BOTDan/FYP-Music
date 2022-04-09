@@ -1,11 +1,14 @@
 import { Request } from 'express';
 import passport from 'passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-spotify';
+import SpotifyWebApi from 'spotify-web-api-node';
 import { config } from '../../config';
 import { AuthProvider } from '../../entities/AuthAccount';
-import { AuthInfo, BaseAuthProvider } from './base';
+import { AuthInfo, AuthInfoTokens, BaseAuthProvider } from './base';
 
 export class SpotifyAuthProvider extends BaseAuthProvider {
+  api: SpotifyWebApi;
+
   constructor() {
     super('spotify', AuthProvider.Spotify);
 
@@ -21,11 +24,16 @@ export class SpotifyAuthProvider extends BaseAuthProvider {
 
     passport.use(strategy);
 
-    this.handleLoginRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
-    this.handleLoginCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
-    this.handleLinkRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
-    this.handleLinkCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
+    this.api = new SpotifyWebApi({
+      clientId: config.SPOTIFY_CLIENT_ID,
+      clientSecret: config.SPOTIFY_CLIENT_SECRET,
+    });
   }
+
+  handleLoginRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
+  handleLoginCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
+  handleLinkRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
+  handleLinkCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
 
   /**
    * Processes user information after they've completed oauth login
@@ -36,7 +44,7 @@ export class SpotifyAuthProvider extends BaseAuthProvider {
    * @param profile User information
    * @param done Callback function
    */
-  override processAuthInfo(
+  processAuthInfo(
     request: Request,
     accessToken: string,
     refreshToken: string,
@@ -54,4 +62,23 @@ export class SpotifyAuthProvider extends BaseAuthProvider {
     } as AuthInfo;
     done(null, userInfo, info);
   }
+
+  async getNewTokens(refreshToken: string): Promise<AuthInfoTokens> {
+    this.api.setRefreshToken(refreshToken);
+    try {
+      const result = await this.api.refreshAccessToken();
+      if (!result.body || !result.body.access_token) {
+        throw new Error('Tokens failed to refresh');
+      }
+      const tokens: AuthInfoTokens = {
+        accessToken: result.body.access_token,
+        refreshToken: result.body.refresh_token,
+      };
+      return tokens;
+    } finally {
+      this.api.resetRefreshToken();
+    }
+  }
 }
+const spotifyAuthProvider = new SpotifyAuthProvider();
+export default spotifyAuthProvider;

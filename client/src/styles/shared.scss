@@ -1,21 +1,2 @@
 @import './helper.scss';
-
-// Main app
-$background: #111;
-$text-colour: #fff;
-
-$border-radius: 0.25rem;
-
-// Headings
-$subheading-fg: #eee;
-
-// Input elements
-$input-fg: #333;
-$input-bg: #fff;
-$input-bg-hover: #eee;
-$input-bg-active: #ddd;
-
-// Brand colours
-$youtube-colour: #FF0000;
-$spotify-colour: #1DB954;
-$soundcloud-colour: #FE5000;
+@import './colours.scss';

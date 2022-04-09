@@ -1,3 +1,5 @@
+@import './colours.scss';
+
 .text-left {
   text-align: left;
 }
@@ -13,4 +15,65 @@
 .block {
   width: 100%;
   display: block;
+}
+
+@mixin card {
+  box-shadow: 0px 0px 0px #222;
+  transition: box-shadow 0.2s;
+  color: $card-fg;
+  background: $card-bg;
+  border-radius: $border-radius;
+  overflow: hidden;
+  
+  &:hover,
+  &:focus {
+    background: $card-bg-hover;
+    box-shadow: 0px 0px 5px 2px #222;
+  }
+}
+
+@mixin brand-colours {
+  --brand-colour: #{$accent-colour};
+  
+  &.YouTube {
+    --brand-colour: #{$youtube-colour};
+  }
+  
+  &.Spotify {
+    --brand-colour: #{$spotify-colour};
+  }
+  
+  &.SoundCloud {
+    --brand-colour: #{$soundcloud-colour};
+  }
+}
+
+@mixin sm {
+  @media (min-width: #{$size-sm}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: #{$size-md}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$size-lg}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: #{$size-xl}) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: #{$size-xxl}) {
+    @content;
+  }
 }

@@ -19,19 +19,24 @@ export interface AuthUserInfo {
 }
 
 /**
+ * Store access and refresh tokens of external provider
+ */
+export interface AuthInfoTokens {
+  accessToken: string,
+  refreshToken?: string,
+}
+
+/**
  * Information about a 3rd party login attempt
  */
 export interface AuthInfo {
   provider: AuthProvider,
   id: string,
-  tokens: {
-    accessToken: string,
-    refreshToken: string,
-  },
+  tokens: AuthInfoTokens,
   userInfo: AuthUserInfo,
 }
 
-export class BaseAuthProvider {
+export abstract class BaseAuthProvider {
   name: string = 'base';
   router: Router;
   provider: AuthProvider;
@@ -79,9 +84,7 @@ export class BaseAuthProvider {
    * @param response Express response object
    * @param next Express next function
    */
-  handleLoginRequest(request: Request, response: Response, next: NextFunction) {
-    next();
-  }
+  abstract handleLoginRequest(request: Request, response: Response, next: NextFunction): void;
 
   /**
    * Handles GET requests to /login/callback.
@@ -90,9 +93,7 @@ export class BaseAuthProvider {
    * @param response Express response object
    * @param next Express next function
    */
-  handleLoginCallback(request: Request, response: Response, next: NextFunction) {
-    next();
-  }
+  abstract handleLoginCallback(request: Request, response: Response, next: NextFunction): void;
 
   /**
    * Handles GET reuqests to /link
@@ -101,9 +102,7 @@ export class BaseAuthProvider {
    * @param response Express response object
    * @param next Express next function
    */
-  handleLinkRequest(request: Request, response: Response, next: NextFunction) {
-    next();
-  }
+  abstract handleLinkRequest(request: Request, response: Response, next: NextFunction): void;
 
   /**
    * Handles GET requests to /link/callback.
@@ -112,9 +111,7 @@ export class BaseAuthProvider {
    * @param response Express response object
    * @param next Express next function
    */
-  handleLinkCallback(request: Request, response: Response, next: NextFunction) {
-    next();
-  }
+  abstract handleLinkCallback(request: Request, response: Response, next: NextFunction): void;
 
   /**
    * Handles GET requests to /callabck. Farwards them on depending on state parameter.
@@ -311,7 +308,19 @@ export class BaseAuthProvider {
    *  AuthInfo
    * );
    */
-  processAuthInfo(...args: any) {
-    // Overwrite me
+  // processAuthInfo(...args: any) {
+  // Overwrite me
+  // }
+
+  async refreshTokens(authAccount: AuthAccount) {
+    if (!authAccount.refreshToken) {
+      throw new InternalServerError('Auth account has no refresh token');
+    }
+    const newTokens = await this.getNewTokens(authAccount.refreshToken);
+
+    await updateStoredTokens(authAccount, newTokens.accessToken, newTokens.refreshToken);
+    return newTokens;
   }
+
+  abstract getNewTokens(refreshToken: string): Promise<AuthInfoTokens>;
 }
