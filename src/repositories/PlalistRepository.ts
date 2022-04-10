@@ -32,7 +32,7 @@ export class PlaylistRepository extends AbstractRepository<Playlist> {
    */
   getUserPlaylists(user: User, includeTracks = false) {
     const relations = (includeTracks) ? ['tracks'] : [];
-    return this.repository.find({ where: { owner: user }, relations });
+    return this.repository.find({ where: { owner: user }, order: { dateCreated: 'DESC' }, relations });
   }
 
   /**
