@@ -1,4 +1,4 @@
-import { authFetch } from '.';
+import { authFetchCatchFail } from '.';
 import { ExternalTrack, MediaProvider, UserTokenDTO } from '../types';
 
 /**
@@ -12,10 +12,5 @@ export async function searchForTrack(
   q: string,
   token?: UserTokenDTO,
 ): Promise<ExternalTrack[]> {
-  const response = await authFetch(`/api/${provider.toLowerCase()}/tracks?q=${q}`, token);
-  if (!response.ok) {
-    throw new Error('Response not OK');
-  }
-  const data = await response.json();
-  return data;
+  return authFetchCatchFail(`/api/${provider.toLowerCase()}/tracks?q=${q}`, token);
 }

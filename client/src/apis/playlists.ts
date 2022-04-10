@@ -1,4 +1,4 @@
-import { authFetch } from '.';
+import { authFetchCatchFail } from '.';
 import {
   ExternalPlaylist, InternalPlaylist, MediaProvider, UserTokenDTO,
 } from '../types';
@@ -13,12 +13,7 @@ export async function getProviderPlaylists(
   provider: MediaProvider,
   token: UserTokenDTO,
 ): Promise<ExternalPlaylist[]> {
-  const response = await authFetch(`/api/${provider.toLowerCase()}/me/playlists`, token);
-  if (!response.ok) {
-    throw new Error('Response not OK');
-  }
-  const data = await response.json();
-  return data;
+  return authFetchCatchFail(`/api/${provider.toLowerCase()}/me/playlists`, token);
 }
 
 /**
@@ -33,12 +28,7 @@ export async function getProviderPlaylist(
   id: string,
   token?: UserTokenDTO,
 ): Promise<ExternalPlaylist> {
-  const response = await authFetch(`/api/${provider.toLowerCase()}/playlists/${encodeURIComponent(id)}`, token);
-  if (!response.ok) {
-    throw new Error('Response not OK');
-  }
-  const data = await response.json();
-  return data;
+  return authFetchCatchFail(`/api/${provider.toLowerCase()}/playlists/${encodeURIComponent(id)}`, token);
 }
 
 /**
@@ -49,12 +39,7 @@ export async function getProviderPlaylist(
 export async function getMyPlaylists(
   token: UserTokenDTO,
 ): Promise<InternalPlaylist[]> {
-  const response = await authFetch('/api/me/playlists/', token);
-  if (!response.ok) {
-    throw new Error('Response not OK');
-  }
-  const data = await response.json();
-  return data;
+  return authFetchCatchFail('/api/me/playlists/', token);
 }
 
 /**
@@ -67,10 +52,26 @@ export async function getPlaylist(
   id: string,
   token?: UserTokenDTO,
 ): Promise<InternalPlaylist> {
-  const response = await authFetch(`/api/playlists/${encodeURIComponent(id)}`, token);
-  if (!response.ok) {
-    throw new Error('Response not OK');
-  }
-  const data = await response.json();
-  return data;
+  return authFetchCatchFail(`/api/playlists/${encodeURIComponent(id)}`, token);
+}
+
+export interface PlaylistOptions {
+  name: string;
+  description?: string;
+  visibility?: string;
+}
+/**
+ * Creates a playlist for a user
+ * @param options The options for the playlist
+ * @param token The user token
+ * @returns The created playlist
+ */
+export async function createPlaylist(
+  options: PlaylistOptions,
+  token?: UserTokenDTO,
+): Promise<InternalPlaylist> {
+  return authFetchCatchFail('/api/playlists', token, {
+    method: 'POST',
+    body: JSON.stringify(options),
+  });
 }
