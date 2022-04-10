@@ -9,8 +9,8 @@ import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
  * Represents a song. Should be used to represent the data back from the API, not user data.
  */
 @Entity()
-@Unique('UQ_SONGS', ['provider', 'providerId'])
-export class Song extends DatabaseEntityWithID {
+@Unique('UQ_TRACKS', ['provider', 'providerId'])
+export class Track extends DatabaseEntityWithID {
   @Column({ type: 'enum', enum: MediaProvider })
     provider!: MediaProvider;
 
