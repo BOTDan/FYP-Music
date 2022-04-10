@@ -76,6 +76,7 @@ export function ExternalPlaylistPage({ provider, id }: SinglePlaylistPageProps) 
             </span>
           )}
           image={playlist.image}
+          imageFallback="/assets/img/playlist_placeholder.png"
         >
           {playlist.name}
         </TopHeading>

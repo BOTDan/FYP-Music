@@ -61,6 +61,8 @@ export function InternalPlaylistPage({ id }: SinglePlaylistPageProps) {
       <>
         <TopHeading
           subheading="Playlist"
+          image={playlist.image}
+          imageFallback="/assets/img/playlist_placeholder.png"
         >
           {playlist.name}
         </TopHeading>
