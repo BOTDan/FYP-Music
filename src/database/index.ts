@@ -4,7 +4,9 @@ import { config } from '../config';
 import { Artist } from '../entities/Artist';
 import { AuthAccount } from '../entities/AuthAccount';
 import { AuthAccountLinkToken } from '../entities/AuthAccountLinkToken';
+import { Playlist } from '../entities/Playlist';
 import { Track } from '../entities/Track';
+import { TrackOnPlaylist } from '../entities/TrackOnPlaylist';
 import { User } from '../entities/User';
 import { UserToken } from '../entities/UserToken';
 
@@ -20,6 +22,8 @@ function getEntities() {
     AuthAccountLinkToken,
     Artist,
     Track,
+    Playlist,
+    TrackOnPlaylist,
   ];
 }
 
