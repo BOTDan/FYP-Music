@@ -1,18 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalPlaylist } from '../../types';
+import { ExternalPlaylist, InternalPlaylist } from '../../types';
 import { SquareImage } from '../structure/SquareImage';
 import './PlaylistCard.scss';
 
-export interface PlaylistCardProps {
+export interface ExternalPlaylistCardProps {
   playlist: ExternalPlaylist;
   isLink?: boolean;
 }
 
-export function PlaylistCard({ playlist, isLink }: PlaylistCardProps) {
+/**
+ * Creates a card for an external playlist
+ * @param props The props object
+ * @returns A playlist card
+ */
+export function ExternalPlaylistCard({ playlist, isLink }: ExternalPlaylistCardProps) {
   const content = (
     <>
-      <SquareImage className="PlaylistCard__Image" src={playlist.image} />
+      <SquareImage className="PlaylistCard__Image" src={playlist.image} fallbackSrc="/assets/img/playlist_placeholder.png" />
       <div className="PlaylistCard__Main">
         <p className="PlaylistCard__Name">{ playlist.name }</p>
       </div>
@@ -32,6 +37,43 @@ export function PlaylistCard({ playlist, isLink }: PlaylistCardProps) {
   );
 }
 
-PlaylistCard.defaultProps = {
+ExternalPlaylistCard.defaultProps = {
+  isLink: false,
+};
+
+export interface InternalPlaylistCardProps {
+  playlist: InternalPlaylist;
+  isLink?: boolean;
+}
+
+/**
+ * Creates a card for an internal playlist
+ * @param props The props object
+ * @returns A playlist card
+ */
+export function InternalPlaylistCard({ playlist, isLink }: InternalPlaylistCardProps) {
+  const content = (
+    <>
+      <SquareImage className="PlaylistCard__Image" src="" fallbackSrc="/assets/img/playlist_placeholder.png" />
+      <div className="PlaylistCard__Main">
+        <p className="PlaylistCard__Name">{playlist.name}</p>
+      </div>
+    </>
+  );
+  if (isLink) {
+    return (
+      <Link to={`/playlists/${playlist.id}`} className="PlaylistCard">
+        {content}
+      </Link>
+    );
+  }
+  return (
+    <div className="PlaylistCard">
+      {content}
+    </div>
+  );
+}
+
+InternalPlaylistCard.defaultProps = {
   isLink: false,
 };

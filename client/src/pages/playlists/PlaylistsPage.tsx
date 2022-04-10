@@ -2,20 +2,28 @@ import React from 'react';
 import {
   Outlet, Route, Routes, useParams,
 } from 'react-router';
-import { AllPlaylistsPage } from './AllPlaylistsPage';
+import { ExternalPlaylistsPage } from './ExternalPlaylistsPage';
 import './PlaylistsPage.scss';
 import { PlaylistsPageLanding } from './PlaylistsPageLanding';
-import { SinglePlaylistPage } from './SinglePlaylistPage';
+import { ExternalPlaylistPage } from './ExternalPlaylistPage';
+import { mediaProviderFromString } from '../../helper';
+import { InternalPlaylistPage } from './InternalPlaylistPage';
 
 function PlaylistsPageContent() {
   const { provider, id } = useParams();
 
   let element = <p>Empty</p>;
 
-  if (provider && id) {
-    element = <SinglePlaylistPage provider={provider} id={id} />;
-  } else if (provider) {
-    element = <AllPlaylistsPage provider={provider} />;
+  if (provider) {
+    if (mediaProviderFromString(provider)) {
+      if (id) {
+        element = <ExternalPlaylistPage provider={provider} id={id} />;
+      } else {
+        element = <ExternalPlaylistsPage provider={provider} />;
+      }
+    } else {
+      element = <InternalPlaylistPage id={provider} />;
+    }
   }
 
   return element;
