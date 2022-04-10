@@ -6,6 +6,7 @@ export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputEle
   value: string | number;
   error?: string;
   label?: string;
+  vertical?: boolean;
   after?: ReactNode;
 }
 
@@ -15,7 +16,7 @@ export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputEle
  * @returns An input
  */
 export function GenericInput({
-  label, type, value, error, after, onChange, size, ...remaining
+  label, vertical, type, value, error, after, onChange, size, ...remaining
 }: GenericInputProps) {
   /**
    * Handles running the callback for when the value of this input changes
@@ -41,8 +42,11 @@ export function GenericInput({
   const afterElem = after ?? undefined;
   const errorElem = (error) ? (<p className="Input__Error">{error}</p>) : undefined;
 
+  const classes = ['Input'];
+  if (vertical) { classes.push('vertical'); }
+
   return (
-    <div className="Input">
+    <div className={classes.join(' ')}>
       <div className="Input__Entry">
         {labelElem}
         {inputElem}
@@ -56,6 +60,7 @@ export function GenericInput({
 GenericInput.defaultProps = {
   error: undefined,
   label: undefined,
+  vertical: false,
   after: undefined,
   onChange: undefined,
 };

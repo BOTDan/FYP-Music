@@ -2,6 +2,13 @@
 
 .Input {
   display: inline-block; 
+
+  &.vertical {
+    >.Input__Entry {
+      display: flex;
+      flex-flow: column nowrap;
+    }
+  }
   
   > .Input__Entry {
     input[type=text],
