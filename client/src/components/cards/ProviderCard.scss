@@ -2,45 +2,4 @@
 
 .ProviderCard {
   @include brand-colours;
-  @include card;
-
-  text-decoration: none;
-  display: flex;
-  flex-flow: row nowrap;
-  overflow: hidden;
-
-  .ProviderCard__Left {
-    width: 2em;
-    height: 2em;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    background: var(--brand-colour);
-    font-size: 2em;
-    flex: 0 0 auto;
-  }
-
-  .ProviderCard__Center {
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    padding: 1em;
-    overflow: hidden;
-
-    p {
-      margin: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  .ProviderCard__Right {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    padding: 1em;
-    flex: 0 0 auto;
-  }
 }
