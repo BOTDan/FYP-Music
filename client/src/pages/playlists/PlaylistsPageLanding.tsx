@@ -58,13 +58,13 @@ export function PlaylistsPageLanding() {
     <GeneralContent className="PlaylistsPageLanding" padTop padBottom>
       <TopHeading subheading="Playlists">External Playlists</TopHeading>
       <Grid className="PlaylistsPageLanding_Providers">
+        <IconCard icon={faPlus} onClick={() => setShowPopup(true)}>New Playlist</IconCard>
         {Object.values(MediaProvider).map((provider) => (
           <ProviderCard provider={provider} key={provider} />
         ))}
       </Grid>
       <TopHeading
         subheading="Playlists"
-        right={<IconCard icon={faPlus} onClick={() => setShowPopup(true)}>New Playlist</IconCard>}
       >
         All Playlists
       </TopHeading>
