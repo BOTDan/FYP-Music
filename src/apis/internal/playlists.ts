@@ -6,9 +6,13 @@ import { getCustomRepository } from 'typeorm';
 import { blockBadRequests } from '.';
 import { preferAuthentication, requireAuthentication } from '../../auth';
 import { Playlist, PlaylistVisibility } from '../../entities/Playlist';
+import { TrackOnPlaylist } from '../../entities/TrackOnPlaylist';
 import { User } from '../../entities/User';
 import { NotFoundError, UnauthorizedError } from '../../errors/httpstatus';
 import { PlaylistData, PlaylistRepository } from '../../repositories/PlalistRepository';
+import { TrackOnPlaylistRepository } from '../../repositories/TrackOnPlaylistRepo';
+import { MediaProvider } from '../providers/base';
+import { getOrCreateTrack } from './tracks';
 
 const playlistsRouteName = 'playlists';
 const tracksRouteName = 'tracks';
@@ -96,6 +100,46 @@ async function canEditPlaylist(playlist: Playlist, user?: User) {
   if (!user || !owner) { return false; }
   if (owner.id === user.id) { return true; }
   return false;
+}
+
+/**
+ * Adds a track to a playlist
+ * @param playlist The playlist to add to
+ * @param provider The provider of the track to add
+ * @param providerId The provider id of the track to add
+ * @param order The order of the track in the playlist
+ * @returns The entry to the playlist
+ */
+async function addTrackToPlaylist(
+  playlist: Playlist,
+  provider: MediaProvider,
+  providerId: string,
+  order?: number,
+  user?: User,
+) {
+  const track = await getOrCreateTrack(provider, providerId, user);
+  const trackOnPlaylistRepo = getCustomRepository(TrackOnPlaylistRepository);
+  return trackOnPlaylistRepo.addTrackToPlaylist(playlist, track);
+}
+
+/**
+ * Returns a track in database entity found by ID
+ * @param id The id of the track on playlist object
+ * @returns The database entry
+ */
+async function getTrackInPlaylist(id: string) {
+  const trackOnPlaylistRepo = getCustomRepository(TrackOnPlaylistRepository);
+  return trackOnPlaylistRepo.getTrackInPlaylist(id);
+}
+
+/**
+ * Deletes a track from the playlist
+ * @param trackOnPlaylist The track on playlist to delete
+ * @returns The deleted track
+ */
+async function deleteTrackFromPlaylist(trackOnPlaylist: TrackOnPlaylist) {
+  const trackOnPlaylistRepo = getCustomRepository(TrackOnPlaylistRepository);
+  return trackOnPlaylistRepo.deleteTrackFromPlaylist(trackOnPlaylist);
 }
 
 const playlistsRouter = Router();
@@ -214,6 +258,72 @@ playlistsRouter.get(
       }
 
       response.send(playlist?.tracks);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+playlistsRouter.post(
+  `/${playlistsRouteName}/:id/${tracksRouteName}`,
+  requireAuthentication,
+  param('id').isString(),
+  body('provider').isIn(Object.values(MediaProvider)),
+  body('providerId').isString(),
+  body('order').optional().isNumeric(),
+  blockBadRequests,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const { id } = request.params;
+      const { provider, providerId, order } = request.body;
+      const playlist = await getPlaylist(id, true);
+      if (!playlist) {
+        throw new NotFoundError(`Playlist with ID ${id} not found`);
+      }
+      if (!await canEditPlaylist(playlist, request.token?.user)) {
+        throw new UnauthorizedError();
+      }
+
+      const user = request.token?.user;
+      const trackInPlaylist = await addTrackToPlaylist(playlist, provider, providerId, order, user);
+
+      response.send(trackInPlaylist);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+playlistsRouter.delete(
+  `/${playlistsRouteName}/:playlistId/${tracksRouteName}/:entryId`,
+  requireAuthentication,
+  param('playlistId').isString(),
+  param('entryId').isString(),
+  blockBadRequests,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const { playlistId, entryId } = request.params;
+      const playlist = await getPlaylist(playlistId, true);
+      const user = request.token?.user;
+
+      if (!playlist) {
+        throw new NotFoundError(`Playlist with ID ${playlistId} not found`);
+      }
+      if (!await canEditPlaylist(playlist, user)) {
+        throw new UnauthorizedError();
+      }
+
+      const trackInPlaylist = await getTrackInPlaylist(entryId);
+      if (!trackInPlaylist) {
+        throw new NotFoundError(`Playlist entry with ID ${entryId} not found on playlist ${playlistId}`);
+      }
+      if (playlist.id !== trackInPlaylist.playlist.id) {
+        throw new NotFoundError(`Playlist entry with ID ${entryId} not found on playlist ${playlistId}`);
+      }
+
+      const deletedTrack = await deleteTrackFromPlaylist(trackInPlaylist);
+
+      response.send(deletedTrack);
     } catch (e) {
       next(e);
     }
