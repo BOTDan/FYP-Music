@@ -158,3 +158,6 @@ export class SpotifyAPI extends ExternalAPI {
     return [];
   }
 }
+
+const spotifyAPI = new SpotifyAPI();
+export default spotifyAPI;

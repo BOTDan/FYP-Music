@@ -221,3 +221,6 @@ export class YouTubeAPI extends ExternalAPI {
     return [];
   }
 }
+
+const youtubeAPI = new YouTubeAPI();
+export default youtubeAPI;
