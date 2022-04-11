@@ -18,9 +18,9 @@ export class Track extends DatabaseEntityWithID {
     name!: string;
 
   @Column({ type: 'int' })
-    length!: number;
+    duration!: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     image?: string;
 
   @ManyToMany(() => Artist)
@@ -30,6 +30,6 @@ export class Track extends DatabaseEntityWithID {
   @Column({ type: 'varchar', length: 128 })
     providerId!: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     providerData?: {};
 }

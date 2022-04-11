@@ -11,12 +11,12 @@ export class Artist extends DatabaseEntityWithID {
   @Column({ type: 'varchar' })
     name!: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     image?: string;
 
   @Column({ type: 'varchar', length: 128 })
     providerId!: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     providerData?: {};
 }
