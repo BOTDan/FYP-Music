@@ -1,6 +1,5 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useRef, useState } from 'react';
-import { getMyPlaylists } from '../../apis/playlists';
+import React, { useState } from 'react';
 import { IconCard } from '../../components/cards/IconCard';
 import { InternalPlaylistCardList } from '../../components/cards/lists/PlaylistCardList';
 import { ProviderCard } from '../../components/cards/ProviderCard';
@@ -10,49 +9,13 @@ import { Grid } from '../../components/layout/Grid';
 import { CreatePlaylistPopup } from '../../components/popup/popups/CreatePlaylistPopup';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { useAppSelector } from '../../store/helper';
-import { InternalPlaylist, MediaProvider, UserTokenDTO } from '../../types';
+import { MediaProvider } from '../../types';
 import './PlaylistsPageLanding.scss';
 
 export function PlaylistsPageLanding() {
-  const [playlists, setPlaylists] = useState<InternalPlaylist[]>([]);
-  const [loading, setLoading] = useState(false);
+  const playlists = useAppSelector((state) => state.playlists.value);
+  const loading = useAppSelector((state) => state.playlists.loading);
   const [showPopup, setShowPopup] = useState(false);
-  const userToken = useAppSelector((state) => state.auth.token);
-  const isMounted = useRef(false);
-
-  const updatePlaylists = (
-    newUserToken: UserTokenDTO | undefined,
-  ) => {
-    setPlaylists([]);
-
-    if (newUserToken) {
-      setLoading(true);
-
-      getMyPlaylists(newUserToken)
-        .then((r) => {
-          if (isMounted.current) {
-            setLoading(false);
-            setPlaylists(r);
-          }
-        })
-        .catch((e) => {
-          setLoading(false);
-          console.log(e);
-        });
-    }
-  };
-
-  useEffect(() => {
-    isMounted.current = true;
-
-    return () => {
-      isMounted.current = false;
-    };
-  });
-
-  useEffect(() => {
-    updatePlaylists(userToken);
-  }, [userToken]);
 
   return (
     <GeneralContent className="PlaylistsPageLanding" padTop padBottom>
