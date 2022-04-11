@@ -1,5 +1,5 @@
 import { AbstractRepository, EntityRepository } from 'typeorm';
-import { MediaProvider } from '../apis/providers/base';
+import { ExternalArtist, MediaProvider } from '../apis/providers/base';
 import { Artist } from '../entities/Artist';
 
 export interface ArtistData {
@@ -28,6 +28,15 @@ export class ArtistRepository extends AbstractRepository<Artist> {
   }
 
   /**
+   * Creates an artist in the database
+   * @param artistData The external artist data
+   * @returns The created artist
+   */
+  registerArtist(artistData: ExternalArtist) {
+    return this.createArtist(artistData);
+  }
+
+  /**
    * Finds an artist in the databse with the given internal ID
    * @param id The internal ID of the artist
    * @returns An artist, if exists
@@ -43,7 +52,7 @@ export class ArtistRepository extends AbstractRepository<Artist> {
    * @returns An artist, if exists
    */
   findArtistByProvider(provider: MediaProvider, providerId: string) {
-    return this.repository.find({ where: { provider, providerId } });
+    return this.repository.findOne({ where: { provider, providerId } });
   }
 
   /**
@@ -51,11 +60,11 @@ export class ArtistRepository extends AbstractRepository<Artist> {
    * @param options The options defining the artist
    * @returns An artist
    */
-  async findOrCreateArtist(options: ArtistData) {
-    const result = await this.findArtistByProvider(options.provider, options.providerId);
+  async findOrCreateArtist(artistData: ExternalArtist) {
+    const result = await this.findArtistByProvider(artistData.provider, artistData.providerId);
     if (result) {
       return result;
     }
-    return this.createArtist(options);
+    return this.registerArtist(artistData);
   }
 }
