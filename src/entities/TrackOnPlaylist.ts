@@ -2,6 +2,7 @@ import {
   Column, Entity, ManyToOne,
 } from 'typeorm';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
+// eslint-disable-next-line import/no-cycle
 import { Playlist } from './Playlist';
 import { Track } from './Track';
 import { User } from './User';
@@ -11,7 +12,7 @@ export class TrackOnPlaylist extends DatabaseEntityWithID {
   @ManyToOne(() => Track)
     track!: Track;
 
-  @ManyToOne(() => Playlist)
+  @ManyToOne(() => Playlist, (playlist) => playlist.tracks)
     playlist!: Playlist;
 
   @Column({ type: 'int' })

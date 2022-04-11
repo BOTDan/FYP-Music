@@ -2,6 +2,7 @@ import {
   Column, Entity, ManyToOne, OneToMany,
 } from 'typeorm';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
+// eslint-disable-next-line import/no-cycle
 import { TrackOnPlaylist } from './TrackOnPlaylist';
 import { User } from './User';
 
@@ -24,7 +25,7 @@ export class Playlist extends DatabaseEntityWithID {
   @ManyToOne(() => User)
     owner!: User;
 
-  @OneToMany(() => TrackOnPlaylist, (trackOnPlaylist) => trackOnPlaylist.track)
+  @OneToMany(() => TrackOnPlaylist, (trackOnPlaylist) => trackOnPlaylist.playlist)
     tracks!: TrackOnPlaylist[];
 
   @Column({ type: 'enum', enum: PlaylistVisibility, default: PlaylistVisibility.Private })
