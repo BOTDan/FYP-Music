@@ -34,12 +34,36 @@ export interface ExternalPlaylist {
   providerId: string;
 }
 
+export interface InternalArtist {
+  id: string;
+  name: string;
+  image?: string;
+  provider: MediaProvider;
+  providerId: string;
+}
+
+export interface InternalTrack {
+  name: string;
+  duration: number;
+  artists: InternalArtist[];
+  image?: string;
+  provider: MediaProvider;
+  providerId: string;
+}
+
 export interface InternalPlaylist {
   id: string;
   name: string;
   description?: string;
-  tracks?: ExternalTrack[];
+  tracks?: InternalTrackOnPlaylist[];
   image?: string;
+}
+
+export interface InternalTrackOnPlaylist {
+  id: string;
+  order: string;
+  track: InternalTrack;
+  playlist: InternalPlaylist;
 }
 
 export interface DatabaseEntityDTO {
