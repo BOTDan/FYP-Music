@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { AbstractRepository, EntityRepository } from 'typeorm';
 import { Playlist, PlaylistVisibility } from '../entities/Playlist';
 import { User } from '../entities/User';
@@ -44,5 +45,27 @@ export class PlaylistRepository extends AbstractRepository<Playlist> {
   getPlaylist(id: string, includeTracks = false) {
     const relations = (includeTracks) ? ['tracks'] : [];
     return this.repository.findOne({ where: { id }, relations });
+  }
+
+  /**
+   * Updates a playlist in the database
+   * @param playlist The playlist to update
+   * @param options The parameters to update
+   * @returns The updated playlist
+   */
+  updatePlaylist(playlist: Playlist, options: Partial<PlaylistData>) {
+    playlist.name = options.name ?? playlist.name;
+    playlist.description = options.description ?? playlist.description;
+    playlist.visibility = options.visibility ?? playlist.visibility;
+    return this.repository.save(playlist);
+  }
+
+  /**
+   * Returns the owner of a playlist
+   * @param playlist The playlist
+   * @returns The owner of the playlist, or undefined if the playlist does not exist
+   */
+  async getPlaylistOwner(playlist: Playlist) {
+    return (await this.repository.findOne({ where: { id: playlist.id }, relations: ['owner'] }))?.owner;
   }
 }
