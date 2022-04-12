@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import useStateRef from 'react-usestateref';
 import { createPlaylist } from '../../../apis/playlists';
 // import { createPlaylist } from '../../../apis/playlists';
 import { useAppSelector } from '../../../store/helper';
@@ -15,8 +14,8 @@ export interface CreatePlaylistPopupProps {
 }
 
 export function CreatePlaylistPopup({ visible, onClose }: CreatePlaylistPopupProps) {
-  const [name, setName] = useStateRef('');
-  const [description, setDescription] = useStateRef('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [submit, setSubmit] = useState(false);
   const userToken = useAppSelector((state) => state.auth.token);
   const navigate = useNavigate();
