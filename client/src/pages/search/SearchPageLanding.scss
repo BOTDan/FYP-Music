@@ -10,6 +10,10 @@
   }
 
   .SearchPageLanding__Content {
-    margin-top: 2rem;
+    padding: 1em;
+
+    * {
+      text-align: center;
+    }
   }
 }
