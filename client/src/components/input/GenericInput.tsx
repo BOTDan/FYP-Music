@@ -1,8 +1,11 @@
-import React, { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
+import React, {
+  ChangeEvent, InputHTMLAttributes, KeyboardEvent, ReactNode,
+} from 'react';
 import './GenericInput.scss';
 
 export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?(value: string | number): void;
+  onEnter?(): void;
   value: string | number;
   error?: string;
   label?: string;
@@ -16,7 +19,7 @@ export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputEle
  * @returns An input
  */
 export function GenericInput({
-  label, vertical, type, value, error, after, onChange, size, ...remaining
+  label, vertical, type, value, error, after, onChange, onEnter, size, ...remaining
 }: GenericInputProps) {
   /**
    * Handles running the callback for when the value of this input changes
@@ -28,6 +31,16 @@ export function GenericInput({
     }
   }
 
+  /**
+   * Handles checking if enter was pressed by the user
+   * @param event The KeyboardEvenet
+   */
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && onEnter) {
+      onEnter();
+    }
+  }
+
   const labelElem = (label) ? (<label htmlFor="entry">{label}</label>) : undefined;
   const inputElem = (
     <input
@@ -35,6 +48,7 @@ export function GenericInput({
       type={type ?? 'text'}
       value={value}
       onChange={handleOnChange}
+      onKeyDown={handleKeyDown}
       size={size}
       {...remaining}
     />
@@ -63,4 +77,5 @@ GenericInput.defaultProps = {
   vertical: false,
   after: undefined,
   onChange: undefined,
+  onEnter: undefined,
 };
