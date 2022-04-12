@@ -11,6 +11,9 @@
   }
   
   > .Input__Entry {
+    display: flex;
+    flex-flow: row nowrap;
+
     input[type=text],
     input[type=number] {
       border: none;
