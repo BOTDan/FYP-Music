@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthActions } from '../../auth/AuthActions';
+import { HistoryNavigation } from './HistoryNavigation';
 import { SearchAll } from './SearchAll';
 import './TopBar.scss';
 
@@ -10,6 +11,7 @@ import './TopBar.scss';
 export function TopBar() {
   return (
     <div className="TopBar">
+      <HistoryNavigation />
       <SearchAll />
       <AuthActions />
     </div>
