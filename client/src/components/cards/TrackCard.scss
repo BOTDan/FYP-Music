@@ -21,6 +21,11 @@ $padding: 0.25em 0.5em;
     padding: $padding;
     width: 2em;
     box-sizing: content-box;
+    display: none;
+
+    @include sm {
+      display: inherit;
+    }
   }
 
   .TrackCard__Image {

@@ -24,6 +24,7 @@
   background: $card-bg;
   border-radius: $border-radius;
   overflow: hidden;
+  user-select: none;
   
   &:hover,
   &:focus {
