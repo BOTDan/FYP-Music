@@ -8,14 +8,17 @@
   color: $input-fg;
   text-align: center;
   font-size: inherit;
-  padding: 0.5em;
+  padding: 0.5em 0.75em;
   display: inline-block;
 
-  &:hover {
-    background: $input-bg-hover;
+  &:not(:disabled) {
+    &:hover {
+      background: $input-bg-hover;
+    }
+  
+    &:active {
+      background: $input-bg-active;
+    }
   }
-
-  &:active {
-    background: $input-bg-active;
   }
 }
