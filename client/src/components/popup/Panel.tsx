@@ -26,7 +26,7 @@ export function Panel({
       {(footer || closeButton) && (
         <div className="Panel__Footer">
           {closeButton && (
-            <Button onClick={onClose}>{ closeButton }</Button>
+            <Button onClick={onClose} bland>{ closeButton }</Button>
           )}
           {footer}
         </div>

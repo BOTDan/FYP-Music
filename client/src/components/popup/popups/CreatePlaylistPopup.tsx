@@ -42,19 +42,14 @@ export function CreatePlaylistPopup({ visible, onClose }: CreatePlaylistPopupPro
     <Modal visible={visible} onClose={onClose}>
       <Panel
         header="Create Playlist"
+        closeButton="Cancel"
+        onClose={onClose}
         footer={(
-          <>
-            <Button
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => setSubmit(true)}
-            >
-              Create
-            </Button>
-          </>
+          <Button
+            onClick={() => setSubmit(true)}
+          >
+            Create
+          </Button>
         )}
       >
         <StringInput
