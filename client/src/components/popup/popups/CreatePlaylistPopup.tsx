@@ -40,6 +40,7 @@ export function CreatePlaylistPopup({ visible, onClose }: CreatePlaylistPopupPro
   return (
     <Modal visible={visible} onClose={onClose}>
       <Panel
+        isForm
         header="Create Playlist"
         closeButton="Cancel"
         onClose={onClose}

@@ -8,13 +8,18 @@ export interface PanelProps extends PropsWithChildren<{}> {
   closeButton?: ReactNode | ReactNode[] | string;
   onClose?: () => void;
   className?: string;
+  isForm?: boolean;
 }
 
 export function Panel({
-  header, children, footer, closeButton, onClose, className,
+  header, children, footer, closeButton, onClose, className, isForm,
 }: PanelProps) {
+  const classList = ['Panel'];
+  if (className) { classList.push(className); }
+  if (isForm) { classList.push('Panel__Form'); }
+
   return (
-    <div className={`Panel ${className}`}>
+    <div className={classList.join(' ')}>
       {header && (
         <div className="Panel__Header">
           { header }
@@ -41,4 +46,5 @@ Panel.defaultProps = {
   closeButton: undefined,
   onClose: undefined,
   className: '',
+  isForm: false,
 };

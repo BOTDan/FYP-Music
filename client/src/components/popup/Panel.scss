@@ -10,6 +10,20 @@ $panel-footer: #111;
   overflow: hidden;
   border-radius: $border-radius;
 
+  &.Panel__Form {
+    .Panel__Body {
+      padding-bottom: 1.5em;
+
+      > * {
+        margin-bottom: 0.5em;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
   .Panel__Header {
     flex: 0 0 auto;
     padding: 0.5em;
