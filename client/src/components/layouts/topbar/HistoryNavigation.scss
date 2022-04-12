@@ -1,0 +1,12 @@
+.HistoryNavigation {
+  display: flex;
+  flex-flow: row nowrap;
+
+  & > * {
+    margin-left: 0.25em;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
