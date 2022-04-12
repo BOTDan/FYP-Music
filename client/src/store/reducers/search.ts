@@ -5,11 +5,13 @@ import { MediaProvider } from '../../types';
 interface SearchState {
   provider: MediaProvider;
   q: string;
+  doSearch: boolean;
 }
 
 const initialState: SearchState = {
   provider: MediaProvider.YouTube,
   q: '',
+  doSearch: false,
 };
 
 export enum SearchStoreActions {
@@ -27,9 +29,12 @@ export const searchSlice = createSlice({
     updateSearchTerm: (state, action: PayloadAction<string>) => {
       state.q = action.payload;
     },
+    updateDoSearch: (state, action: PayloadAction<boolean>) => {
+      state.doSearch = action.payload;
+    },
   },
 });
 
-export const { updateProvider, updateSearchTerm } = searchSlice.actions;
+export const { updateProvider, updateSearchTerm, updateDoSearch } = searchSlice.actions;
 
 export default searchSlice.reducer;

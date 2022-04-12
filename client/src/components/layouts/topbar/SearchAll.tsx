@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { mediaProviderFromString } from '../../../helper';
 import { useAppDispatch, useAppSelector } from '../../../store/helper';
-import { updateProvider, updateSearchTerm } from '../../../store/reducers/search';
+import { updateDoSearch, updateProvider, updateSearchTerm } from '../../../store/reducers/search';
 import { MediaProvider } from '../../../types';
 import { ProviderIcon } from '../../icons/ProviderIcon';
+import { Button } from '../../input/Button';
 import { Dropdown, DropdownOption } from '../../input/Dropdown';
 import { StringInput } from '../../input/StringInput';
 import './SearchAll.scss';
@@ -67,6 +68,10 @@ export function SearchAll() {
     }
   }
 
+  function doSearch() {
+    dispatch(updateDoSearch(true));
+  }
+
   useEffect(() => {
     setSearchProviderOption(searchProvidersMapping[searchProvider]);
   }, [searchProvider]);
@@ -85,10 +90,12 @@ export function SearchAll() {
         onChange={onSearchChanged}
         autoComplete="off"
         placeholder={placeholderText}
+        onEnter={doSearch}
+        showClearButton
       />
-      <span className="SearchAll__Icon">
+      <Button className="SearchAll__Icon" onClick={doSearch}>
         <FontAwesomeIcon icon={faSearch} />
-      </span>
+      </Button>
     </div>
   );
 }
