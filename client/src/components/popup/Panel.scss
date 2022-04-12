@@ -14,14 +14,18 @@ $panel-footer: #111;
     flex: 0 0 auto;
     padding: 0.5em;
     background: $panel-header;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
   }
 
   .Panel__Body {
     flex: 1 1 auto;
-    padding: 0.5em;
+    padding: 1em;
     background: $panel-body;
     display: flex;
     flex-flow: column nowrap;
+    overflow-y: auto;
   }
 
   .Panel__Footer {

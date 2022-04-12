@@ -40,5 +40,5 @@ Panel.defaultProps = {
   footer: undefined,
   closeButton: undefined,
   onClose: undefined,
-  className: undefined,
+  className: '',
 };
