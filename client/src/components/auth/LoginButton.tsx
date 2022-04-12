@@ -6,7 +6,7 @@ import { updateToken } from '../../store/reducers/auth';
 // import { mediaProviderPrettyPrint } from '../../helper';
 import { AuthProvider } from '../../types';
 import { LoadingSpinner } from '../icons/LoadingSpinner';
-import { ProviderIcon } from '../icons/ProviderIcon';
+import { classes, ProviderIcon } from '../icons/ProviderIcon';
 import { Button } from '../input/Button';
 import './LoginButton.scss';
 import { LoginPopup } from './LoginPopup';
@@ -37,14 +37,17 @@ export function LoginButton({ provider }: LoginButtonProps) {
   }
   return (
     <Button
-      className="LoginButton block text-left"
+      className={`LoginButton block text-left ${classes[provider]}`}
       onClick={() => setPopupVisible(true)}
     >
-      {popupVisible
-        ? <LoadingSpinner inline />
-        : (<ProviderIcon provider={provider} />)}
-      {' '}
-      Log In Using {authProviderPrettyPrint(provider)}
+      <div className="LoginButton__Left">
+        {popupVisible
+          ? <LoadingSpinner inline />
+          : (<ProviderIcon provider={provider} />)}
+      </div>
+      <div className="LoginButton__Right">
+        Log In using {authProviderPrettyPrint(provider)}
+      </div>
       <LoginPopup
         provider={provider}
         visible={popupVisible}

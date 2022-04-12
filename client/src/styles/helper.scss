@@ -46,6 +46,10 @@
   &.SoundCloud {
     --brand-colour: #{$soundcloud-colour};
   }
+
+  &.Google {
+    --brand-colour: #{$google-colour};
+  }
 }
 
 @mixin sm {
