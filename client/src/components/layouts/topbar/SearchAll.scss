@@ -2,7 +2,7 @@
 
 .SearchAll {
   border-radius: $border-radius;
-  background: #fff;
+  background: $input-bg;
   display: flex;
   flex-flow: row nowrap;
   color: $input-fg;
