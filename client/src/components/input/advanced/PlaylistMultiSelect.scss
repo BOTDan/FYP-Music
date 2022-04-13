@@ -1,0 +1,20 @@
+.PlaylistMultiSelect {
+  .PlaylistMultiSelect__Label {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding-right: 1em;
+    overflow: hidden;
+
+    .PlaylistMultiSelect__Label__Image {
+      width: 3em;
+      flex: 0 0 auto;
+    }
+
+    .PlaylistMultiSelect__Label__Text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

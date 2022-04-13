@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { mediaProviderFromString } from '../../helper';
 import { useAppDispatch, useAppSelector } from '../../store/helper';
-import { updateProvider, updateSearchTerm } from '../../store/reducers/search';
+import { updateDoSearch, updateProvider, updateSearchTerm } from '../../store/reducers/search';
 
 /**
  * A search store manager, handles URL changes
@@ -15,6 +15,7 @@ export function SearchManager() {
   const dispatch = useAppDispatch();
   const searchValue = useAppSelector((state) => state.search.q);
   const searchProvider = useAppSelector((state) => state.search.provider);
+  const doSearch = useAppSelector((state) => state.search.doSearch);
 
   // Startup function to check the URL
   // If it's a search URL, update the store to match it.
@@ -39,5 +40,12 @@ export function SearchManager() {
       navigate(`/search/${searchProvider.toLowerCase()}/${encodeURI(searchValue)}`);
     }
   }, [searchValue, searchProvider]);
+
+  useEffect(() => {
+    if (doSearch) {
+      dispatch(updateDoSearch(false));
+      navigate(`/search/${searchProvider.toLowerCase()}/${encodeURI(searchValue)}`);
+    }
+  }, [doSearch]);
   return (null);
 }

@@ -1,11 +1,15 @@
-import React, { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
+import React, {
+  ChangeEvent, InputHTMLAttributes, KeyboardEvent, ReactNode,
+} from 'react';
 import './GenericInput.scss';
 
 export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?(value: string | number): void;
+  onEnter?(): void;
   value: string | number;
   error?: string;
   label?: string;
+  vertical?: boolean;
   after?: ReactNode;
 }
 
@@ -15,7 +19,7 @@ export interface GenericInputProps extends Omit<InputHTMLAttributes<HTMLInputEle
  * @returns An input
  */
 export function GenericInput({
-  label, type, value, error, after, onChange, size, ...remaining
+  label, vertical, type, value, error, after, onChange, onEnter, size, ...remaining
 }: GenericInputProps) {
   /**
    * Handles running the callback for when the value of this input changes
@@ -27,6 +31,16 @@ export function GenericInput({
     }
   }
 
+  /**
+   * Handles checking if enter was pressed by the user
+   * @param event The KeyboardEvenet
+   */
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && onEnter) {
+      onEnter();
+    }
+  }
+
   const labelElem = (label) ? (<label htmlFor="entry">{label}</label>) : undefined;
   const inputElem = (
     <input
@@ -34,6 +48,7 @@ export function GenericInput({
       type={type ?? 'text'}
       value={value}
       onChange={handleOnChange}
+      onKeyDown={handleKeyDown}
       size={size}
       {...remaining}
     />
@@ -41,8 +56,11 @@ export function GenericInput({
   const afterElem = after ?? undefined;
   const errorElem = (error) ? (<p className="Input__Error">{error}</p>) : undefined;
 
+  const classes = ['Input'];
+  if (vertical) { classes.push('vertical'); }
+
   return (
-    <div className="Input">
+    <div className={classes.join(' ')}>
       <div className="Input__Entry">
         {labelElem}
         {inputElem}
@@ -56,6 +74,8 @@ export function GenericInput({
 GenericInput.defaultProps = {
   error: undefined,
   label: undefined,
+  vertical: false,
   after: undefined,
   onChange: undefined,
+  onEnter: undefined,
 };

@@ -4,25 +4,35 @@
   padding: 2em 1em 1em 1em;
   display: flex;
   flex-flow: column nowrap;
+  overflow: hidden;
 
   .TopHeading__Image {
     margin-bottom: 1em;
+    max-width: 40vmax;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   @include sm {
     padding: 2em 0 1em 0;
     flex-flow: row nowrap;
     align-items: flex-end;
+    max-width: initial;
+    margin-left: 0;
+    margin-right: 0;
 
     .TopHeading__Image {
       max-width: 10em;
-      flex: 1 1 auto;
+      width: 100%;
+      flex: 1 0 auto;
       margin-right: 1em;
       margin-bottom: 0;
     }
   
     .TopHeading__Content {
       flex: 1;
+      overflow: hidden;
     }
   }
 
@@ -39,5 +49,7 @@
   .TopHeading__Heading {
     margin: 0;
     font-size: 2em;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }

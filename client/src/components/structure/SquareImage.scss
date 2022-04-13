@@ -2,11 +2,18 @@
   position: relative;
   // width: 100%;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity ease-in 0.2s;
 
   &::before {
     content: '';
     display: block;
     padding-top: 100%;
+  }
+
+  &.Loading {
+    visibility: hidden;
+    opacity: 0;
   }
 
   .SquareImage__Inner {

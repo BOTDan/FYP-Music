@@ -1,16 +1,47 @@
+@import "../../../styles/shared.scss";
+
 $background: #222;
 
 .TopBar {
   background: $background;
   padding: 0.5em;
-  display: flex;
-  flex-flow: row nowrap;
+  // display: flex;
+  // flex-flow: row nowrap;
+  // justify-content: space-between;
+  display: grid;
+  grid-template-columns: [left] 1fr [right] 1fr;
+  grid-template-rows: [top] 1fr [bottom] 1fr;
+  column-gap: 0.25em;
+  row-gap: 0.25em;
 
-  > .SearchAll {
-    margin-right: auto;
+  @include sm {
+    grid-template-columns: [left] auto [center] 1fr [right] auto;
+    grid-template-rows: [top] 1fr;
+    
+    > .SearchAll {
+      grid-column: center !important;
+      grid-row: top !important;
+      margin-right: auto;
+    }
   }
 
-  > .AuthActions * {
-    white-space: nowrap;
+  > .HistoryNavigation {
+    grid-column: left;
+    grid-row: top;
+  }
+
+  > .SearchAll {
+    grid-column: left / span 2;
+    grid-row: bottom;
+  }
+
+  > .AuthActions {
+    grid-column: right;
+    grid-row: top;
+    margin-left: auto;
+    
+    > * {
+      white-space: nowrap;
+    }
   }
 }

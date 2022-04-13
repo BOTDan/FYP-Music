@@ -9,21 +9,28 @@ export function AuthActions() {
   const authToken = useAppSelector((state) => state.auth.token);
   const [popupVisible, setPopupVisible] = useState(false);
 
-  if (!authToken) {
-    return (
-      <div className="AuthActions">
-        <Button onClick={() => setPopupVisible(true)}>
-          Log In
-        </Button>
-        <Modal visible={popupVisible} onClose={() => setPopupVisible(false)}>
-          <LoginPanel onClose={() => setPopupVisible(false)} />
-        </Modal>
-      </div>
+  let content = (
+    <>
+      <Button onClick={() => setPopupVisible(true)}>
+        Log In
+      </Button>
+      <Modal visible={popupVisible} onClose={() => setPopupVisible(false)}>
+        <LoginPanel onClose={() => setPopupVisible(false)} />
+      </Modal>
+    </>
+  );
+
+  if (authToken) {
+    content = (
+      <Button>
+        Logged In
+      </Button>
     );
   }
+
   return (
-    <Button>
-      Logged In
-    </Button>
+    <div className="AuthActions">
+      {content}
+    </div>
   );
 }

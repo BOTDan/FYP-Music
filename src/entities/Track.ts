@@ -1,35 +1,35 @@
 import {
-  Column, Entity, JoinTable, ManyToMany, Unique,
+  Column, Entity, JoinTable, ManyToMany, PrimaryColumn,
 } from 'typeorm';
 import { MediaProvider } from '../apis/providers/base';
 import { Artist } from './Artist';
-import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
+import { DatabaseEntity } from './base/DatabaseEntity';
 
 /**
  * Represents a song. Should be used to represent the data back from the API, not user data.
  */
 @Entity()
-@Unique('UQ_SONGS', ['provider', 'providerId'])
-export class Song extends DatabaseEntityWithID {
-  @Column({ type: 'enum', enum: MediaProvider })
+// @Unique('UQ_TRACKS', ['provider', 'providerId'])
+export class Track extends DatabaseEntity {
+  @PrimaryColumn({ type: 'varchar' })
     provider!: MediaProvider;
 
   @Column({ type: 'varchar' })
     name!: string;
 
   @Column({ type: 'int' })
-    length!: number;
+    duration!: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     image?: string;
 
   @ManyToMany(() => Artist)
   @JoinTable()
     artists!: Artist[];
 
-  @Column({ type: 'varchar', length: 128 })
+  @PrimaryColumn({ type: 'varchar', length: 128 })
     providerId!: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     providerData?: {};
 }

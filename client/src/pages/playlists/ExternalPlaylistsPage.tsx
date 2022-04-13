@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getProviderPlaylists } from '../../apis/playlists';
-import { PlaylistCardList } from '../../components/cards/lists/PlaylistCardList';
+import { ExternalPlaylistCardList } from '../../components/cards/lists/PlaylistCardList';
 import { LoadingSpinner } from '../../components/icons/LoadingSpinner';
 import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
@@ -13,12 +13,12 @@ export interface AllPlaylistsPageProps {
   provider: string;
 }
 
-export function AllPlaylistsPage({ provider }: AllPlaylistsPageProps) {
+export function ExternalPlaylistsPage({ provider }: AllPlaylistsPageProps) {
   const finalProvider = mediaProviderFromString(provider);
-  const [playlists, setPlaylists] = useState<ExternalPlaylist[]>([]);
   const userToken = useAppSelector((state) => state.auth.token);
-  const isMounted = useRef(false);
+  const [playlists, setPlaylists] = useState<ExternalPlaylist[]>([]);
   const [loading, setLoading] = useState(false);
+  const isMounted = useRef(false);
 
   const updatePlaylists = (
     newProvider: string,
@@ -70,7 +70,7 @@ export function AllPlaylistsPage({ provider }: AllPlaylistsPageProps) {
         </TopHeading>
         {loading
           ? (<LoadingSpinner size="5x" />)
-          : (<PlaylistCardList playlists={playlists} areLinks />)}
+          : (<ExternalPlaylistCardList playlists={playlists} areLinks />)}
       </GeneralContent>
     );
   }

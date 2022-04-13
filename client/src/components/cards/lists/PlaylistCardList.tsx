@@ -1,18 +1,18 @@
 import React from 'react';
-import { ExternalPlaylist } from '../../../types';
+import { ExternalPlaylist, InternalPlaylist } from '../../../types';
 import { Grid } from '../../layout/Grid';
-import { PlaylistCard } from '../PlaylistCard';
+import { ExternalPlaylistCard, InternalPlaylistCard } from '../PlaylistCard';
 
-export interface PlaylistCardListProps {
+export interface ExternalPlaylistCardListProps {
   playlists: ExternalPlaylist[];
   areLinks?: boolean;
 }
 
-export function PlaylistCardList({ playlists, areLinks }: PlaylistCardListProps) {
+export function ExternalPlaylistCardList({ playlists, areLinks }: ExternalPlaylistCardListProps) {
   return (
     <Grid>
       {playlists.map((playlist) => (
-        <PlaylistCard
+        <ExternalPlaylistCard
           isLink={areLinks}
           playlist={playlist}
           key={playlist.providerId}
@@ -22,6 +22,29 @@ export function PlaylistCardList({ playlists, areLinks }: PlaylistCardListProps)
   );
 }
 
-PlaylistCardList.defaultProps = {
+ExternalPlaylistCardList.defaultProps = {
+  areLinks: false,
+};
+
+export interface InternalPlaylistCardListProps {
+  playlists: InternalPlaylist[];
+  areLinks?: boolean;
+}
+
+export function InternalPlaylistCardList({ playlists, areLinks }: InternalPlaylistCardListProps) {
+  return (
+    <Grid>
+      {playlists.map((playlist) => (
+        <InternalPlaylistCard
+          isLink={areLinks}
+          playlist={playlist}
+          key={playlist.id}
+        />
+      ))}
+    </Grid>
+  );
+}
+
+InternalPlaylistCardList.defaultProps = {
   areLinks: false,
 };

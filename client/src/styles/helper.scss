@@ -24,6 +24,7 @@
   background: $card-bg;
   border-radius: $border-radius;
   overflow: hidden;
+  user-select: none;
   
   &:hover,
   &:focus {
@@ -45,6 +46,10 @@
   
   &.SoundCloud {
     --brand-colour: #{$soundcloud-colour};
+  }
+
+  &.Google {
+    --brand-colour: #{$google-colour};
   }
 }
 

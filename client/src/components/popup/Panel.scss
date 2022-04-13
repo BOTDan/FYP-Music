@@ -9,17 +9,47 @@ $panel-footer: #111;
   flex-flow: column nowrap;
   overflow: hidden;
   border-radius: $border-radius;
+  max-width: 100%;
+
+  &.Panel__Form {
+    .Panel__Body {
+      padding-bottom: 1.5em;
+
+      > * {
+        margin-bottom: 0.5em;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      > p {
+        margin: 0;
+        margin-bottom: 0.5em;
+      }
+    }
+  }
 
   .Panel__Header {
     flex: 0 0 auto;
     padding: 0.5em;
     background: $panel-header;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
   }
 
   .Panel__Body {
     flex: 1 1 auto;
-    padding: 0.5em;
+    padding: 1em;
     background: $panel-body;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow-y: auto;
+
+    > * {
+      flex: 0 0 auto;
+    }
   }
 
   .Panel__Footer {
@@ -27,5 +57,8 @@ $panel-footer: #111;
     padding: 0.5em;
     background: $panel-footer;
     border-top: 1px solid #333;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
   }
 }

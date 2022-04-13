@@ -2,8 +2,18 @@
 
 .Input {
   display: inline-block; 
+
+  &.vertical {
+    >.Input__Entry {
+      display: flex;
+      flex-flow: column nowrap;
+    }
+  }
   
   > .Input__Entry {
+    display: flex;
+    flex-flow: row nowrap;
+
     input[type=text],
     input[type=number] {
       border: none;
@@ -14,6 +24,10 @@
       padding: 0.5em;
       display: inline-block;
       outline: none;
+
+      &::placeholder {
+        color: $input-fg-placeholder;
+      }
     }
   }
 }

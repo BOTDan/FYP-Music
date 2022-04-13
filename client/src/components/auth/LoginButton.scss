@@ -1,1 +1,24 @@
-@import '../../styles/shared.scss'
+@import '../../styles/shared.scss';
+
+.LoginButton {
+  display: flex !important;
+  flex-flow: row nowrap;
+  padding: 0;
+  align-items: stretch;
+  overflow: hidden;
+
+  @include brand-colours;
+
+  .LoginButton__Left {
+    width: 2.5em;
+    background: var(--brand-colour);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .LoginButton__Right {
+    padding: 0.5em 1em;
+  }
+}

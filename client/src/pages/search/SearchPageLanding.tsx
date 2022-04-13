@@ -1,29 +1,30 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { MediaProvider } from '../../types';
 import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import './SearchPageLanding.scss';
+import { GeneralContent } from '../../components/layout/GeneralContent';
+import { mediaProviderFromString, mediaProviderPrettyPrint } from '../../helper';
 
 export interface SearchPageLandingProps {
   provider: string;
 }
 
 export function SearchPageLanding({ provider }: SearchPageLandingProps) {
-  const lower = provider.toLowerCase();
-  const finalProvider = (Object.values(MediaProvider).includes(lower as MediaProvider))
-    ? lower as MediaProvider
-    : undefined;
+  const finalProvider = mediaProviderFromString(provider);
 
   return (
-    <div className="SearchPageLanding">
+    <GeneralContent className="SearchPageLanding">
       <div className="SearchPageLanding__Icon">
         <FontAwesomeIcon icon={faSearch} />
         {finalProvider && <ProviderIcon provider={finalProvider} />}
       </div>
       <div className="SearchPageLanding__Content">
-        <p>Search for music from {finalProvider} using the search bar above.</p>
+        <p>Search for music from{' '}
+          {mediaProviderPrettyPrint(finalProvider!)}
+          {' '}using the search bar above.
+        </p>
       </div>
-    </div>
+    </GeneralContent>
   );
 }

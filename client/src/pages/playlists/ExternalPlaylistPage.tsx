@@ -14,12 +14,13 @@ export interface SinglePlaylistPageProps {
   id: string;
 }
 
-export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
+export function ExternalPlaylistPage({ provider, id }: SinglePlaylistPageProps) {
   const finalProvider = mediaProviderFromString(provider);
   const [playlist, setPlaylist] = useState<ExternalPlaylist | undefined>(undefined);
   const userToken = useAppSelector((state) => state.auth.token);
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const updatePlaylist = (
     newProvider: string,
@@ -29,8 +30,11 @@ export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
     const finalNewProvider = mediaProviderFromString(newProvider);
     setPlaylist(undefined);
 
-    if (finalNewProvider && newUserToken) {
+    if (!finalNewProvider) {
+      setError('Invalid provider');
+    } else {
       setLoading(true);
+      setError('');
 
       getProviderPlaylist(finalNewProvider, newId, newUserToken)
         .then((r) => {
@@ -42,6 +46,7 @@ export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
         })
         .catch((e) => {
           setLoading(false);
+          setError('Either this playlist does not exist, or you must be logged in to see it.');
           console.log(e);
         });
     }
@@ -59,7 +64,7 @@ export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
     updatePlaylist(provider, id, userToken);
   }, [provider, id, userToken]);
 
-  let content = <p>Init</p>;
+  let content = <p>{error}</p>;
 
   if (finalProvider && playlist) {
     content = (
@@ -71,6 +76,7 @@ export function SinglePlaylistPage({ provider, id }: SinglePlaylistPageProps) {
             </span>
           )}
           image={playlist.image}
+          imageFallback="/assets/img/playlist_placeholder.png"
         >
           {playlist.name}
         </TopHeading>

@@ -34,6 +34,38 @@ export interface ExternalPlaylist {
   providerId: string;
 }
 
+export interface InternalArtist {
+  id: string;
+  name: string;
+  image?: string;
+  provider: MediaProvider;
+  providerId: string;
+}
+
+export interface InternalTrack {
+  name: string;
+  duration: number;
+  artists: InternalArtist[];
+  image?: string;
+  provider: MediaProvider;
+  providerId: string;
+}
+
+export interface InternalPlaylist {
+  id: string;
+  name: string;
+  description?: string;
+  tracks?: TrackOnInternalPlaylist[];
+  image?: string;
+}
+
+export interface TrackOnInternalPlaylist {
+  id: string;
+  order: string;
+  track: ExternalTrack;
+  playlist?: InternalPlaylist;
+}
+
 export interface DatabaseEntityDTO {
   dateCreated: Date;
   dateUpdated: Date;
