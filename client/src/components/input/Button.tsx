@@ -22,8 +22,8 @@ export function Button({
     }
   }, [onClick, disabled]);
 
-  const leftIconComponent = (leftIcon) ? <FontAwesomeIcon icon={leftIcon} /> : (null);
-  const rightIconComponent = (rightIcon) ? <FontAwesomeIcon icon={rightIcon} /> : (null);
+  const leftIconComponent = (leftIcon) ? <FontAwesomeIcon icon={leftIcon} fixedWidth /> : (null);
+  const rightIconComponent = (rightIcon) ? <FontAwesomeIcon icon={rightIcon} fixedWidth /> : (null);
 
   const classList = ['Button'];
   if (className) { classList.push(className); }
