@@ -12,7 +12,12 @@ export function SquareImage({
   src, alt, className, fallbackSrc,
 }: SquareImageProps) {
   const [imgSrc, setImgSrc] = useState(src ?? fallbackSrc);
+  const [loaded, setLoaded] = useState(false);
   const errored = useRef(false);
+
+  const onLoad = () => {
+    setLoaded(true);
+  };
 
   const onError = () => {
     if (errored.current) { return; }
@@ -23,10 +28,19 @@ export function SquareImage({
     }
   };
 
+  const classList = ['SquareImage'];
+  if (className) { classList.push(className); }
+  if (!loaded) { classList.push('Loading'); }
+
   return (
-    <div className={`SquareImage ${className}`}>
+    <div className={classList.join(' ')}>
       <div className="SquareImage__Inner">
-        <img src={imgSrc} alt={alt} onError={onError} />
+        <img
+          onLoad={onLoad}
+          onError={onError}
+          src={imgSrc}
+          alt={alt}
+        />
       </div>
     </div>
   );
