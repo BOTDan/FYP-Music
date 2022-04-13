@@ -31,6 +31,11 @@ module.exports = {
       allowFunctions: true,
     }],
     'react/jsx-one-expression-per-line': 'off',
+    'jsx-a11y/label-has-associated-control': ['error', {
+      required: {
+        some: ['nesting', 'id'],
+      },
+    }],
   },
   settings: {
     'import/resolver': {
