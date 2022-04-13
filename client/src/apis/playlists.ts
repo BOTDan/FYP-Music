@@ -1,6 +1,6 @@
 import { authFetchCatchFail } from '.';
 import {
-  ExternalPlaylist, InternalPlaylist, MediaProvider, UserTokenDTO,
+  ExternalPlaylist, ExternalTrack, InternalPlaylist, MediaProvider, UserTokenDTO,
 } from '../types';
 
 /**
@@ -73,5 +73,26 @@ export async function createPlaylist(
   return authFetchCatchFail('/api/playlists', token, {
     method: 'POST',
     body: JSON.stringify(options),
+  });
+}
+
+/**
+ * Adds a track to a playlist
+ * @param playlist The playlist
+ * @param track The track
+ * @param token The user token
+ * @returns The added track
+ */
+export async function addTrackToPlaylist(
+  playlist: InternalPlaylist,
+  track: ExternalTrack,
+  token?: UserTokenDTO,
+) {
+  return authFetchCatchFail(`/api/playlists/${playlist.id}/tracks`, token, {
+    method: 'POST',
+    body: JSON.stringify({
+      provider: track.provider,
+      providerId: track.providerId,
+    }),
   });
 }

@@ -1,15 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InternalPlaylist } from '../../types';
+import { ExternalTrack, InternalPlaylist } from '../../types';
 
 interface PlaylistsState {
   value: InternalPlaylist[];
   loading: boolean;
+  trackToAdd: ExternalTrack | undefined;
 }
 
 const initialState: PlaylistsState = {
   value: [],
   loading: false,
+  trackToAdd: undefined,
 };
 
 export const playlistsSlice = createSlice({
@@ -22,9 +24,12 @@ export const playlistsSlice = createSlice({
     updateLoadingPlaylists: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    updateTrackToAdd: (state, action: PayloadAction<ExternalTrack | undefined>) => {
+      state.trackToAdd = action.payload;
+    },
   },
 });
 
-export const { updatePlaylists, updateLoadingPlaylists } = playlistsSlice.actions;
+export const { updatePlaylists, updateLoadingPlaylists, updateTrackToAdd } = playlistsSlice.actions;
 
 export default playlistsSlice.reducer;
