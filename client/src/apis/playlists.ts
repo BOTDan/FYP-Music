@@ -1,6 +1,7 @@
 import { authFetchCatchFail } from '.';
 import {
-  ExternalPlaylist, ExternalTrack, InternalPlaylist, MediaProvider, UserTokenDTO,
+  ExternalPlaylist, ExternalTrack, InternalPlaylist, MediaProvider, TrackOnInternalPlaylist,
+  UserTokenDTO,
 } from '../types';
 
 /**
@@ -94,5 +95,22 @@ export async function addTrackToPlaylist(
       provider: track.provider,
       providerId: track.providerId,
     }),
+  });
+}
+
+/**
+ * Deletes a track from a playlist
+ * @param playlist The playlist
+ * @param track The track on the playlist
+ * @param token The user token
+ * @returns The deleted track
+ */
+export async function removeSongFromPlaylist(
+  playlist: InternalPlaylist,
+  track: TrackOnInternalPlaylist,
+  token?: UserTokenDTO,
+) {
+  return authFetchCatchFail(`/api/playlists/${playlist.id}/tracks/${track.id}`, token, {
+    method: 'DELETE',
   });
 }
