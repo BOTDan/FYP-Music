@@ -9,6 +9,7 @@ $panel-footer: #111;
   flex-flow: column nowrap;
   overflow: hidden;
   border-radius: $border-radius;
+  max-width: 100%;
 
   &.Panel__Form {
     .Panel__Body {
