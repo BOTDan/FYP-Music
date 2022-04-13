@@ -55,15 +55,15 @@ export interface InternalPlaylist {
   id: string;
   name: string;
   description?: string;
-  tracks?: InternalTrackOnPlaylist[];
+  tracks?: TrackOnInternalPlaylist[];
   image?: string;
 }
 
-export interface InternalTrackOnPlaylist {
+export interface TrackOnInternalPlaylist {
   id: string;
   order: string;
-  track: InternalTrack;
-  playlist: InternalPlaylist;
+  track: ExternalTrack;
+  playlist?: InternalPlaylist;
 }
 
 export interface DatabaseEntityDTO {

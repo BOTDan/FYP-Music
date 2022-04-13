@@ -66,7 +66,10 @@ export function InternalPlaylistPage({ id }: SinglePlaylistPageProps) {
         >
           {playlist.name}
         </TopHeading>
-        <TrackCardList tracks={playlist.tracks?.map((trackEntry) => trackEntry.track) ?? []} />
+        <TrackCardList
+          tracks={playlist.tracks ?? []}
+          playlist={playlist}
+        />
       </>
     );
   }

@@ -1,7 +1,7 @@
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { formatTime } from '../../helper';
-import { ExternalTrack } from '../../types';
+import { ExternalTrack, InternalPlaylist, TrackOnInternalPlaylist } from '../../types';
 import { ProviderIcon } from '../icons/ProviderIcon';
 import { Button } from '../input/Button';
 // eslint-disable-next-line import/no-cycle
@@ -9,17 +9,20 @@ import { TrackOptionsPopup } from '../popup/popups/TrackOptionsPopup';
 import './TrackCard.scss';
 
 export interface TrackCardProps {
-  track: ExternalTrack;
+  track: ExternalTrack | TrackOnInternalPlaylist;
+  playlist?: InternalPlaylist;
   number?: number | undefined;
   small?: boolean;
   inactive?: boolean;
 }
 
 export function TrackCard({
-  track, number, small, inactive,
+  track, number, small, inactive, playlist,
 }: TrackCardProps) {
   const [optionsPopupVisible, setOptionsPopupVisible] = useState(false);
-  const artists = track.artists.map((artist) => artist.name).join(', ');
+
+  const finalTrack = (track as TrackOnInternalPlaylist).track ?? (track as ExternalTrack);
+  const artists = finalTrack.artists.map((artist) => artist.name).join(', ');
 
   const numberElement = (
     <span className="TrackCard__Number">
@@ -29,7 +32,7 @@ export function TrackCard({
 
   const durationElement = (
     <span className="TrackCard__Duration">
-      {formatTime(track.duration)}
+      {formatTime(finalTrack.duration)}
     </span>
   );
 
@@ -48,6 +51,7 @@ export function TrackCard({
         visible={optionsPopupVisible}
         onClose={() => setOptionsPopupVisible(false)}
         track={track}
+        playlist={playlist}
       />
     )
     : (null);
@@ -60,13 +64,13 @@ export function TrackCard({
     <div className={classList.join(' ')}>
       {!small && numberElement}
       <span className="TrackCard__Provider">
-        <ProviderIcon provider={track.provider} />
+        <ProviderIcon provider={finalTrack.provider} />
       </span>
       <span className="TrackCard__Image">
-        <img src={track.image} alt="" />
+        <img src={finalTrack.image} alt="" />
       </span>
       <span className="TrackCard__Main">
-        <p className="TrackCard__Name">{ track.name }</p>
+        <p className="TrackCard__Name">{ finalTrack.name }</p>
         <p className="TrackCard__Artists">{ artists }</p>
       </span>
       {!small && durationElement}
@@ -80,4 +84,5 @@ TrackCard.defaultProps = {
   number: undefined,
   small: false,
   inactive: false,
+  playlist: undefined,
 };
