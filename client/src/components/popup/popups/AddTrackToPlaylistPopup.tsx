@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { addTrackToPlaylist } from '../../../apis/playlists';
 import { useAppSelector } from '../../../store/helper';
 import { ExternalTrack, InternalPlaylist } from '../../../types';
+// eslint-disable-next-line import/no-cycle
+import { TrackCard } from '../../cards/TrackCard';
 import { LoadingSpinner } from '../../icons/LoadingSpinner';
 import { PlaylistMultiSelect } from '../../input/advanced/PlaylistMultiSelect';
 import { Button } from '../../input/Button';
@@ -35,6 +37,9 @@ export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToP
         .then(() => {
           console.log('Success');
           setSubmit(false);
+          if (onClose) {
+            onClose();
+          }
         })
         .catch((e) => {
           console.log(e);
@@ -66,7 +71,8 @@ export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToP
           </Button>
         )}
       >
-        <p>Select the playlist to add this track to. {track.name}</p>
+        <TrackCard track={track} small inactive />
+        <p>Select the playlist to add this track to.</p>
         <PlaylistMultiSelect
           playlists={userPlaylists}
           checked={checked}

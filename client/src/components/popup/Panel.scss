@@ -22,6 +22,11 @@ $panel-footer: #111;
           margin-bottom: 0;
         }
       }
+
+      > p {
+        margin: 0;
+        margin-bottom: 0.5em;
+      }
     }
   }
 
@@ -41,6 +46,10 @@ $panel-footer: #111;
     display: flex;
     flex-flow: column nowrap;
     overflow-y: auto;
+
+    > * {
+      flex: 0 0 auto;
+    }
   }
 
   .Panel__Footer {
