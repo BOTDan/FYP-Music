@@ -10,6 +10,16 @@ $padding: 0.25em 0.5em;
   flex-flow: row nowrap;
   cursor: pointer;
 
+  &.Small {
+    .TrackCard__Provider {
+      padding-left: 0;
+    }
+  }
+
+  &.Inactive {
+    cursor: default;
+  }
+
   > * {
     display: flex;
     flex-flow: column nowrap;
@@ -29,7 +39,7 @@ $padding: 0.25em 0.5em;
   }
 
   .TrackCard__Image {
-    padding: 0 0.5em;
+    padding: 0;
     box-sizing: content-box;
     width: 4em;
     height: 3.5em;
@@ -75,5 +85,13 @@ $padding: 0.25em 0.5em;
   .TrackCard__Duration {
     padding: $padding;
     text-align: right;
+  }
+
+  .TrackCard__Actions {
+    &:hover {
+      > * {
+        transform: scale(1.5);
+      }
+    }
   }
 }
