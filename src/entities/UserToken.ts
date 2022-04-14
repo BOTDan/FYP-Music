@@ -25,7 +25,7 @@ export class UserToken extends DatabaseEntity {
   public get dto(): UserTokenDTO {
     return {
       token: this.token,
-      user: this.user.dto,
+      user: this.user?.dto,
     };
   }
 }

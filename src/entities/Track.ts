@@ -40,7 +40,7 @@ export class Track extends DatabaseEntity {
       name: this.name,
       duration: this.duration,
       image: this.image,
-      artists: this.artists.map((artist) => artist.dto),
+      artists: this.artists?.map((artist) => artist.dto),
     };
   }
 }

@@ -135,6 +135,7 @@ export interface TrackOnPlaylistDTO {
  * DTO for Playlist
  */
 export interface PlaylistDTO {
+  id: string;
   name: string;
   description?: string;
   owner: UserDTO;

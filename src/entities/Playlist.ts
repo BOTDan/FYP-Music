@@ -26,10 +26,11 @@ export class Playlist extends DatabaseEntityWithID {
 
   public get dto(): PlaylistDTO {
     return {
+      id: this.id,
       name: this.name,
       description: this.description,
-      owner: this.owner.dto,
-      tracks: this.tracks.map((track) => track.dto),
+      owner: this.owner?.dto,
+      tracks: this.tracks?.map((track) => track.dto),
       visibility: this.visibility,
     };
   }

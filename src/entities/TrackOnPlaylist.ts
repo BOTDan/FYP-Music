@@ -25,9 +25,9 @@ export class TrackOnPlaylist extends DatabaseEntityWithID {
   public get dto(): TrackOnPlaylistDTO {
     return {
       id: this.id,
-      track: this.track.dto,
+      track: this.track?.dto,
       playlist: {
-        id: this.playlist.id,
+        id: this.playlist?.id,
       },
       order: this.order,
       addedBy: this.addedBy?.dto,
