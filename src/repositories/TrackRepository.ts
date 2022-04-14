@@ -1,5 +1,5 @@
 import { AbstractRepository, EntityRepository, getCustomRepository } from 'typeorm';
-import { ExternalTrack, MediaProvider } from '../apis/providers/base';
+import { ExternalTrack, MediaProvider } from '../types/public';
 import { Artist } from '../entities/Artist';
 import { Track } from '../entities/Track';
 import { ArtistRepository } from './ArtistRepository';
@@ -59,6 +59,6 @@ export class TrackRepository extends AbstractRepository<Track> {
    * @returns A track, if exists in the database
    */
   findTrackByProvider(provider: MediaProvider, providerId: string) {
-    return this.repository.findOne({ where: { provider, providerId } });
+    return this.repository.findOne({ where: { provider, providerId }, relations: ['artists'] });
   }
 }

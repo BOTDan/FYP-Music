@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ExternalPlaylist, InternalPlaylist } from '../../../types';
+import { ExternalPlaylist, PlaylistDTO } from '../../../types/public';
 import { SquareImage } from '../../structure/SquareImage';
 import { MultiSelect, MultiSelectOption } from '../MultiSelect';
 import './PlaylistMultiSelect.scss';
 
-type PlaylistType = InternalPlaylist | ExternalPlaylist;
+type PlaylistType = PlaylistDTO | ExternalPlaylist;
 
 export interface PlaylistMultiSelectProps<T extends PlaylistType> {
   playlists: T[];
@@ -28,12 +28,12 @@ export function PlaylistMultiSelect<T extends PlaylistType>({
   }
 
   useEffect(() => {
-    const checkedNames = checked.map((o) => (o as InternalPlaylist).id
+    const checkedNames = checked.map((o) => (o as PlaylistDTO).id
       ?? (o as ExternalPlaylist).providerId);
     setCheckedInternal(
       optionsInternal.filter(
         (option) => checkedNames.includes(
-          (option.value as InternalPlaylist).id
+          (option.value as PlaylistDTO).id
           ?? (option.value as ExternalPlaylist).providerId,
         ),
       ),
@@ -46,7 +46,7 @@ export function PlaylistMultiSelect<T extends PlaylistType>({
         <div className="PlaylistMultiSelect__Label">
           <SquareImage
             className="PlaylistMultiSelect__Label__Image"
-            src={playlist.image}
+            // src={playlist.image}
             fallbackSrc="/assets/img/playlist_placeholder.png"
           />
           <p className="PlaylistMultiSelect__Label__Text">
@@ -54,7 +54,7 @@ export function PlaylistMultiSelect<T extends PlaylistType>({
           </p>
         </div>
       ),
-      name: (playlist as InternalPlaylist).id ?? (playlist as ExternalPlaylist).providerId,
+      name: (playlist as PlaylistDTO).id ?? (playlist as ExternalPlaylist).providerId,
       value: playlist,
     })));
   }, [playlists]);

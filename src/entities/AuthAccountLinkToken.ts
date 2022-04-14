@@ -2,6 +2,7 @@ import {
   BeforeInsert, Entity, ManyToOne, PrimaryColumn,
 } from 'typeorm';
 import { createRandomToken, TOKEN_LENGTH } from '../Random';
+import { AuthAccountLinkTokenDTO } from '../types/public';
 import { AuthAccount } from './AuthAccount';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
@@ -19,5 +20,11 @@ export class AuthAccountLinkToken extends DatabaseEntity {
   @BeforeInsert()
   setToken() {
     this.token = createRandomToken();
+  }
+
+  public get dto(): AuthAccountLinkTokenDTO {
+    return {
+      token: this.token,
+    };
   }
 }

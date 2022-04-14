@@ -1,4 +1,5 @@
-import { ExternalAPI, MediaProvider } from './base';
+import { ExternalAPI } from './base';
+import { MediaProvider } from '../../types/public';
 import spotifyAPI from './Spotify';
 import youtubeAPI from './YouTube';
 

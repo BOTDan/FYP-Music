@@ -7,7 +7,7 @@ import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString, mediaProviderPrettyPrint } from '../../helper';
 import { useAppSelector } from '../../store/helper';
-import { ExternalPlaylist, UserTokenDTO } from '../../types';
+import { ExternalPlaylist, UserTokenDTO } from '../../types/public';
 
 export interface AllPlaylistsPageProps {
   provider: string;

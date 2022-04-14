@@ -1,10 +1,10 @@
 import React from 'react';
-import { ExternalTrack, InternalPlaylist, TrackOnInternalPlaylist } from '../../../types';
+import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../../types/public';
 import { TrackCard } from '../TrackCard';
 
 export interface TrackCardListProps {
-  tracks: ExternalTrack[] | TrackOnInternalPlaylist[];
-  playlist?: InternalPlaylist;
+  tracks: ExternalTrack[] | TrackOnPlaylistDTO[];
+  playlist?: PlaylistDTO;
 }
 
 export function TrackCardList({ tracks, playlist }: TrackCardListProps) {
@@ -15,7 +15,7 @@ export function TrackCardList({ tracks, playlist }: TrackCardListProps) {
           track={track}
           playlist={playlist}
           number={i + 1}
-          key={(track as TrackOnInternalPlaylist).id ?? (track as ExternalTrack).providerId}
+          key={(track as TrackOnPlaylistDTO).id ?? (track as ExternalTrack).providerId}
         />
       ))}
     </div>

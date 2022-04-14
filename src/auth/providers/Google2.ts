@@ -4,8 +4,8 @@ import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'googleapis-common';
 import { config } from '../../config';
-import { AuthProvider } from '../../entities/AuthAccount';
 import { AuthInfo, AuthInfoTokens, BaseAuthProvider } from './base';
+import { AuthProvider } from '../../types/public';
 
 /**
  * Provides logins for Google auth.

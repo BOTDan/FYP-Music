@@ -1,7 +1,7 @@
 import {
   Column, Entity, JoinTable, ManyToMany, PrimaryColumn,
 } from 'typeorm';
-import { MediaProvider } from '../apis/providers/base';
+import { ExternalTrack, MediaProvider } from '../types/public';
 import { Artist } from './Artist';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
@@ -32,4 +32,15 @@ export class Track extends DatabaseEntity {
 
   @Column({ type: 'json', nullable: true })
     providerData?: {};
+
+  public get dto(): ExternalTrack {
+    return {
+      provider: this.provider,
+      providerId: this.providerId,
+      name: this.name,
+      duration: this.duration,
+      image: this.image,
+      artists: this.artists?.map((artist) => artist.dto),
+    };
+  }
 }

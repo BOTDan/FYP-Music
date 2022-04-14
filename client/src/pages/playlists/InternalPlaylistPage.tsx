@@ -5,14 +5,14 @@ import { LoadingSpinner } from '../../components/icons/LoadingSpinner';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { useAppSelector } from '../../store/helper';
-import { InternalPlaylist, UserTokenDTO } from '../../types';
+import { PlaylistDTO, UserTokenDTO } from '../../types/public';
 
 export interface SinglePlaylistPageProps {
   id: string;
 }
 
 export function InternalPlaylistPage({ id }: SinglePlaylistPageProps) {
-  const [playlist, setPlaylist] = useState<InternalPlaylist | undefined>(undefined);
+  const [playlist, setPlaylist] = useState<PlaylistDTO | undefined>(undefined);
   const userToken = useAppSelector((state) => state.auth.token);
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ export function InternalPlaylistPage({ id }: SinglePlaylistPageProps) {
       <>
         <TopHeading
           subheading="Playlist"
-          image={playlist.image}
+          // image={playlist.image}
           imageFallback="/assets/img/playlist_placeholder.png"
         >
           {playlist.name}

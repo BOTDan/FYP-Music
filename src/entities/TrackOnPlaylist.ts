@@ -1,6 +1,7 @@
 import {
   Column, Entity, ManyToOne,
 } from 'typeorm';
+import { TrackOnPlaylistDTO } from '../types/public';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 // eslint-disable-next-line import/no-cycle
 import { Playlist } from './Playlist';
@@ -20,4 +21,16 @@ export class TrackOnPlaylist extends DatabaseEntityWithID {
 
   @ManyToOne(() => User)
     addedBy!: User;
+
+  public get dto(): TrackOnPlaylistDTO {
+    return {
+      id: this.id,
+      track: this.track?.dto,
+      playlist: {
+        id: this.playlist?.id,
+      },
+      order: this.order,
+      addedBy: this.addedBy?.dto,
+    };
+  }
 }

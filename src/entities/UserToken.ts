@@ -2,6 +2,7 @@ import {
   BeforeInsert, Entity, ManyToOne, PrimaryColumn,
 } from 'typeorm';
 import { createRandomToken, TOKEN_LENGTH } from '../Random';
+import { UserTokenDTO } from '../types/public';
 import { DatabaseEntity } from './base/DatabaseEntity';
 import { User } from './User';
 
@@ -19,5 +20,12 @@ export class UserToken extends DatabaseEntity {
   @BeforeInsert()
   setToken() {
     this.token = createRandomToken();
+  }
+
+  public get dto(): UserTokenDTO {
+    return {
+      token: this.token,
+      user: this.user?.dto,
+    };
   }
 }

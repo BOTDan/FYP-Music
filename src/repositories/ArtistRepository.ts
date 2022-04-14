@@ -1,5 +1,5 @@
 import { AbstractRepository, EntityRepository } from 'typeorm';
-import { ExternalArtist, MediaProvider } from '../apis/providers/base';
+import { ExternalArtist, MediaProvider } from '../types/public';
 import { Artist } from '../entities/Artist';
 
 export interface ArtistData {

@@ -3,7 +3,7 @@ import passport from 'passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-spotify';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { config } from '../../config';
-import { AuthProvider } from '../../entities/AuthAccount';
+import { AuthProvider } from '../../types/public';
 import { AuthInfo, AuthInfoTokens, BaseAuthProvider } from './base';
 
 export class SpotifyAuthProvider extends BaseAuthProvider {

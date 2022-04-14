@@ -1,7 +1,7 @@
 import { Connection, getConnection } from 'typeorm';
 import { setupDatabase } from '../database';
-import { AuthProvider } from '../entities/AuthAccount';
 import { AuthAccountLinkToken } from '../entities/AuthAccountLinkToken';
+import { AuthProvider } from '../types/public';
 import { AuthAccountLinkTokenRepository } from './AuthAccountLinkTokenRepository';
 import { AuthAccountRepository } from './AuthAccountRepository';
 

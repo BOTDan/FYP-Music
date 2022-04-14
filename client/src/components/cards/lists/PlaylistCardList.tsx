@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalPlaylist, InternalPlaylist } from '../../../types';
+import { ExternalPlaylist, PlaylistDTO } from '../../../types/public';
 import { Grid } from '../../layout/Grid';
 import { ExternalPlaylistCard, InternalPlaylistCard } from '../PlaylistCard';
 
@@ -27,7 +27,7 @@ ExternalPlaylistCardList.defaultProps = {
 };
 
 export interface InternalPlaylistCardListProps {
-  playlists: InternalPlaylist[];
+  playlists: PlaylistDTO[];
   areLinks?: boolean;
 }
 

@@ -45,7 +45,7 @@ authRouter.post('/link', requireAuthentication, async (request, response, next) 
     const { token } = request.body;
     if (!token) { throw new BadRequestError('Parameter \'token\' is missing from JSON post body.'); }
     const authAccount = await linkAccount(request.token?.user, token);
-    response.send(authAccount);
+    response.send(authAccount.dto);
   } catch (e) {
     next(e);
   }

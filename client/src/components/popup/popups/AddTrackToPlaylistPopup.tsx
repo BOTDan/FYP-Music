@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addTrackToPlaylist } from '../../../apis/playlists';
 import { useAppSelector } from '../../../store/helper';
-import { ExternalTrack, InternalPlaylist } from '../../../types';
+import { ExternalTrack, PlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
 import { LoadingSpinner } from '../../icons/LoadingSpinner';
@@ -17,16 +17,16 @@ export interface AddTrackToPlaylistPopupProps {
 }
 
 export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToPlaylistPopupProps) {
-  const [checked, setChecked] = useState<InternalPlaylist[]>([]);
+  const [checked, setChecked] = useState<PlaylistDTO[]>([]);
   const [submit, setSubmit] = useState(false);
   const userPlaylists = useAppSelector((state) => state.playlists.value);
   const userToken = useAppSelector((state) => state.auth.token);
 
-  function handleOnCheck(playlist: InternalPlaylist) {
+  function handleOnCheck(playlist: PlaylistDTO) {
     setChecked((prev) => [...prev, playlist]);
   }
 
-  function handleOnUncheck(playlist: InternalPlaylist) {
+  function handleOnUncheck(playlist: PlaylistDTO) {
     setChecked((prev) => [...prev].filter((o) => o.id !== playlist.id));
   }
 

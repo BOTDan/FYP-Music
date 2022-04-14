@@ -25,7 +25,7 @@ export class TrackOnPlaylistRepository extends AbstractRepository<TrackOnPlaylis
    * @returns The track on playlist
    */
   getTrackInPlaylist(id: string) {
-    return this.repository.findOne({ where: { id }, relations: ['playlist', 'track'] });
+    return this.repository.findOne({ where: { id }, relations: ['playlist', 'track', 'addedBy'] });
   }
 
   /**

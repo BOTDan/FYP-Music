@@ -3,12 +3,13 @@ import {
 } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
 import { issueToken, updateStoredTokens } from '..';
-import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
+import { AuthAccount } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestError, InternalServerError } from '../../errors/httpstatus';
 import { AuthAccountLinkTokenRepository } from '../../repositories/AuthAccountLinkTokenRepository';
 import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import { UserRepository } from '../../repositories/UserRepository';
+import { AuthProvider } from '../../types/public';
 
 /**
  * User information returned from a 3rd party login attempt
@@ -172,7 +173,7 @@ export abstract class BaseAuthProvider {
     const { tokens } = request.authInfo;
     await updateStoredTokens(authAccount, tokens.accessToken, tokens.refreshToken);
     const token = await this.issueToken(user);
-    response.send({ token });
+    response.send(token.dto);
   }
 
   /**
@@ -194,11 +195,11 @@ export abstract class BaseAuthProvider {
       if (authAccount.user) {
         // Account already linked to a user, so can't be linked again
         next(new BadRequestError('Account is already linked to a user'));
-      } else {
-        // Account isn't linked, give a token to allow linking
-        const createdToken = await this.issueLinkToken(authAccount);
-        linkToken = createdToken.linkToken;
+        return;
       }
+      // Account isn't linked, give a token to allow linking
+      const createdToken = await this.issueLinkToken(authAccount);
+      linkToken = createdToken.linkToken;
     } else {
       // Auth account unregistered, register it and create link token
       const createdToken = await this.issueLinkToken(id);
@@ -207,7 +208,7 @@ export abstract class BaseAuthProvider {
     }
     const { tokens } = request.authInfo;
     await updateStoredTokens(authAccount, tokens.accessToken, tokens.refreshToken);
-    response.send(linkToken);
+    response.send(linkToken.dto);
   }
 
   /**

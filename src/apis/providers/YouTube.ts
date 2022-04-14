@@ -2,13 +2,14 @@ import { google, youtube_v3 } from 'googleapis';
 import { duration } from 'moment';
 import googleAuthProvider from '../../auth/providers/Google2';
 import { config } from '../../config';
-import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
+import { AuthAccount } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams, SearchParams,
+  AuthProvider, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams, SearchParams,
   TrackSearchParams,
-} from './base';
+} from '../../types/public';
+import { ExternalAPI } from './base';
 
 const api = google.youtube('v3');
 const apiKey = config.YOUTUBE_API_KEY;
