@@ -20,4 +20,14 @@ export class AuthAccountLinkToken extends DatabaseEntity {
   setToken() {
     this.token = createRandomToken();
   }
+
+  public get dto(): AuthAccountLinkTokenDTO {
+    return {
+      token: this.token,
+    };
+  }
+}
+
+export interface AuthAccountLinkTokenDTO {
+  token: string;
 }
