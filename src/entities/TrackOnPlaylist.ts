@@ -1,10 +1,11 @@
 import {
   Column, Entity, ManyToOne,
 } from 'typeorm';
+import { ExternalTrack } from '../apis/providers/base';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 // eslint-disable-next-line import/no-cycle
 import { Playlist } from './Playlist';
-import { Track, TrackDTO } from './Track';
+import { Track } from './Track';
 import { User, UserDTO } from './User';
 
 @Entity()
@@ -36,7 +37,7 @@ export class TrackOnPlaylist extends DatabaseEntityWithID {
 
 export interface TrackOnPlaylistDTO {
   id: string;
-  track: TrackDTO;
+  track: ExternalTrack;
   playlist: {
     id: string;
   }

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { MediaProvider } from '../apis/providers/base';
+import { ExternalArtist, MediaProvider } from '../apis/providers/base';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
 @Entity()
@@ -20,21 +20,12 @@ export class Artist extends DatabaseEntity {
   @Column({ type: 'json', nullable: true })
     providerData?: {};
 
-  public get dto(): ArtistDTO {
+  public get dto(): ExternalArtist {
     return {
       provider: this.provider,
       providerId: this.providerId,
-      providerData: this.providerData,
       name: this.name,
       image: this.image,
     };
   }
-}
-
-export interface ArtistDTO {
-  provider: MediaProvider;
-  providerId: string;
-  providerData?: any;
-  name: string;
-  image?: string;
 }
