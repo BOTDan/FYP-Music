@@ -2,7 +2,7 @@ import {
   Column, Entity, JoinTable, ManyToMany, PrimaryColumn,
 } from 'typeorm';
 import { MediaProvider } from '../apis/providers/base';
-import { Artist } from './Artist';
+import { Artist, ArtistDTO } from './Artist';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
 /**
@@ -32,4 +32,26 @@ export class Track extends DatabaseEntity {
 
   @Column({ type: 'json', nullable: true })
     providerData?: {};
+
+  public get dto(): TrackDTO {
+    return {
+      provider: this.provider,
+      providerId: this.providerId,
+      providerData: this.providerData,
+      name: this.name,
+      duration: this.duration,
+      image: this.image,
+      artists: this.artists.map((artist) => artist.dto),
+    };
+  }
+}
+
+export interface TrackDTO {
+  provider: MediaProvider;
+  providerId: string;
+  providerData?: any;
+  name: string;
+  duration: number;
+  image?: string;
+  artists: ArtistDTO[];
 }

@@ -59,6 +59,6 @@ export class TrackRepository extends AbstractRepository<Track> {
    * @returns A track, if exists in the database
    */
   findTrackByProvider(provider: MediaProvider, providerId: string) {
-    return this.repository.findOne({ where: { provider, providerId } });
+    return this.repository.findOne({ where: { provider, providerId }, relations: ['artists'] });
   }
 }
