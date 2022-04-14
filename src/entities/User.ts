@@ -8,4 +8,16 @@ import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 export class User extends DatabaseEntityWithID {
   @Column({ type: 'varchar', length: 64 })
     displayName!: string;
+
+  public get dto(): UserDTO {
+    return {
+      id: this.id,
+      displayName: this.displayName,
+    };
+  }
+}
+
+export interface UserDTO {
+  id: string;
+  displayName: string;
 }
