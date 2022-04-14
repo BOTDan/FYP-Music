@@ -19,4 +19,22 @@ export class Artist extends DatabaseEntity {
 
   @Column({ type: 'json', nullable: true })
     providerData?: {};
+
+  public get dto(): ArtistDTO {
+    return {
+      provider: this.provider,
+      providerId: this.providerId,
+      providerData: this.providerData,
+      name: this.name,
+      image: this.image,
+    };
+  }
+}
+
+export interface ArtistDTO {
+  provider: MediaProvider;
+  providerId: string;
+  providerData?: any;
+  name: string;
+  image?: string;
 }
