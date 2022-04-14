@@ -2,6 +2,7 @@ import {
   BeforeInsert, Entity, ManyToOne, PrimaryColumn,
 } from 'typeorm';
 import { createRandomToken, TOKEN_LENGTH } from '../Random';
+import { AuthAccountLinkTokenDTO } from '../types/public';
 import { AuthAccount } from './AuthAccount';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
@@ -26,8 +27,4 @@ export class AuthAccountLinkToken extends DatabaseEntity {
       token: this.token,
     };
   }
-}
-
-export interface AuthAccountLinkTokenDTO {
-  token: string;
 }

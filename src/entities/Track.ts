@@ -1,7 +1,7 @@
 import {
   Column, Entity, JoinTable, ManyToMany, PrimaryColumn,
 } from 'typeorm';
-import { ExternalTrack, MediaProvider } from '../apis/providers/base';
+import { ExternalTrack, MediaProvider } from '../types/public';
 import { Artist } from './Artist';
 import { DatabaseEntity } from './base/DatabaseEntity';
 

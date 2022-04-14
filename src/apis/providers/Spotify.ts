@@ -1,13 +1,15 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import spotifyAuthProvider from '../../auth/providers/Spotify';
 import { config } from '../../config';
-import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
+import { AuthAccount } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { ItemNotFoundError } from '../../errors/api';
 import {
-  ExternalAPI, ExternalArtist, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams,
+  AuthProvider,
+  ExternalArtist, ExternalPlaylist, ExternalTrack, MediaProvider, PaginationParams,
   SearchParams, TrackSearchParams,
-} from './base';
+} from '../../types/public';
+import { ExternalAPI } from './base';
 
 const api = new SpotifyWebApi({
   clientId: config.SPOTIFY_CLIENT_ID,

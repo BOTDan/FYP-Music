@@ -3,12 +3,13 @@ import {
 } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
 import { issueToken, updateStoredTokens } from '..';
-import { AuthAccount, AuthProvider } from '../../entities/AuthAccount';
+import { AuthAccount } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestError, InternalServerError } from '../../errors/httpstatus';
 import { AuthAccountLinkTokenRepository } from '../../repositories/AuthAccountLinkTokenRepository';
 import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import { UserRepository } from '../../repositories/UserRepository';
+import { AuthProvider } from '../../types/public';
 
 /**
  * User information returned from a 3rd party login attempt

@@ -1,13 +1,9 @@
 import {
   Column, Entity, ManyToOne, Unique,
 } from 'typeorm';
+import { AuthAccountDTO, AuthProvider } from '../types/public';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 import { User } from './User';
-
-export enum AuthProvider {
-  Spotify = 'spotify',
-  Google = 'Google',
-}
 
 /**
  * Stores information about a login account.
@@ -37,9 +33,4 @@ export class AuthAccount extends DatabaseEntityWithID {
       authId: this.authId,
     };
   }
-}
-
-export interface AuthAccountDTO {
-  provider: AuthProvider;
-  authId: string;
 }

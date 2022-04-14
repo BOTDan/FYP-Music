@@ -3,7 +3,7 @@ import { User } from '../../entities/User';
 import { InternalServerError } from '../../errors/httpstatus';
 import { TrackRepository } from '../../repositories/TrackRepository';
 import { externalAPIs } from '../providers';
-import { MediaProvider } from '../providers/base';
+import { MediaProvider } from '../../types/public';
 
 /**
  * Finds or creates a track in the DB

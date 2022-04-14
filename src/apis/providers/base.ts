@@ -4,53 +4,14 @@ import {
 import { param, query, validationResult } from 'express-validator';
 import { getCustomRepository } from 'typeorm';
 import { preferAuthentication, requireAuthentication } from '../../auth';
-import { AuthProvider } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
 import { BadRequestValidationError } from '../../errors/api';
 import { InternalServerError, NotAuthenticatedError, UnauthorizedError } from '../../errors/httpstatus';
 import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
-
-export enum MediaProvider {
-  Spotify = 'spotify',
-  YouTube = 'youtube',
-  SoundCloud = 'soundcloud',
-}
-
-export interface PaginationParams {
-  page: number;
-}
-
-export interface SearchParams extends Partial<PaginationParams> {
-  q: string;
-}
-
-export interface TrackSearchParams extends SearchParams {}
-
-export interface PlaylistSearchParams extends SearchParams {}
-
-export interface ExternalResource {
-  provider: MediaProvider;
-  providerId: string;
-}
-
-export interface ExternalArtist extends ExternalResource {
-  name: string;
-  image?: string;
-}
-
-export interface ExternalTrack extends ExternalResource {
-  name: string;
-  duration: number;
-  artists: ExternalArtist[];
-  image?: string;
-}
-
-export interface ExternalPlaylist extends ExternalResource {
-  name: string;
-  description: string;
-  tracks?: ExternalTrack[];
-  image?: string;
-}
+import {
+  AuthProvider,
+  ExternalPlaylist, ExternalTrack, PaginationParams, SearchParams, TrackSearchParams,
+} from '../../types/public';
 
 /**
  * Represents an external music API.

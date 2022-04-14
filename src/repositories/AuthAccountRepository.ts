@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { AbstractRepository, EntityRepository } from 'typeorm';
-import { AuthAccount, AuthProvider } from '../entities/AuthAccount';
+import { AuthAccount } from '../entities/AuthAccount';
 import { User } from '../entities/User';
+import { AuthProvider } from '../types/public';
 
 @EntityRepository(AuthAccount)
 export class AuthAccountRepository extends AbstractRepository<AuthAccount> {

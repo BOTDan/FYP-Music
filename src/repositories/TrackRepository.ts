@@ -1,5 +1,5 @@
 import { AbstractRepository, EntityRepository, getCustomRepository } from 'typeorm';
-import { ExternalTrack, MediaProvider } from '../apis/providers/base';
+import { ExternalTrack, MediaProvider } from '../types/public';
 import { Artist } from '../entities/Artist';
 import { Track } from '../entities/Track';
 import { ArtistRepository } from './ArtistRepository';

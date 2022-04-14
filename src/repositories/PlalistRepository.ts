@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { AbstractRepository, EntityRepository } from 'typeorm';
-import { Playlist, PlaylistVisibility } from '../entities/Playlist';
+import { Playlist } from '../entities/Playlist';
 import { User } from '../entities/User';
+import { PlaylistVisibility } from '../types/public';
 
 export interface PlaylistData {
   name: string;

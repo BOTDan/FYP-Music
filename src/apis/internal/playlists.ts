@@ -5,13 +5,13 @@ import { body, oneOf, param } from 'express-validator';
 import { getCustomRepository } from 'typeorm';
 import { blockBadRequests } from '.';
 import { preferAuthentication, requireAuthentication } from '../../auth';
-import { Playlist, PlaylistVisibility } from '../../entities/Playlist';
+import { Playlist } from '../../entities/Playlist';
 import { TrackOnPlaylist } from '../../entities/TrackOnPlaylist';
 import { User } from '../../entities/User';
 import { NotFoundError, UnauthorizedError } from '../../errors/httpstatus';
 import { PlaylistData, PlaylistRepository } from '../../repositories/PlalistRepository';
 import { TrackOnPlaylistRepository } from '../../repositories/TrackOnPlaylistRepo';
-import { MediaProvider } from '../providers/base';
+import { MediaProvider, PlaylistVisibility } from '../../types/public';
 import { getOrCreateTrack } from './tracks';
 
 const playlistsRouteName = 'playlists';

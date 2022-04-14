@@ -1,18 +1,11 @@
 import {
   Column, Entity, ManyToOne, OneToMany,
 } from 'typeorm';
+import { PlaylistDTO, PlaylistVisibility } from '../types/public';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 // eslint-disable-next-line import/no-cycle
-import { TrackOnPlaylist, TrackOnPlaylistDTO } from './TrackOnPlaylist';
-import { User, UserDTO } from './User';
-
-/**
- * Visibility of user playlists
- */
-export enum PlaylistVisibility {
-  Public = 'public',
-  Private = 'private',
-}
+import { TrackOnPlaylist } from './TrackOnPlaylist';
+import { User } from './User';
 
 @Entity()
 export class Playlist extends DatabaseEntityWithID {
@@ -40,12 +33,4 @@ export class Playlist extends DatabaseEntityWithID {
       visibility: this.visibility,
     };
   }
-}
-
-export interface PlaylistDTO {
-  name: string;
-  description?: string;
-  owner: UserDTO;
-  tracks: TrackOnPlaylistDTO[];
-  visibility: PlaylistVisibility;
 }

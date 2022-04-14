@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { ExternalArtist, MediaProvider } from '../apis/providers/base';
+import { MediaProvider, ExternalArtist } from '../types/public';
 import { DatabaseEntity } from './base/DatabaseEntity';
 
 @Entity()

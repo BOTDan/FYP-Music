@@ -2,8 +2,9 @@ import {
   BeforeInsert, Entity, ManyToOne, PrimaryColumn,
 } from 'typeorm';
 import { createRandomToken, TOKEN_LENGTH } from '../Random';
+import { UserTokenDTO } from '../types/public';
 import { DatabaseEntity } from './base/DatabaseEntity';
-import { User, UserDTO } from './User';
+import { User } from './User';
 
 /**
  * Stores a login token against a user, to use for authentication.
@@ -27,9 +28,4 @@ export class UserToken extends DatabaseEntity {
       user: this.user.dto,
     };
   }
-}
-
-export interface UserTokenDTO {
-  token: string;
-  user: UserDTO;
 }

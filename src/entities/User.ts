@@ -1,4 +1,5 @@
 import { Column, Entity } from 'typeorm';
+import { UserDTO } from '../types/public';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 
 /**
@@ -15,9 +16,4 @@ export class User extends DatabaseEntityWithID {
       displayName: this.displayName,
     };
   }
-}
-
-export interface UserDTO {
-  id: string;
-  displayName: string;
 }
