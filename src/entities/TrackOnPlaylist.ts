@@ -4,8 +4,8 @@ import {
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 // eslint-disable-next-line import/no-cycle
 import { Playlist } from './Playlist';
-import { Track } from './Track';
-import { User } from './User';
+import { Track, TrackDTO } from './Track';
+import { User, UserDTO } from './User';
 
 @Entity()
 export class TrackOnPlaylist extends DatabaseEntityWithID {
@@ -20,4 +20,26 @@ export class TrackOnPlaylist extends DatabaseEntityWithID {
 
   @ManyToOne(() => User)
     addedBy!: User;
+
+  public get dto(): TrackOnPlaylistDTO {
+    return {
+      id: this.id,
+      track: this.track.dto,
+      playlist: {
+        id: this.playlist.id,
+      },
+      order: this.order,
+      addedBy: this.addedBy?.dto,
+    };
+  }
+}
+
+export interface TrackOnPlaylistDTO {
+  id: string;
+  track: TrackDTO;
+  playlist: {
+    id: string;
+  }
+  order: number;
+  addedBy?: UserDTO;
 }
