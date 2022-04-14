@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 import { createRandomToken, TOKEN_LENGTH } from '../Random';
 import { DatabaseEntity } from './base/DatabaseEntity';
-import { User } from './User';
+import { User, UserDTO } from './User';
 
 /**
  * Stores a login token against a user, to use for authentication.
@@ -20,4 +20,16 @@ export class UserToken extends DatabaseEntity {
   setToken() {
     this.token = createRandomToken();
   }
+
+  public get dto(): UserTokenDTO {
+    return {
+      token: this.token,
+      user: this.user.dto,
+    };
+  }
+}
+
+export interface UserTokenDTO {
+  token: string;
+  user: UserDTO;
 }
