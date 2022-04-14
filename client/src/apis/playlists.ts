@@ -1,8 +1,8 @@
 import { authFetchCatchFail } from '.';
 import {
-  ExternalPlaylist, ExternalTrack, InternalPlaylist, MediaProvider, TrackOnInternalPlaylist,
+  ExternalPlaylist, ExternalTrack, PlaylistDTO, MediaProvider, TrackOnPlaylistDTO,
   UserTokenDTO,
-} from '../types';
+} from '../types/public';
 
 /**
  * Queries the API to search for playlists
@@ -39,7 +39,7 @@ export async function getProviderPlaylist(
  */
 export async function getMyPlaylists(
   token: UserTokenDTO,
-): Promise<InternalPlaylist[]> {
+): Promise<PlaylistDTO[]> {
   return authFetchCatchFail('/api/me/playlists/', token);
 }
 
@@ -52,7 +52,7 @@ export async function getMyPlaylists(
 export async function getPlaylist(
   id: string,
   token?: UserTokenDTO,
-): Promise<InternalPlaylist> {
+): Promise<PlaylistDTO> {
   return authFetchCatchFail(`/api/playlists/${encodeURIComponent(id)}`, token);
 }
 
@@ -70,7 +70,7 @@ export interface PlaylistOptions {
 export async function createPlaylist(
   options: PlaylistOptions,
   token?: UserTokenDTO,
-): Promise<InternalPlaylist> {
+): Promise<PlaylistDTO> {
   return authFetchCatchFail('/api/playlists', token, {
     method: 'POST',
     body: JSON.stringify(options),
@@ -85,7 +85,7 @@ export async function createPlaylist(
  * @returns The added track
  */
 export async function addTrackToPlaylist(
-  playlist: InternalPlaylist,
+  playlist: PlaylistDTO,
   track: ExternalTrack,
   token?: UserTokenDTO,
 ) {
@@ -106,8 +106,8 @@ export async function addTrackToPlaylist(
  * @returns The deleted track
  */
 export async function removeSongFromPlaylist(
-  playlist: InternalPlaylist,
-  track: TrackOnInternalPlaylist,
+  playlist: PlaylistDTO,
+  track: TrackOnPlaylistDTO,
   token?: UserTokenDTO,
 ) {
   return authFetchCatchFail(`/api/playlists/${playlist.id}/tracks/${track.id}`, token, {

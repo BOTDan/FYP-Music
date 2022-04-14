@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MediaProvider } from '../../types';
+import { MediaProvider } from '../../types/public';
 
 interface SearchState {
   provider: MediaProvider;

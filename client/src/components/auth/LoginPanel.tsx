@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthProvider } from '../../types';
+import { AuthProvider } from '../../types/public';
 import { Panel } from '../popup/Panel';
 import { LoginButton } from './LoginButton';
 import './LoginPanel.scss';

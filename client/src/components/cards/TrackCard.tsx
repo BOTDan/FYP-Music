@@ -1,7 +1,7 @@
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { formatTime } from '../../helper';
-import { ExternalTrack, InternalPlaylist, TrackOnInternalPlaylist } from '../../types';
+import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../types/public';
 import { ProviderIcon } from '../icons/ProviderIcon';
 import { Button } from '../input/Button';
 // eslint-disable-next-line import/no-cycle
@@ -9,8 +9,8 @@ import { TrackOptionsPopup } from '../popup/popups/TrackOptionsPopup';
 import './TrackCard.scss';
 
 export interface TrackCardProps {
-  track: ExternalTrack | TrackOnInternalPlaylist;
-  playlist?: InternalPlaylist;
+  track: ExternalTrack | TrackOnPlaylistDTO;
+  playlist?: PlaylistDTO;
   number?: number | undefined;
   small?: boolean;
   inactive?: boolean;
@@ -21,7 +21,7 @@ export function TrackCard({
 }: TrackCardProps) {
   const [optionsPopupVisible, setOptionsPopupVisible] = useState(false);
 
-  const finalTrack = (track as TrackOnInternalPlaylist).track ?? (track as ExternalTrack);
+  const finalTrack = (track as TrackOnPlaylistDTO).track ?? (track as ExternalTrack);
   const artists = finalTrack.artists.map((artist) => artist.name).join(', ');
 
   const numberElement = (

@@ -1,4 +1,4 @@
-import { AuthProvider, MediaProvider } from '../types';
+import { AuthProvider, MediaProvider } from '../types/public';
 
 /**
  * Converts a provider string to an enum

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { mediaProviderFromString } from '../../../helper';
 import { useAppDispatch, useAppSelector } from '../../../store/helper';
 import { updateDoSearch, updateProvider, updateSearchTerm } from '../../../store/reducers/search';
-import { MediaProvider } from '../../../types';
+import { MediaProvider } from '../../../types/public';
 import { ProviderIcon } from '../../icons/ProviderIcon';
 import { Button } from '../../input/Button';
 import { Dropdown, DropdownOption } from '../../input/Dropdown';
@@ -41,7 +41,7 @@ const searchProviders: DropdownOption[] = [
   },
 ];
 
-const searchProvidersMapping = {
+const searchProvidersMapping: { [provider in MediaProvider]: DropdownOption } = {
   [MediaProvider.YouTube]: searchProviders[0],
   [MediaProvider.Spotify]: searchProviders[1],
   [MediaProvider.SoundCloud]: searchProviders[2],

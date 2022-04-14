@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AuthProvider } from '../../types';
+import { AuthProvider } from '../../types/public';
 
 export interface LoginPopupProps {
   provider: AuthProvider;

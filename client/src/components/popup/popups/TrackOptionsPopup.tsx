@@ -2,7 +2,7 @@ import { faBan, faList } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { removeSongFromPlaylist } from '../../../apis/playlists';
 import { useAppSelector } from '../../../store/helper';
-import { ExternalTrack, InternalPlaylist, TrackOnInternalPlaylist } from '../../../types';
+import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
 import { Button } from '../../input/Button';
@@ -13,8 +13,8 @@ import { AddTrackToPlaylistPopup } from './AddTrackToPlaylistPopup';
 
 export interface TrackOptionsPopupProps {
   visible: boolean;
-  track: ExternalTrack | TrackOnInternalPlaylist;
-  playlist?: InternalPlaylist;
+  track: ExternalTrack | TrackOnPlaylistDTO;
+  playlist?: PlaylistDTO;
   onClose?(): void
 }
 
@@ -24,10 +24,10 @@ export function TrackOptionsPopup({
   const [showAddTrack, setShowAddTrack] = useState(false);
   const userToken = useAppSelector((state) => state.auth.token);
 
-  const finalTrack = (track as TrackOnInternalPlaylist).track ?? (track as ExternalTrack);
+  const finalTrack = (track as TrackOnPlaylistDTO).track ?? (track as ExternalTrack);
 
   const removeTrack = () => {
-    removeSongFromPlaylist(playlist!, track as TrackOnInternalPlaylist, userToken)
+    removeSongFromPlaylist(playlist!, track as TrackOnPlaylistDTO, userToken)
       .then((r) => {
         console.log(r);
         if (onClose) { onClose(); }

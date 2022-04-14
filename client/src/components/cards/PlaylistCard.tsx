@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalPlaylist, InternalPlaylist } from '../../types';
+import { ExternalPlaylist, PlaylistDTO } from '../../types/public';
 import { SquareImage } from '../structure/SquareImage';
 import './PlaylistCard.scss';
 
@@ -42,7 +42,7 @@ ExternalPlaylistCard.defaultProps = {
 };
 
 export interface InternalPlaylistCardProps {
-  playlist: InternalPlaylist;
+  playlist: PlaylistDTO;
   isLink?: boolean;
 }
 

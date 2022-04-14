@@ -10,7 +10,7 @@ import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
 import { useAppSelector } from '../../store/helper';
-import { ExternalTrack, MediaProvider, UserTokenDTO } from '../../types';
+import { ExternalTrack, MediaProvider, UserTokenDTO } from '../../types/public';
 import './SearchPageResults.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

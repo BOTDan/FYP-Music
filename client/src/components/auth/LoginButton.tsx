@@ -4,7 +4,7 @@ import { authProviderPrettyPrint } from '../../helper';
 import { useAppDispatch } from '../../store/helper';
 import { updateToken } from '../../store/reducers/auth';
 // import { mediaProviderPrettyPrint } from '../../helper';
-import { AuthProvider } from '../../types';
+import { AuthProvider } from '../../types/public';
 import { LoadingSpinner } from '../icons/LoadingSpinner';
 import { classes, ProviderIcon } from '../icons/ProviderIcon';
 import { Button } from '../input/Button';
@@ -32,7 +32,7 @@ export function LoginButton({ provider }: LoginButtonProps) {
     console.log(`Returned ${code} and state ${state}`);
     login(provider, code)
       .then((data) => {
-        dispatch(updateToken(data.token));
+        dispatch(updateToken(data));
       });
   }
   return (

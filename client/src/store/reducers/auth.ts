@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserTokenDTO } from '../../types';
+import { UserTokenDTO } from '../../types/public';
 
 interface AuthState {
   token: UserTokenDTO | undefined

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { mediaProviderPrettyPrint } from '../../helper';
-import { MediaProvider } from '../../types';
+import { MediaProvider } from '../../types/public';
 import { classes, ProviderIcon } from '../icons/ProviderIcon';
 import { IconCard } from './IconCard';
 import './ProviderCard.scss';

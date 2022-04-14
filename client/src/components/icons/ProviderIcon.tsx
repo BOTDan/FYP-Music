@@ -4,7 +4,7 @@ import {
   faSoundcloud, faSpotify, faYoutube, IconDefinition,
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AuthProvider, MediaProvider } from '../../types';
+import { AuthProvider, MediaProvider } from '../../types/public';
 import './MediaProviderIcon.scss';
 
 export interface MediaProviderIconProps {

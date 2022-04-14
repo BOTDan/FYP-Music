@@ -1,4 +1,4 @@
-import { UserTokenDTO } from '../types';
+import { UserTokenDTO } from '../types/public';
 
 /**
  * Makes an authenticated fetch request
@@ -12,6 +12,7 @@ export function authFetch(url: string, token?: UserTokenDTO, options?: RequestIn
     Accept: 'application/json',
     'Content-Type': 'application/json',
   };
+  console.log(token);
   if (token && token.token.length > 0) {
     headers.authorization = `Bearer ${token.token}`;
   }
@@ -29,6 +30,9 @@ export async function authFetchCatchFail(url: string, token?: UserTokenDTO, opti
   const response = await authFetch(url, token, options);
   if (!response.ok) {
     throw new Error('Response not OK');
+  }
+  if (response.status === 204) {
+    return null;
   }
   const data = await response.json();
   return data;

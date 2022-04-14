@@ -1,5 +1,5 @@
 import { authFetchCatchFail } from '.';
-import { ExternalTrack, MediaProvider, UserTokenDTO } from '../types';
+import { MediaProvider, ExternalTrack, UserTokenDTO } from '../types/public';
 
 /**
  * Searches for a track from the API

@@ -9,7 +9,7 @@ import { Grid } from '../../components/layout/Grid';
 import { CreatePlaylistPopup } from '../../components/popup/popups/CreatePlaylistPopup';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { useAppSelector } from '../../store/helper';
-import { MediaProvider } from '../../types';
+import { MediaProvider } from '../../types/public';
 import './PlaylistsPageLanding.scss';
 
 export function PlaylistsPageLanding() {
