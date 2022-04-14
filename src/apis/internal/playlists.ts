@@ -153,7 +153,7 @@ playlistsRouter.get(
       const { user } = request.token!;
       const playlists = await getUserPlaylists(user, true);
 
-      response.send(playlists);
+      response.send(playlists.map((playlist) => playlist.dto));
     } catch (e) {
       next(e);
     }
@@ -176,7 +176,7 @@ playlistsRouter.get(
         throw new UnauthorizedError();
       }
 
-      response.send(playlist);
+      response.send(playlist.dto);
     } catch (e) {
       next(e);
     }
@@ -201,7 +201,7 @@ playlistsRouter.post(
       };
       const playlist = await createPlaylist(options);
 
-      response.send(playlist);
+      response.send(playlist.dto);
     } catch (e) {
       next(e);
     }
@@ -234,7 +234,7 @@ playlistsRouter.patch(
         name, description, visibility,
       });
 
-      response.send(updatedPlaylist);
+      response.send(updatedPlaylist.dto);
     } catch (e) {
       next(e);
     }
@@ -257,7 +257,7 @@ playlistsRouter.get(
         throw new UnauthorizedError();
       }
 
-      response.send(playlist?.tracks);
+      response.send(playlist.dto.tracks);
     } catch (e) {
       next(e);
     }
@@ -287,7 +287,7 @@ playlistsRouter.post(
       const user = request.token?.user;
       const trackInPlaylist = await addTrackToPlaylist(playlist, provider, providerId, order, user);
 
-      response.send(trackInPlaylist);
+      response.send(trackInPlaylist.dto);
     } catch (e) {
       next(e);
     }
@@ -321,9 +321,9 @@ playlistsRouter.delete(
         throw new NotFoundError(`Playlist entry with ID ${entryId} not found on playlist ${playlistId}`);
       }
 
-      const deletedTrack = await deleteTrackFromPlaylist(trackInPlaylist);
+      await deleteTrackFromPlaylist(trackInPlaylist);
 
-      response.send(deletedTrack);
+      response.sendStatus(204);
     } catch (e) {
       next(e);
     }
