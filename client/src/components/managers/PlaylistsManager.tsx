@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getMyPlaylists } from '../../apis/playlists';
-import { useAppDispatch, useAppSelector } from '../../store/helper';
+import { useAppAuthToken, useAppDispatch, useAppSelector } from '../../store/helper';
 import { updateLoadingPlaylists, updatePlaylists, updateTrackToAdd } from '../../store/reducers/playlists';
 import { ExternalTrack } from '../../types/public';
 import { AddTrackToPlaylistPopup } from '../popup/popups/AddTrackToPlaylistPopup';
@@ -12,7 +12,7 @@ import { AddTrackToPlaylistPopup } from '../popup/popups/AddTrackToPlaylistPopup
  */
 export function PlaylistsManager() {
   const dispatch = useAppDispatch();
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const trackToAdd = useAppSelector((state) => state.playlists.trackToAdd);
 
   // Runs every time the user token is updated

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '../../store/helper';
+import { useAppAuthToken } from '../../store/helper';
 import { Button } from '../input/Button';
 import { Modal } from '../popup/Modal';
 import './AuthActions.scss';
 import { LoginPanel } from './LoginPanel';
 
 export function AuthActions() {
-  const authToken = useAppSelector((state) => state.auth.token);
+  const authToken = useAppAuthToken();
   const [popupVisible, setPopupVisible] = useState(false);
 
   let content = (

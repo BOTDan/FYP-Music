@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { createPlaylist } from '../../../apis/playlists';
 // import { createPlaylist } from '../../../apis/playlists';
-import { useAppSelector } from '../../../store/helper';
+import { useAppAuthToken } from '../../../store/helper';
 import { Button } from '../../input/Button';
 import { StringInput } from '../../input/StringInput';
 import { Modal } from '../Modal';
@@ -17,7 +17,7 @@ export function CreatePlaylistPopup({ visible, onClose }: CreatePlaylistPopupPro
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [submit, setSubmit] = useState(false);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const navigate = useNavigate();
 
   useEffect(() => {

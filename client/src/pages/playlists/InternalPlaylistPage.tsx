@@ -4,7 +4,7 @@ import { TrackCardList } from '../../components/cards/lists/TrackCardList';
 import { LoadingSpinner } from '../../components/icons/LoadingSpinner';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
-import { useAppSelector } from '../../store/helper';
+import { useAppAuthToken } from '../../store/helper';
 import { PlaylistDTO, UserTokenDTO } from '../../types/public';
 
 export interface SinglePlaylistPageProps {
@@ -13,7 +13,7 @@ export interface SinglePlaylistPageProps {
 
 export function InternalPlaylistPage({ id }: SinglePlaylistPageProps) {
   const [playlist, setPlaylist] = useState<PlaylistDTO | undefined>(undefined);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

@@ -6,7 +6,7 @@ import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
-import { useAppSelector } from '../../store/helper';
+import { useAppAuthToken } from '../../store/helper';
 import { ExternalPlaylist, UserTokenDTO } from '../../types/public';
 
 export interface SinglePlaylistPageProps {
@@ -17,7 +17,7 @@ export interface SinglePlaylistPageProps {
 export function ExternalPlaylistPage({ provider, id }: SinglePlaylistPageProps) {
   const finalProvider = mediaProviderFromString(provider);
   const [playlist, setPlaylist] = useState<ExternalPlaylist | undefined>(undefined);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

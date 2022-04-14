@@ -6,7 +6,7 @@ import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString, mediaProviderPrettyPrint } from '../../helper';
-import { useAppSelector } from '../../store/helper';
+import { useAppAuthToken } from '../../store/helper';
 import { ExternalPlaylist, UserTokenDTO } from '../../types/public';
 
 export interface AllPlaylistsPageProps {
@@ -15,7 +15,7 @@ export interface AllPlaylistsPageProps {
 
 export function ExternalPlaylistsPage({ provider }: AllPlaylistsPageProps) {
   const finalProvider = mediaProviderFromString(provider);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const [playlists, setPlaylists] = useState<ExternalPlaylist[]>([]);
   const [loading, setLoading] = useState(false);
   const isMounted = useRef(false);

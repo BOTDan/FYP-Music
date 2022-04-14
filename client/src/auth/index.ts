@@ -1,3 +1,6 @@
+import { AppDispatch } from '../store/helper';
+import { updateToken } from '../store/reducers/auth';
+import { StoreObjectState } from '../types';
 import { AuthProvider, UserTokenDTO } from '../types/public';
 
 /**
@@ -6,9 +9,24 @@ import { AuthProvider, UserTokenDTO } from '../types/public';
  * @param code The callback code from successful OAuth login
  * @returns A UserTokenDTO if successfully logged in
  */
-export async function login(provider: AuthProvider, code: string) {
+export async function login(provider: AuthProvider, code: string, dispatch?: AppDispatch) {
   const response = await fetch(`/auth/${provider}/login/callback?code=${code}&state=login`);
-  if (!response.ok) { throw new Error('Failed to log in'); }
+  if (!response.ok) {
+    if (dispatch) {
+      dispatch(updateToken({
+        state: StoreObjectState.Error,
+        error: 'Failed to log in',
+        value: undefined,
+      }));
+    }
+    throw new Error('Failed to log in');
+  }
   const data = await response.json();
+  if (dispatch) {
+    dispatch(updateToken({
+      state: StoreObjectState.Loaded,
+      value: data,
+    }));
+  }
   return data as UserTokenDTO;
 }

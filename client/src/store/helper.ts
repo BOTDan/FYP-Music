@@ -6,3 +6,7 @@ export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export function useAppAuthToken() {
+  return useAppSelector((state) => state.auth.token.value);
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { addTrackToPlaylist } from '../../../apis/playlists';
-import { useAppSelector } from '../../../store/helper';
+import { useAppAuthToken, useAppSelector } from '../../../store/helper';
 import { ExternalTrack, PlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
@@ -20,7 +20,7 @@ export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToP
   const [checked, setChecked] = useState<PlaylistDTO[]>([]);
   const [submit, setSubmit] = useState(false);
   const userPlaylists = useAppSelector((state) => state.playlists.value);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
 
   function handleOnCheck(playlist: PlaylistDTO) {
     setChecked((prev) => [...prev, playlist]);
