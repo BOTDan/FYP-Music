@@ -3,8 +3,8 @@ import {
 } from 'typeorm';
 import { DatabaseEntityWithID } from './base/DatabaseEntityWithID';
 // eslint-disable-next-line import/no-cycle
-import { TrackOnPlaylist } from './TrackOnPlaylist';
-import { User } from './User';
+import { TrackOnPlaylist, TrackOnPlaylistDTO } from './TrackOnPlaylist';
+import { User, UserDTO } from './User';
 
 /**
  * Visibility of user playlists
@@ -30,4 +30,22 @@ export class Playlist extends DatabaseEntityWithID {
 
   @Column({ type: 'enum', enum: PlaylistVisibility, default: PlaylistVisibility.Private })
     visibility!: PlaylistVisibility;
+
+  public get dto(): PlaylistDTO {
+    return {
+      name: this.name,
+      description: this.description,
+      owner: this.owner.dto,
+      tracks: this.tracks.map((track) => track.dto),
+      visibility: this.visibility,
+    };
+  }
+}
+
+export interface PlaylistDTO {
+  name: string;
+  description?: string;
+  owner: UserDTO;
+  tracks: TrackOnPlaylistDTO[];
+  visibility: PlaylistVisibility;
 }

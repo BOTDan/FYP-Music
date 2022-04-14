@@ -32,7 +32,8 @@ export class PlaylistRepository extends AbstractRepository<Playlist> {
    * @returns A list of playlists
    */
   getUserPlaylists(user: User, includeTracks = false) {
-    const relations = (includeTracks) ? ['tracks', 'tracks.track', 'tracks.track.artists'] : [];
+    const relations = ['owner'];
+    if (includeTracks) { relations.push('tracks', 'tracks.playlist', 'tracks.addedBy', 'tracks.track', 'tracks.track.artists'); }
     return this.repository.find({ where: { owner: user }, order: { dateCreated: 'DESC' }, relations });
   }
 
@@ -43,7 +44,8 @@ export class PlaylistRepository extends AbstractRepository<Playlist> {
    * @returns A playlist
    */
   getPlaylist(id: string, includeTracks = false) {
-    const relations = (includeTracks) ? ['tracks', 'tracks.track', 'tracks.track.artists'] : [];
+    const relations = ['owner'];
+    if (includeTracks) { relations.push('tracks', 'tracks.playlist', 'tracks.addedBy', 'tracks.track', 'tracks.track.artists'); }
     return this.repository.findOne({ where: { id }, relations });
   }
 
