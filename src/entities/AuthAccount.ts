@@ -30,4 +30,16 @@ export class AuthAccount extends DatabaseEntityWithID {
 
   @ManyToOne(() => User)
     user?: User;
+
+  public get dto(): AuthAccountDTO {
+    return {
+      provider: this.provider,
+      authId: this.authId,
+    };
+  }
+}
+
+export interface AuthAccountDTO {
+  provider: AuthProvider;
+  authId: string;
 }
