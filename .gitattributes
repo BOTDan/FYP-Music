@@ -1,2 +1,5 @@
 # Always use LF fine newlines
 * text eol=lf
+
+*.png binary
+*.ico bimary
