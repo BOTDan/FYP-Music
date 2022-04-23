@@ -1,7 +1,8 @@
-import { faBan, faList } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faList, faPlay } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { removeTrackFromPlaylistToStore } from '../../../store/actions/playlists';
 import { useAppAuthToken, useAppDispatch } from '../../../store/helper';
+import { updateCurrentTrack } from '../../../store/reducers/playback';
 import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
@@ -26,6 +27,11 @@ export function TrackOptionsPopup({
   const dispatch = useAppDispatch();
 
   const finalTrack = (track as TrackOnPlaylistDTO).track ?? (track as ExternalTrack);
+
+  const playTrack = () => {
+    dispatch(updateCurrentTrack(finalTrack));
+    if (onClose) { onClose(); }
+  };
 
   const removeTrack = () => {
     removeTrackFromPlaylistToStore(playlist!, track as TrackOnPlaylistDTO, userToken, dispatch)
@@ -58,6 +64,13 @@ export function TrackOptionsPopup({
           isForm
         >
           <TrackCard track={track} small inactive />
+          <Button
+            className="text-left"
+            leftIcon={faPlay}
+            onClick={() => playTrack()}
+          >
+            {' '}Play Track
+          </Button>
           <Button
             className="text-left"
             leftIcon={faList}
