@@ -29,8 +29,10 @@ export function SquareImage({
   };
 
   useEffect(() => {
-    setImgSrc(src);
-  }, [src]);
+    errored.current = false;
+    setLoaded(false);
+    setImgSrc(src ?? fallbackSrc);
+  }, [src, fallbackSrc]);
 
   const classList = ['SquareImage'];
   if (className) { classList.push(className); }
