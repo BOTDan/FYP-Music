@@ -1,0 +1,58 @@
+.PlaybackBar {
+  display: flex;
+  flex-flow: row nowrap;
+
+  > *:not(.PlaybackControls) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .PlaybackBar__Info {
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    flex-flow: row nowrap;
+
+    .PlaybackBar__Info__Provider {
+      padding: 0.25em;
+    }
+
+    .PlaybackBar__Info__Image {
+      flex: 0 0 auto;
+      width: 3rem;
+
+      .SquareImage {
+        width: 100%;
+      }
+    }
+
+    .PlaybackBar__Info__Main {
+      flex: 1;
+      align-items: flex-start;
+      padding-left: 0.25em;
+      overflow: hidden;
+    
+      .PlaybackBar__Info__Name {
+        font-weight: bold;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        min-width: 0;
+        width: 100%;
+      }
+    
+      .PlaybackBar__Info__Artists {
+        font-weight: normal;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  }
+}
