@@ -89,7 +89,9 @@ export function YouTubePlaybackManager() {
   }, [player, currentTrack]);
 
   const opts = {
+    host: 'https://www.youtube-nocookie.com',
     playerVars: {
+      origin: window.location.host,
       autoplay: 1,
       mute: 1, // Autoplay doesn't work without this...(???)
       // Guessing this is YouTube/Chrome trying to save people from annoying unexpected videos
