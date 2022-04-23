@@ -5,6 +5,7 @@ import { SquareImage } from '../structure/SquareImage';
 import { PlaybackControls } from './PlaybackControls';
 import './PlaybackBar.scss';
 import { GeneralContent } from '../layout/GeneralContent';
+import { formatTime } from '../../helper';
 
 /**
  * The main playback bar at the bottom of the page
@@ -32,6 +33,11 @@ export function PlaybackBar() {
           <span className="PlaybackBar__Info__Main">
             <p className="PlaybackBar__Info__Name">{currentTrack.name}</p>
             <p className="PlaybackBar__Info__Artists">{currentTrack.artists.map((artist) => artist.name).join(', ')}</p>
+          </span>
+          <span className="PlaybackBar__Info__Duration">
+            <span>{formatTime(currentTime)}</span>
+            {' / '}
+            <span>{formatTime(currentTrack.duration)}</span>
           </span>
         </div>
         )}
