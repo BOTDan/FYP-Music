@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import YouTube, { YouTubeProps } from 'react-youtube';
-import { useAppSelector } from '../../../store/helper';
+import { useAppDispatch, useAppSelector } from '../../../store/helper';
+import { updatePlaybackTimestamp } from '../../../store/reducers/playback';
 import { PlaybackState } from '../../../types';
 import { MediaProvider } from '../../../types/public';
 
@@ -9,6 +10,7 @@ import { MediaProvider } from '../../../types/public';
  * THERE SHOULD ONLY EVER BE 1 OF THESE
  */
 export function YouTubePlaybackManager() {
+  const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.playback.currentTrack);
   const playbackState = useAppSelector((state) => state.playback.playbackState);
   const [player, setPlayer] = useState<YouTube['internalPlayer']>(null);
@@ -54,6 +56,7 @@ export function YouTubePlaybackManager() {
       setVideoId('');
     } else {
       setVideoId(currentTrack.providerId);
+      player.seekTo(0);
     }
   }, [currentTrack]);
 
@@ -71,6 +74,19 @@ export function YouTubePlaybackManager() {
       player.pauseVideo();
     }
   }, [playbackState]);
+
+  /**
+   * Update the current playback duration
+   */
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (player && currentTrack && currentTrack.provider === MediaProvider.YouTube) {
+        const playbackAmount = player.getCurrentTime();
+        dispatch(updatePlaybackTimestamp(playbackAmount * 1000));
+      }
+    }, 1000);
+    return () => { window.clearInterval(timer); };
+  }, [player, currentTrack]);
 
   const opts = {
     playerVars: {

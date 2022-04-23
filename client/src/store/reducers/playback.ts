@@ -15,9 +15,11 @@ export const playbackSlice = createSlice({
   reducers: {
     updateCurrentTrack: (state, action: PayloadAction<ExternalTrack | null>) => {
       state.currentTrack = action.payload;
+      state.playbackTimestamp = 0;
       if (action.payload === null) {
         state.playbackState = PlaybackState.Stopped;
-        state.playbackTimestamp = 0;
+      } else {
+        state.playbackState = PlaybackState.Playing;
       }
     },
     updatePlaybackState: (state, action: PayloadAction<PlaybackState>) => {
@@ -26,9 +28,14 @@ export const playbackSlice = createSlice({
         state.playbackTimestamp = 0;
       }
     },
+    updatePlaybackTimestamp: (state, action: PayloadAction<number>) => {
+      state.playbackTimestamp = action.payload;
+    },
   },
 });
 
-export const { updateCurrentTrack, updatePlaybackState } = playbackSlice.actions;
+export const {
+  updateCurrentTrack, updatePlaybackState, updatePlaybackTimestamp,
+} = playbackSlice.actions;
 
 export default playbackSlice.reducer;
