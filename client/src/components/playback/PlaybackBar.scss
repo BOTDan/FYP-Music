@@ -16,7 +16,7 @@
     flex-flow: row nowrap;
 
     .PlaybackBar__Info__Provider {
-      padding: 0.25em;
+      padding: 0.5em;
     }
 
     .PlaybackBar__Info__Image {
@@ -31,7 +31,7 @@
     .PlaybackBar__Info__Main {
       flex: 1;
       align-items: flex-start;
-      padding-left: 0.25em;
+      padding: 0.25em 0.5em;
       overflow: hidden;
     
       .PlaybackBar__Info__Name {
