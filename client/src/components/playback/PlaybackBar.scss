@@ -1,3 +1,18 @@
+@import '../../styles/shared.scss';
+
+.PlaybackBar__Container {
+  position: relative;
+}
+
+.PlaybackBar__Scrub {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  height: 2px;
+  background: $accent-colour;
+  transition: width 0.1s linear;
+}
+
 .PlaybackBar {
   display: flex;
   flex-flow: row nowrap;
