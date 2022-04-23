@@ -11,6 +11,13 @@ export interface StoreObject<T> {
   value?: T;
 }
 
+export enum PlaybackState {
+  Stopped = 'stopped',
+  Playing = 'playing',
+  Paused = 'paused',
+  Loading = 'loading',
+}
+
 // export enum MediaProvider {
 //   YouTube = 'youtube',
 //   Spotify = 'spotify',
