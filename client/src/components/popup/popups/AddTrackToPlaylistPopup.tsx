@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { addTrackToPlaylist } from '../../../apis/playlists';
-import { useAppAuthToken, useAppSelector } from '../../../store/helper';
+import { addTrackToPlaylistToStore } from '../../../store/actions/playlists';
+import { useAppAuthToken, useAppDispatch, useAppPersonalPlaylists } from '../../../store/helper';
 import { ExternalTrack, PlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
@@ -19,8 +19,9 @@ export interface AddTrackToPlaylistPopupProps {
 export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToPlaylistPopupProps) {
   const [checked, setChecked] = useState<PlaylistDTO[]>([]);
   const [submit, setSubmit] = useState(false);
-  const userPlaylists = useAppSelector((state) => state.playlists.value);
+  const userPlaylists = useAppPersonalPlaylists().value ?? [];
   const userToken = useAppAuthToken();
+  const dispatch = useAppDispatch();
 
   function handleOnCheck(playlist: PlaylistDTO) {
     setChecked((prev) => [...prev, playlist]);
@@ -32,7 +33,9 @@ export function AddTrackToPlaylistPopup({ visible, track, onClose }: AddTrackToP
 
   useEffect(() => {
     if (submit) {
-      const promises = checked.map((playlist) => addTrackToPlaylist(playlist, track, userToken));
+      const promises = checked.map(
+        (playlist) => addTrackToPlaylistToStore(playlist, track, userToken, dispatch),
+      );
       Promise.all(promises)
         .then(() => {
           console.log('Success');

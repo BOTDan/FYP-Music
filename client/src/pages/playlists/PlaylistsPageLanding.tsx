@@ -8,13 +8,15 @@ import { GeneralContent } from '../../components/layout/GeneralContent';
 import { Grid } from '../../components/layout/Grid';
 import { CreatePlaylistPopup } from '../../components/popup/popups/CreatePlaylistPopup';
 import { TopHeading } from '../../components/structure/TopHeading';
-import { useAppSelector } from '../../store/helper';
+import { useAppPersonalPlaylists } from '../../store/helper';
+import { StoreObjectState } from '../../types';
 import { MediaProvider } from '../../types/public';
 import './PlaylistsPageLanding.scss';
 
 export function PlaylistsPageLanding() {
-  const playlists = useAppSelector((state) => state.playlists.value);
-  const loading = useAppSelector((state) => state.playlists.loading);
+  const playlistsObject = useAppPersonalPlaylists();
+  const playlists = playlistsObject.value ?? [];
+  const loading = playlistsObject.state === StoreObjectState.Loading;
   const [showPopup, setShowPopup] = useState(false);
 
   return (

@@ -2,7 +2,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StoreObject, StoreObjectState } from '../../types';
 import { UserTokenDTO } from '../../types/public';
-// eslint-disable-next-line import/no-cycle
 
 const initialState = {
   token: {

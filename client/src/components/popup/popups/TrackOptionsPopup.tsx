@@ -1,7 +1,7 @@
 import { faBan, faList } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
-import { removeSongFromPlaylist } from '../../../apis/playlists';
-import { useAppAuthToken } from '../../../store/helper';
+import { removeTrackFromPlaylistToStore } from '../../../store/actions/playlists';
+import { useAppAuthToken, useAppDispatch } from '../../../store/helper';
 import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../../types/public';
 // eslint-disable-next-line import/no-cycle
 import { TrackCard } from '../../cards/TrackCard';
@@ -23,14 +23,15 @@ export function TrackOptionsPopup({
 }: TrackOptionsPopupProps) {
   const [showAddTrack, setShowAddTrack] = useState(false);
   const userToken = useAppAuthToken();
+  const dispatch = useAppDispatch();
 
   const finalTrack = (track as TrackOnPlaylistDTO).track ?? (track as ExternalTrack);
 
   const removeTrack = () => {
-    removeSongFromPlaylist(playlist!, track as TrackOnPlaylistDTO, userToken)
+    removeTrackFromPlaylistToStore(playlist!, track as TrackOnPlaylistDTO, userToken, dispatch)
       .then((r) => {
         console.log(r);
-        if (onClose) { onClose(); }
+        // if (onClose) { onClose(); }
       })
       .catch((e) => {
         console.log(e);
