@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { login } from '../../auth';
 import { authProviderPrettyPrint } from '../../helper';
 import { useAppDispatch } from '../../store/helper';
-import { updateToken } from '../../store/reducers/auth';
 // import { mediaProviderPrettyPrint } from '../../helper';
 import { AuthProvider } from '../../types/public';
 import { LoadingSpinner } from '../icons/LoadingSpinner';
@@ -30,10 +29,7 @@ export function LoginButton({ provider }: LoginButtonProps) {
 
   function onCode(code: string, state: string) {
     console.log(`Returned ${code} and state ${state}`);
-    login(provider, code)
-      .then((data) => {
-        dispatch(updateToken(data));
-      });
+    login(provider, code, dispatch);
   }
   return (
     <Button

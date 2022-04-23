@@ -1,24 +1,20 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StoreObject, StoreObjectState } from '../../types';
 import { UserTokenDTO } from '../../types/public';
 
-interface AuthState {
-  token: UserTokenDTO | undefined
-}
-
-const initialState: AuthState = {
-  token: undefined,
+const initialState = {
+  token: {
+    state: StoreObjectState.Uninitialized,
+    value: undefined,
+  } as StoreObject<UserTokenDTO>,
 };
-
-export enum AuthStoreActions {
-  UPDATE_TOKEN = 'UPDATE_TOKEN',
-}
 
 export const authSlice = createSlice({
   name: 'Auth',
   initialState,
   reducers: {
-    updateToken: (state, action: PayloadAction<UserTokenDTO | undefined>) => {
+    updateToken: (state, action: PayloadAction<StoreObject<UserTokenDTO>>) => {
       state.token = action.payload;
     },
   },

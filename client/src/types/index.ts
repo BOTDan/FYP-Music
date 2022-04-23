@@ -1,3 +1,16 @@
+export enum StoreObjectState {
+  Uninitialized = 'uninitialized',
+  Loading = 'loading',
+  Loaded = 'loaded',
+  Error = 'error',
+}
+
+export interface StoreObject<T> {
+  state: StoreObjectState;
+  error?: any;
+  value?: T;
+}
+
 // export enum MediaProvider {
 //   YouTube = 'youtube',
 //   Spotify = 'spotify',

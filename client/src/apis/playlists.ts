@@ -105,7 +105,7 @@ export async function addTrackToPlaylist(
  * @param token The user token
  * @returns The deleted track
  */
-export async function removeSongFromPlaylist(
+export async function removeTrackFromPlaylist(
   playlist: PlaylistDTO,
   track: TrackOnPlaylistDTO,
   token?: UserTokenDTO,

@@ -9,7 +9,7 @@ import { ProviderIcon } from '../../components/icons/ProviderIcon';
 import { GeneralContent } from '../../components/layout/GeneralContent';
 import { TopHeading } from '../../components/structure/TopHeading';
 import { mediaProviderFromString } from '../../helper';
-import { useAppSelector } from '../../store/helper';
+import { useAppAuthToken } from '../../store/helper';
 import { ExternalTrack, MediaProvider, UserTokenDTO } from '../../types/public';
 import './SearchPageResults.scss';
 
@@ -61,7 +61,7 @@ export interface SearchPageResultsProps {
 export function SearchPageResults({ q, provider }: SearchPageResultsProps) {
   const finalProvider = mediaProviderFromString(provider);
   const [results, setResults] = useState<ExternalTrack[]>([]);
-  const userToken = useAppSelector((state) => state.auth.token);
+  const userToken = useAppAuthToken();
   const isMounted = useRef(false);
   const [loading, setLoading] = useState(false);
 
