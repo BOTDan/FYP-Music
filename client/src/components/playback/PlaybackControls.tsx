@@ -24,8 +24,8 @@ export function PlaybackControls() {
   return (
     <div className="PlaybackControls">
       {(playbackState === PlaybackState.Playing)
-        ? <Button leftIcon={faPause} onClick={pause} />
-        : <Button leftIcon={faPlay} onClick={play} />}
+        ? <Button leftIcon={faPause} onClick={pause} bland />
+        : <Button leftIcon={faPlay} onClick={play} bland />}
     </div>
   );
 }
