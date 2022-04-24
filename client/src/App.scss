@@ -36,6 +36,21 @@
   color: #61dafb;
 }
 
+#mediaplayers {
+  position: fixed;
+  bottom: 8em;
+  right: 0;
+  padding: 2em;
+  pointer-events: none;
+
+  > *,
+  > * * {
+    pointer-events: all;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

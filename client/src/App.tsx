@@ -12,7 +12,6 @@ function App() {
       <SearchManager />
       <PlaylistsManager />
       <YouTubePlaybackManager />
-      <div id="Modals" />
     </div>
   );
 }

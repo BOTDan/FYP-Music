@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import { useAppDispatch, useAppSelector } from '../../../store/helper';
 import { updatePlaybackState, updatePlaybackTimestamp } from '../../../store/reducers/playback';
@@ -15,6 +16,9 @@ export function YouTubePlaybackManager() {
   const playbackState = useAppSelector((state) => state.playback.playbackState);
   const [player, setPlayer] = useState<YouTube['internalPlayer']>(null);
   const [videoId, setVideoId] = useState('');
+
+  const parent = document.getElementById('mediaplayers');
+  if (!parent) { throw new Error('Parent doesn\'t exist for playback manager'); }
 
   /**
    * Handles callbacks for when a video is ready to play
@@ -103,6 +107,8 @@ export function YouTubePlaybackManager() {
 
   const opts = {
     host: 'https://www.youtube-nocookie.com',
+    width: '356',
+    height: '200',
     playerVars: {
       origin: window.location.host,
       autoplay: 1,
@@ -111,14 +117,16 @@ export function YouTubePlaybackManager() {
     },
   };
 
-  return (
-    <YouTube
-      videoId={videoId}
-      opts={opts}
-      onReady={handleOnReady}
-      onPlay={handleOnPlay}
-      onPause={handleOnPause}
-      onEnd={handleOnEnd}
-    />
+  return ReactDOM.createPortal(
+    (
+      <YouTube
+        videoId={videoId}
+        opts={opts}
+        onReady={handleOnReady}
+        onPlay={handleOnPlay}
+        onPause={handleOnPause}
+        onEnd={handleOnEnd}
+      />
+    ), parent,
   );
 }
