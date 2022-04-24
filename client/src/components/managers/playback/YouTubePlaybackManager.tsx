@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import { useAppDispatch, useAppSelector } from '../../../store/helper';
-import { updatePlaybackTimestamp } from '../../../store/reducers/playback';
+import { updatePlaybackState, updatePlaybackTimestamp } from '../../../store/reducers/playback';
 import { PlaybackState } from '../../../types';
 import { MediaProvider } from '../../../types/public';
 
@@ -36,6 +36,19 @@ export function YouTubePlaybackManager() {
    */
   const handleOnPlay: YouTubeProps['onPlay'] = (event) => {
     event.target.unMute(); // Unmute to work around autoplay problems.
+    if (player && currentTrack && currentTrack.provider === MediaProvider.YouTube) {
+      dispatch(updatePlaybackState(PlaybackState.Playing));
+    }
+  };
+
+  /**
+   * Handles callbacks for when a video is paused
+   * @param event The event from the YouTube embed
+   */
+  const handleOnPause: YouTubeProps['onPause'] = () => {
+    if (player && currentTrack && currentTrack.provider === MediaProvider.YouTube) {
+      dispatch(updatePlaybackState(PlaybackState.Paused));
+    }
   };
 
   /**
@@ -104,6 +117,7 @@ export function YouTubePlaybackManager() {
       opts={opts}
       onReady={handleOnReady}
       onPlay={handleOnPlay}
+      onPause={handleOnPause}
       onEnd={handleOnEnd}
     />
   );
