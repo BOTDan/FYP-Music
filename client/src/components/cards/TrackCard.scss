@@ -85,6 +85,8 @@ $padding: 0.25em 0.5em;
   .TrackCard__Duration {
     padding: $padding;
     text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: lighter;
   }
 
   .TrackCard__Actions {
