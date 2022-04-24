@@ -20,9 +20,9 @@ export function PlaybackBar() {
 
   return (
     <GeneralContent className="PlaybackBar__Container">
+      {currentTrack
+      && (
       <div className="PlaybackBar">
-        {currentTrack
-        && (
         <div className="PlaybackBar__Info">
           <span className="PlaybackBar__Info__Provider">
             <ProviderIcon provider={currentTrack.provider} />
@@ -40,9 +40,9 @@ export function PlaybackBar() {
             <span>{formatTime(currentTrack.duration)}</span>
           </span>
         </div>
-        )}
         <PlaybackControls />
       </div>
+      )}
       <div className="PlaybackBar__Scrub" style={{ width: `${width}%` }} />
     </GeneralContent>
   );
