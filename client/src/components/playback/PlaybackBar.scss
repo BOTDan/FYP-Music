@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '../../styles/shared.scss';
 
 $padding: 0.25em 0.5em;
@@ -13,6 +14,19 @@ $padding: 0.25em 0.5em;
   height: 2px;
   background: $accent-colour;
   transition: width 0.1s linear;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(
+      rgba($accent-colour, 0),
+      rgba($accent-colour, 0.3));
+    pointer-events: none;
+  }
 }
 
 .PlaybackBar {
