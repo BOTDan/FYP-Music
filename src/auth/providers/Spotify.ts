@@ -30,10 +30,21 @@ export class SpotifyAuthProvider extends BaseAuthProvider {
     });
   }
 
-  handleLoginRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
-  handleLoginCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'login' });
-  handleLinkRequest = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
-  handleLinkCallback = passport.authenticate('spotify', { session: false, failWithError: true, state: 'link' });
+  handleLoginRequest = passport.authenticate('spotify', {
+    session: false, failWithError: true, state: 'login', scope: ['streaming', 'playlist-read-private'],
+  });
+
+  handleLoginCallback = passport.authenticate('spotify', {
+    session: false, failWithError: true, state: 'login', scope: ['streaming', 'playlist-read-private'],
+  });
+
+  handleLinkRequest = passport.authenticate('spotify', {
+    session: false, failWithError: true, state: 'link', scope: ['streaming', 'playlist-read-private'],
+  });
+
+  handleLinkCallback = passport.authenticate('spotify', {
+    session: false, failWithError: true, state: 'link', scope: ['streaming', 'playlist-read-private'],
+  });
 
   /**
    * Processes user information after they've completed oauth login
