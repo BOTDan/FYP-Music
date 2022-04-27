@@ -7,6 +7,7 @@ const initialState = {
   currentTrack: null as ExternalTrack | null,
   playbackState: PlaybackState.Stopped,
   playbackTimestamp: 0,
+  volume: 50,
 };
 
 export const playbackSlice = createSlice({
@@ -34,11 +35,15 @@ export const playbackSlice = createSlice({
     incrementPlaybackTimestamp: (state, action: PayloadAction<number>) => {
       state.playbackTimestamp += action.payload;
     },
+    updateVolume: (state, action: PayloadAction<number>) => {
+      state.volume = action.payload;
+    },
   },
 });
 
 export const {
   updateCurrentTrack, updatePlaybackState, updatePlaybackTimestamp, incrementPlaybackTimestamp,
+  updateVolume,
 } = playbackSlice.actions;
 
 export default playbackSlice.reducer;

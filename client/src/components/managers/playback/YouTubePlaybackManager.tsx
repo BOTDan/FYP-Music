@@ -14,6 +14,7 @@ export function YouTubePlaybackManager() {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.playback.currentTrack);
   const playbackState = useAppSelector((state) => state.playback.playbackState);
+  const volume = useAppSelector((state) => state.playback.volume);
   const [player, setPlayer] = useState<YouTube['internalPlayer']>(null);
   const [videoId, setVideoId] = useState('');
 
@@ -73,6 +74,7 @@ export function YouTubePlaybackManager() {
       setVideoId('');
     } else {
       setVideoId(currentTrack.providerId);
+      player.setVolume(volume);
       player.seekTo(0);
     }
   }, [currentTrack]);
@@ -86,6 +88,7 @@ export function YouTubePlaybackManager() {
       player.stopVideo();
       setVideoId('');
     } else if (playbackState === PlaybackState.Playing) {
+      player.setVolume(volume);
       player.playVideo();
     } else {
       player.pauseVideo();
@@ -104,6 +107,15 @@ export function YouTubePlaybackManager() {
     }, 1000);
     return () => { window.clearInterval(timer); };
   }, [player, currentTrack]);
+
+  /**
+   * Handle volume changes
+   */
+  useEffect(() => {
+    if (player) {
+      player.setVolume(volume);
+    }
+  }, [volume]);
 
   const opts = {
     host: 'https://www.youtube-nocookie.com',

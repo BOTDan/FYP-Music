@@ -14,6 +14,7 @@ export function SpotifyPlaybackManager() {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.playback.currentTrack);
   const playbackState = useAppSelector((state) => state.playback.playbackState);
+  const volume = useAppSelector((state) => state.playback.volume);
   const [loaded, setLoaded] = useState(false);
   const [player, setPlayer] = useState<Spotify.Player>();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -45,6 +46,7 @@ export function SpotifyPlaybackManager() {
             cb(token);
           });
         },
+        volume: volume / 100,
       });
       setPlayer(newPlayer);
       // Set up event listeners for the player
@@ -108,6 +110,7 @@ export function SpotifyPlaybackManager() {
       if (!userToken) { return; }
       playTrack(currentTrack, userToken, deviceId)
         .then(() => {
+          player.setVolume(volume / 100);
           player.resume();
         });
     }
@@ -125,6 +128,7 @@ export function SpotifyPlaybackManager() {
       }
     } else if (playbackState === PlaybackState.Playing) {
       setIsPlaying(true);
+      player.setVolume(volume / 100);
       player.resume();
     } else {
       setIsPlaying(false);
@@ -145,6 +149,15 @@ export function SpotifyPlaybackManager() {
     }, 1000);
     return () => { window.clearInterval(timer); };
   }, [player, currentTrack, playbackState]);
+
+  /**
+   * Update the volumne
+   */
+  useEffect(() => {
+    if (player) {
+      player.setVolume(volume / 100);
+    }
+  }, [volume]);
 
   return (null);
 }
