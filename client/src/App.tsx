@@ -3,7 +3,7 @@ import './App.scss';
 import { SearchManager } from './components/managers/SearchManager';
 import { MainDesktop } from './components/layouts/MainDesktop';
 import { PlaylistsManager } from './components/managers/PlaylistsManager';
-import { YouTubePlaybackManager } from './components/managers/playback/YouTubePlaybackManager';
+import { PlaybackManager } from './components/managers/playback/PlaybackManager';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <MainDesktop />
       <SearchManager />
       <PlaylistsManager />
-      <YouTubePlaybackManager />
+      <PlaybackManager />
     </div>
   );
 }
