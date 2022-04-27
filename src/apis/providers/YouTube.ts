@@ -221,6 +221,10 @@ export class YouTubeAPI extends ExternalAPI {
     }
     return [];
   }
+
+  async playTrack(id: string, device?: string, user?: User): Promise<void> {
+    // YouTube playback happens on the client, so this isn't needed
+  }
 }
 
 const youtubeAPI = new YouTubeAPI();

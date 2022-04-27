@@ -96,6 +96,21 @@ export abstract class ExternalAPI {
         }
       },
     );
+
+    this.router.post(
+      '/me/play/:id',
+      requireAuthentication,
+      param('id').isString(),
+      query('device').optional().isString(),
+      this.ensureValidRequest,
+      async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          await this.handlePlayTrack(req, res, next);
+        } catch (e) {
+          next(e);
+        }
+      },
+    );
   }
 
   /**
@@ -227,6 +242,15 @@ export abstract class ExternalAPI {
     response.send(result);
   }
 
+  async handlePlayTrack(request: Request, response: Response, next: NextFunction) {
+    const { id } = request.params;
+    const { device } = request.query;
+    const user = request.token?.user;
+
+    await this.playTrack(id, device?.toString(), user);
+    response.sendStatus(204);
+  }
+
   /**
    * Finds a list of tracks from the external API based on the search params.
    * @param params The search params to use for finding the tracks
@@ -272,4 +296,11 @@ export abstract class ExternalAPI {
    * @param user The user that made the request, if available
    */
   abstract getPlaylist(id: string, user?: User): Promise<ExternalPlaylist>;
+
+  /**
+   * Plays a song for the user
+   * @param id The id of the track to play
+   * @param user The user trying to play the track
+   */
+  abstract playTrack(id: string, device?: string, user?: User): Promise<void>;
 }
