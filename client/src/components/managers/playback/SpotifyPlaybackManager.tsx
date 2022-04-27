@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { playTrack } from '../../../apis/playback';
 import { getAccessToken } from '../../../auth';
 import { useAppAuthToken, useAppDispatch, useAppSelector } from '../../../store/helper';
@@ -146,5 +146,5 @@ export function SpotifyPlaybackManager() {
     return () => { window.clearInterval(timer); };
   }, [player, currentTrack, playbackState]);
 
-  return (<div>Hello</div>);
+  return (null);
 }
