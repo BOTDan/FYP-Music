@@ -31,11 +31,14 @@ export const playbackSlice = createSlice({
     updatePlaybackTimestamp: (state, action: PayloadAction<number>) => {
       state.playbackTimestamp = action.payload;
     },
+    incrementPlaybackTimestamp: (state, action: PayloadAction<number>) => {
+      state.playbackTimestamp += action.payload;
+    },
   },
 });
 
 export const {
-  updateCurrentTrack, updatePlaybackState, updatePlaybackTimestamp,
+  updateCurrentTrack, updatePlaybackState, updatePlaybackTimestamp, incrementPlaybackTimestamp,
 } = playbackSlice.actions;
 
 export default playbackSlice.reducer;
