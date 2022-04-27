@@ -1,3 +1,4 @@
+import { authFetchCatchFail } from '../apis';
 import { AppDispatch } from '../store/helper';
 import { updateToken } from '../store/reducers/auth';
 import { StoreObjectState } from '../types';
@@ -29,4 +30,16 @@ export async function login(provider: AuthProvider, code: string, dispatch?: App
     }));
   }
   return data as UserTokenDTO;
+}
+
+/**
+ * Gets an access token for the given auth provider
+ * @param provider The provider to get the access token from
+ * @param token The user login token
+ * @returns The access token from the server
+ */
+export async function getAccessToken(provider: AuthProvider, token: UserTokenDTO) {
+  const result = await authFetchCatchFail(`/auth/${provider}/accesstoken`, token);
+  console.log(result);
+  return result.accessToken;
 }
