@@ -1,0 +1,14 @@
+.LinkedAccountCard {
+  margin-bottom: 0.5em;
+  
+  .IconCard__Center {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .LinkedAccountCard__Delete {
+    margin-left: auto;
+  }
+}
