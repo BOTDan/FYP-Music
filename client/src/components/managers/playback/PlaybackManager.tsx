@@ -49,7 +49,12 @@ export function PlaybackManager() {
       setOffsetY(offsetY - pointerEvent.movementY);
     } else if (pointerEvent.type === 'pointerup') {
       if (dragPointer.current === pointerEvent.pointerId) {
-        mainDiv.current?.releasePointerCapture(dragPointer.current);
+        try {
+          // This is erroring(?) on mobile. Doesn't seem to effect dragging though???
+          mainDiv.current?.releasePointerCapture(dragPointer.current);
+        } catch (e) {
+          //
+        }
         dragPointer.current = null;
       }
     }
