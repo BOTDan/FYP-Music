@@ -16,6 +16,7 @@ export function YouTubePlaybackManager() {
   const playbackState = useAppSelector((state) => state.playback.playbackState);
   const volume = useAppSelector((state) => state.playback.volume);
   const [player, setPlayer] = useState<YouTube['internalPlayer']>(null);
+  const [playerState, setPlayerState] = useState<PlaybackState>(PlaybackState.Stopped);
   const [videoId, setVideoId] = useState('');
 
   const parent = document.getElementById('mediaplayers');
@@ -41,9 +42,7 @@ export function YouTubePlaybackManager() {
    */
   const handleOnPlay: YouTubeProps['onPlay'] = (event) => {
     event.target.unMute(); // Unmute to work around autoplay problems.
-    if (player && currentTrack && currentTrack.provider === MediaProvider.YouTube) {
-      dispatch(updatePlaybackState(PlaybackState.Playing));
-    }
+    setPlayerState(PlaybackState.Playing);
   };
 
   /**
@@ -51,9 +50,7 @@ export function YouTubePlaybackManager() {
    * @param event The event from the YouTube embed
    */
   const handleOnPause: YouTubeProps['onPause'] = () => {
-    if (player && currentTrack && currentTrack.provider === MediaProvider.YouTube) {
-      dispatch(updatePlaybackState(PlaybackState.Paused));
-    }
+    setPlayerState(PlaybackState.Paused);
   };
 
   /**
@@ -61,7 +58,7 @@ export function YouTubePlaybackManager() {
    * @param event The event from the YouTube embed
    */
   const handleOnEnd: YouTubeProps['onEnd'] = () => {
-    console.log('Video finished');
+    setPlayerState(PlaybackState.Finished);
   };
 
   /**
@@ -115,7 +112,16 @@ export function YouTubePlaybackManager() {
     if (player) {
       player.setVolume(volume);
     }
-  }, [volume]);
+  }, [volume, player]);
+
+  /**
+   * Handle YouTube player state updates
+   */
+  useEffect(() => {
+    if (currentTrack && currentTrack.provider === MediaProvider.YouTube) {
+      dispatch(updatePlaybackState(playerState));
+    }
+  }, [playerState]);
 
   const opts = {
     host: 'https://www.youtube-nocookie.com',
