@@ -11,6 +11,7 @@ import { InputTestPage } from './pages/InputTestPage';
 import { SearchPage } from './pages/search/SearchPage';
 import store from './store';
 import { PlaylistsPage } from './pages/playlists/PlaylistsPage';
+import { AccountPage } from './pages/account/AccountPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,6 +23,8 @@ ReactDOM.render(
             <Route path="search/*" element={<SearchPage />} />
             {/* Playlists routing */}
             <Route path="playlists/*" element={<PlaylistsPage />} />
+            {/* Accouint routing */}
+            <Route path="account/*" element={<AccountPage />} />
             {/* Testing router */}
             <Route path="test">
               <Route path="inputs" element={<InputTestPage />} />

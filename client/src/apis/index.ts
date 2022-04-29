@@ -12,7 +12,6 @@ export function authFetch(url: string, token?: UserTokenDTO, options?: RequestIn
     Accept: 'application/json',
     'Content-Type': 'application/json',
   };
-  console.log(token);
   if (token && token.token.length > 0) {
     headers.authorization = `Bearer ${token.token}`;
   }

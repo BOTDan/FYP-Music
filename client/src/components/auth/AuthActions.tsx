@@ -5,6 +5,9 @@ import { Modal } from '../popup/Modal';
 import './AuthActions.scss';
 import { LoginPanel } from './LoginPanel';
 
+/**
+ * Collection of buttons for the top-right of the app
+ */
 export function AuthActions() {
   const authToken = useAppAuthToken();
   const [popupVisible, setPopupVisible] = useState(false);
@@ -14,16 +17,18 @@ export function AuthActions() {
       <Button onClick={() => setPopupVisible(true)}>
         Log In
       </Button>
+      {popupVisible && (
       <Modal visible={popupVisible} onClose={() => setPopupVisible(false)}>
         <LoginPanel onClose={() => setPopupVisible(false)} />
       </Modal>
+      )}
     </>
   );
 
   if (authToken) {
     content = (
-      <Button>
-        Logged In
+      <Button to="/account">
+        My Account
       </Button>
     );
   }

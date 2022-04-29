@@ -21,4 +21,12 @@ $padding: 2em;
   &.pad-bottom {
     padding-bottom: $padding / 2;
   }
+
+  &.center {
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
 }

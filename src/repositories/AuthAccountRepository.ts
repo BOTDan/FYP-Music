@@ -85,4 +85,23 @@ export class AuthAccountRepository extends AbstractRepository<AuthAccount> {
   findAuthAccountOfUser(user: User, provider: AuthProvider) {
     return this.repository.findOne({ where: { user, provider }, order: { dateUpdated: 'DESC' } });
   }
+
+  /**
+   * Finds all accounts linked t0 a user
+   * @param user The user
+   * @returns The linked accounts
+   */
+  findAllAuthAccountsOfUser(user: User) {
+    return this.repository.find({ where: { user }, order: { dateCreated: 'ASC' } });
+  }
+
+  /**
+   * Unlinks an account from a user, if the account belongs to them
+   * @param id The id of the account to unlink
+   * @param user The user the account belongs to
+   * @returns The dleeted rows
+   */
+  unlinkAccount(id: string, user: User) {
+    return this.repository.delete({ id, user });
+  }
 }

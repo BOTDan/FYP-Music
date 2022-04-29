@@ -31,7 +31,7 @@ export function IconCard({
 
       </div>
       <div className="IconCard__Center">
-        <p>{children}</p>
+        {children}
       </div>
       {showArrow
     && (
@@ -49,10 +49,17 @@ export function IconCard({
       </Link>
     );
   }
+  if (onClick) {
+    return (
+      <Button className={classList.join(' ')} onClick={onClick}>
+        {content}
+      </Button>
+    );
+  }
   return (
-    <Button className={classList.join(' ')} onClick={onClick}>
+    <div className={classList.join(' ')}>
       {content}
-    </Button>
+    </div>
   );
 }
 
@@ -62,5 +69,5 @@ IconCard.defaultProps = {
   iconContent: undefined,
   to: undefined,
   showArrow: false,
-  onClick: () => {},
+  onClick: undefined,
 };

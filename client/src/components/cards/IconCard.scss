@@ -8,7 +8,8 @@
   display: flex;
   flex-flow: row nowrap;
   overflow: hidden;
-  align-items: center;
+  align-items: stretch;
+  width: inherit;
 
   &.Button {
     padding: 0;
@@ -18,7 +19,7 @@
 
   .IconCard__Left {
     width: 2em;
-    height: 2em;
+    min-height: 2em;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;

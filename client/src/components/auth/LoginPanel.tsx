@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthProvider } from '../../types/public';
 import { Panel } from '../popup/Panel';
-import { LoginButton } from './LoginButton';
+import { AuthAccountLoginButton } from './AuthAccountLoginButton';
 import './LoginPanel.scss';
 
 interface LoginPanelProps {
@@ -20,8 +20,8 @@ export function LoginPanel({ onClose }: LoginPanelProps) {
       closeButton="Cancel"
       onClose={onClose}
     >
-      <LoginButton provider={AuthProvider.Google} />
-      <LoginButton provider={AuthProvider.Spotify} />
+      <AuthAccountLoginButton provider={AuthProvider.Google} />
+      <AuthAccountLoginButton provider={AuthProvider.Spotify} />
     </Panel>
   );
 }
