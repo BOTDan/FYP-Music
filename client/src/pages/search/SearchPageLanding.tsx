@@ -14,7 +14,7 @@ export function SearchPageLanding({ provider }: SearchPageLandingProps) {
   const finalProvider = mediaProviderFromString(provider);
 
   return (
-    <GeneralContent className="SearchPageLanding">
+    <GeneralContent className="SearchPageLanding" center>
       <div className="SearchPageLanding__Icon">
         <FontAwesomeIcon icon={faSearch} />
         {finalProvider && <ProviderIcon provider={finalProvider} />}
