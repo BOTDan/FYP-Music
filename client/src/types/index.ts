@@ -16,6 +16,7 @@ export enum PlaybackState {
   Playing = 'playing',
   Paused = 'paused',
   Loading = 'loading',
+  Finished = 'finished',
 }
 
 // export enum MediaProvider {

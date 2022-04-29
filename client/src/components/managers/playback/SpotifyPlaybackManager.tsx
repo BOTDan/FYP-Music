@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { playTrack } from '../../../apis/playback';
 import { getAccessToken } from '../../../auth';
 import { useAppAuthToken, useAppDispatch, useAppSelector } from '../../../store/helper';
-import { incrementPlaybackTimestamp, updatePlaybackTimestamp } from '../../../store/reducers/playback';
+import { incrementPlaybackTimestamp, updatePlaybackState, updatePlaybackTimestamp } from '../../../store/reducers/playback';
 import { PlaybackState } from '../../../types';
 import { AuthProvider, MediaProvider } from '../../../types/public';
 
@@ -19,6 +19,7 @@ export function SpotifyPlaybackManager() {
   const [player, setPlayer] = useState<Spotify.Player>();
   const [isPlaying, setIsPlaying] = useState(false);
   const [deviceId, setDeviceId] = useState<string>();
+  const [playerState, setPlayerState] = useState<Spotify.PlaybackState>();
   const userToken = useAppAuthToken();
 
   const destroyPlayer = (oldPlayer: Spotify.Player) => {
@@ -72,10 +73,7 @@ export function SpotifyPlaybackManager() {
       });
 
       newPlayer.addListener('player_state_changed', (state) => {
-        console.log(state);
-        if (!state.paused) {
-          dispatch(updatePlaybackTimestamp(state.position));
-        }
+        setPlayerState(state);
       });
 
       newPlayer.connect();
@@ -158,6 +156,34 @@ export function SpotifyPlaybackManager() {
       player.setVolume(volume / 100);
     }
   }, [volume]);
+
+  /**
+   * Handle Spotify player state updates
+   */
+  useEffect(() => {
+    console.log(playerState);
+    if (!playerState) { return; }
+    if (currentTrack && currentTrack.provider === MediaProvider.Spotify) {
+      if (playerState.track_window.current_track.id !== currentTrack.providerId) {
+        // The user has probably skipped from the Spotify app.
+        // For now, stop playback.
+        // @todo: in future, extract data and continue.
+        dispatch(updatePlaybackState(PlaybackState.Stopped));
+      } else if (playerState.paused) {
+        // See if the tracks finished. 100ms leniency for potential mismatches.
+        if (playerState.duration >= (currentTrack.duration - 100)) {
+          dispatch(updatePlaybackState(PlaybackState.Finished));
+        } else {
+          dispatch(updatePlaybackState(PlaybackState.Paused));
+        }
+      } else {
+        dispatch(updatePlaybackTimestamp(playerState.position));
+        if (!playerState.loading) {
+          dispatch(updatePlaybackState(PlaybackState.Playing));
+        }
+      }
+    }
+  }, [playerState]);
 
   return (null);
 }

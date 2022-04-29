@@ -27,13 +27,31 @@ export const playbackSlice = createSlice({
       state.playbackState = action.payload;
       if (action.payload === PlaybackState.Stopped) {
         state.playbackTimestamp = 0;
+      } else if (action.payload === PlaybackState.Finished) {
+        if (state.currentTrack) {
+          state.playbackTimestamp = state.currentTrack.duration;
+        }
       }
     },
     updatePlaybackTimestamp: (state, action: PayloadAction<number>) => {
-      state.playbackTimestamp = action.payload;
+      if (state.currentTrack) {
+        state.playbackTimestamp = Math.min(
+          action.payload,
+          state.currentTrack.duration,
+        );
+      } else {
+        state.playbackTimestamp = action.payload;
+      }
     },
     incrementPlaybackTimestamp: (state, action: PayloadAction<number>) => {
-      state.playbackTimestamp += action.payload;
+      if (state.currentTrack) {
+        state.playbackTimestamp = Math.min(
+          state.playbackTimestamp + action.payload,
+          state.currentTrack.duration,
+        );
+      } else {
+        state.playbackTimestamp += action.payload;
+      }
     },
     updateVolume: (state, action: PayloadAction<number>) => {
       state.volume = action.payload;
