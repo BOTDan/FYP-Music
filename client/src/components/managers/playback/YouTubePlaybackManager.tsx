@@ -125,8 +125,8 @@ export function YouTubePlaybackManager() {
 
   const opts = {
     host: 'https://www.youtube-nocookie.com',
-    width: '356',
-    height: '200',
+    width: '100%',
+    height: '100%',
     playerVars: {
       origin: window.location.host,
       autoplay: 1,
@@ -144,6 +144,7 @@ export function YouTubePlaybackManager() {
         onPlay={handleOnPlay}
         onPause={handleOnPause}
         onEnd={handleOnEnd}
+        className={videoId === '' ? 'hidden' : ''}
       />
     ), parent,
   );
