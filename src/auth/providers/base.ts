@@ -231,10 +231,12 @@ export abstract class BaseAuthProvider {
     const authRepo = getCustomRepository(AuthAccountRepository);
     const authAccount = await authRepo.findAuthAccountOfUser(user, this.provider);
     if (!authAccount) {
-      throw new NotFoundError(`A ${this.provider} account must be linked to this account to get an access token`);
+      next(new NotFoundError(`A ${this.provider} account must be linked to this account to get an access token`));
+      return;
     }
     if (!authAccount.accessToken) {
-      throw new NotFoundError(`No access tokens found for your ${this.provider} account. Log in again.`);
+      next(new NotFoundError(`No access tokens found for your ${this.provider} account. Log in again.`));
+      return;
     }
     response.send({
       accessToken: authAccount.accessToken,
