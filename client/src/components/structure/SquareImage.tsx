@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './SquareImage.scss';
 
 export interface SquareImageProps {
@@ -27,6 +27,12 @@ export function SquareImage({
       setImgSrc(fallbackSrc);
     }
   };
+
+  useEffect(() => {
+    errored.current = false;
+    setLoaded(false);
+    setImgSrc(src ?? fallbackSrc);
+  }, [src, fallbackSrc]);
 
   const classList = ['SquareImage'];
   if (className) { classList.push(className); }

@@ -1,5 +1,6 @@
 import { faHome, faList } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import { PlaybackBar } from '../../playback/PlaybackBar';
 import './BottomBar.scss';
 import { BottomBarLink } from './BottomBarLink';
 
@@ -9,8 +10,11 @@ import { BottomBarLink } from './BottomBarLink';
 export function BottomBar() {
   return (
     <div className="BottomBar">
-      <BottomBarLink name="Home" icon={faHome} to="/" />
-      <BottomBarLink name="Playlists" icon={faList} to="/playlists" />
+      <PlaybackBar />
+      <div className="BottomBar__Links">
+        <BottomBarLink name="Home" icon={faHome} to="/" />
+        <BottomBarLink name="Playlists" icon={faList} to="/playlists" />
+      </div>
     </div>
   );
 }

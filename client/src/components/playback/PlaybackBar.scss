@@ -1,0 +1,102 @@
+@use 'sass:color';
+@import '../../styles/shared.scss';
+
+$padding: 0.25em 0.5em;
+
+.PlaybackBar__Container {
+  position: relative;
+}
+
+.PlaybackBar__Scrub {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  height: 2px;
+  background: $accent-colour;
+  transition: width 0.1s linear;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(
+      rgba($accent-colour, 0),
+      rgba($accent-colour, 0.3));
+    pointer-events: none;
+  }
+}
+
+.PlaybackBar {
+  display: flex;
+  flex-flow: row nowrap;
+  user-select: none;
+
+  > *:not(.PlaybackControls) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .PlaybackBar__Info {
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    flex-flow: row nowrap;
+
+    .PlaybackBar__Info__Provider {
+      padding: 0.5em;
+    }
+
+    .PlaybackBar__Info__Image {
+      flex: 0 0 auto;
+      width: 3rem;
+
+      .SquareImage {
+        width: 100%;
+      }
+    }
+
+    .PlaybackBar__Info__Main {
+      flex: 1;
+      align-items: flex-start;
+      padding: $padding;
+      overflow: hidden;
+    
+      .PlaybackBar__Info__Name {
+        font-weight: bold;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        min-width: 0;
+        width: 100%;
+      }
+    
+      .PlaybackBar__Info__Artists {
+        font-weight: normal;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        min-width: 0;
+        width: 100%;
+      }
+    }
+
+    .PlaybackBar__Info__Duration {
+      padding: $padding;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: lighter;
+      display: none;
+
+      @include sm {
+        display: initial;
+      }
+    }
+  }
+}

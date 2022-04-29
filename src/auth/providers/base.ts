@@ -2,10 +2,10 @@ import {
   NextFunction, Request, Response, Router,
 } from 'express';
 import { getConnection, getCustomRepository } from 'typeorm';
-import { issueToken, updateStoredTokens } from '..';
+import { issueToken, requireAuthentication, updateStoredTokens } from '..';
 import { AuthAccount } from '../../entities/AuthAccount';
 import { User } from '../../entities/User';
-import { BadRequestError, InternalServerError } from '../../errors/httpstatus';
+import { BadRequestError, InternalServerError, NotFoundError } from '../../errors/httpstatus';
 import { AuthAccountLinkTokenRepository } from '../../repositories/AuthAccountLinkTokenRepository';
 import { AuthAccountRepository } from '../../repositories/AuthAccountRepository';
 import { UserRepository } from '../../repositories/UserRepository';
@@ -75,6 +75,11 @@ export abstract class BaseAuthProvider {
     this.router.get(
       '/callback',
       (req, res, next) => { this.handleCallback(req, res, next); },
+    );
+    this.router.get(
+      '/accesstoken',
+      requireAuthentication,
+      (req, res, next) => { this.handleGetAccessToken(req, res, next); },
     );
   }
 
@@ -209,6 +214,31 @@ export abstract class BaseAuthProvider {
     const { tokens } = request.authInfo;
     await updateStoredTokens(authAccount, tokens.accessToken, tokens.refreshToken);
     response.send(linkToken.dto);
+  }
+
+  /**
+   * Handles returning an access token to the user
+   * This is only really here for Spotify and should be removed whenever possible.
+   * Will require handling access tokens on the client
+   * @todo DELETE THIS FUNCTION.
+   * @deprecated
+   * @param request Express request object
+   * @param response Express response object
+   * @param next Express next function
+   */
+  private async handleGetAccessToken(request: Request, response: Response, next: NextFunction) {
+    const { user } = request.token!;
+    const authRepo = getCustomRepository(AuthAccountRepository);
+    const authAccount = await authRepo.findAuthAccountOfUser(user, this.provider);
+    if (!authAccount) {
+      throw new NotFoundError(`A ${this.provider} account must be linked to this account to get an access token`);
+    }
+    if (!authAccount.accessToken) {
+      throw new NotFoundError(`No access tokens found for your ${this.provider} account. Log in again.`);
+    }
+    response.send({
+      accessToken: authAccount.accessToken,
+    });
   }
 
   /**

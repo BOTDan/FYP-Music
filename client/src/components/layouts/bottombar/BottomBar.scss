@@ -2,6 +2,13 @@ $background: #222;
 
 .BottomBar {
   background: $background;
+
+  .GeneralContent {
+    padding: 0;
+  }
+}
+
+.BottomBar__Links {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;

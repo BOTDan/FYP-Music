@@ -1,0 +1,16 @@
+@import '../../styles/shared.scss';
+
+.Slider {
+  display: flex;
+  flex-flow: row nowrap;
+
+  input[type=range] {
+    width: 100%;
+    outline: none;
+    background: none;
+  }
+
+  &.vertical {
+    transform: rotate(270deg);
+  }
+}

@@ -159,6 +159,14 @@ export class SpotifyAPI extends ExternalAPI {
     }
     return [];
   }
+
+  async playTrack(id: string, device?: string, user?: User): Promise<void> {
+    const authAccount = await this.requireAuthAccount(user);
+    await this.runAsAuthAccount(
+      authAccount,
+      () => api.play({ uris: [`spotify:track:${id}`], device_id: device ?? '' }),
+    );
+  }
 }
 
 const spotifyAPI = new SpotifyAPI();

@@ -8,6 +8,8 @@
   background-color: $background;
   height: 100%;
   color: $text-colour;
+  position: relative;
+  overflow: hidden;
 }
 
 .App-logo {
