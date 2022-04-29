@@ -91,6 +91,7 @@ export interface ExternalPlaylist extends ExternalResource {
  * DTO for AuthAccount
  */
 export interface AuthAccountDTO {
+  id: string;
   provider: AuthProvider;
   authId: string;
 }

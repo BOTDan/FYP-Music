@@ -29,6 +29,7 @@ export class AuthAccount extends DatabaseEntityWithID {
 
   public get dto(): AuthAccountDTO {
     return {
+      id: this.id,
       provider: this.provider,
       authId: this.authId,
     };
