@@ -1,5 +1,5 @@
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { formatTime } from '../../helper';
 import { ExternalTrack, PlaylistDTO, TrackOnPlaylistDTO } from '../../types/public';
 import { ProviderIcon } from '../icons/ProviderIcon';
@@ -23,6 +23,13 @@ export function TrackCard({
 
   const finalTrack = (track as TrackOnPlaylistDTO).track ?? (track as ExternalTrack);
   const artists = finalTrack.artists.map((artist) => artist.name).join(', ');
+
+  const handleContextMenu = (event: MouseEvent) => {
+    if (!inactive) {
+      event.preventDefault();
+      setOptionsPopupVisible(true);
+    }
+  };
 
   const numberElement = (
     <span className="TrackCard__Number">
@@ -61,7 +68,7 @@ export function TrackCard({
   if (inactive) { classList.push('Inactive'); }
 
   return (
-    <div className={classList.join(' ')}>
+    <div className={classList.join(' ')} onContextMenu={handleContextMenu}>
       {!small && numberElement}
       <span className="TrackCard__Provider">
         <ProviderIcon provider={finalTrack.provider} />
