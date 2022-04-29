@@ -152,3 +152,24 @@ export async function linkAccount(user: User, linkToken: string) {
     return authAccount;
   });
 }
+
+/**
+ * Gets all the auth accounts linked to the given user
+ * @param user The user
+ * @returns A list of auth accounts
+ */
+export async function getLinkedAccounts(user: User) {
+  const authAccountRepo = getCustomRepository(AuthAccountRepository);
+  return authAccountRepo.findAllAuthAccountsOfUser(user);
+}
+
+/**
+ * Removes an account from a user
+ * @param id The id of the account to unlink
+ * @param user Thw user who wants to unlink the account
+ * @returns The removed account
+ */
+export async function unlinkAccount(id: string, user: User) {
+  const authAccountRepo = getCustomRepository(AuthAccountRepository);
+  return authAccountRepo.unlinkAccount(id, user);
+}
