@@ -2,14 +2,14 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { mediaProviderPrettyPrint } from '../../helper';
-import { MediaProvider } from '../../types/public';
+import { providerPrettyPrint } from '../../helper';
+import { AuthProvider, MediaProvider } from '../../types/public';
 import { classes, ProviderIcon } from '../icons/ProviderIcon';
 import { IconCard } from './IconCard';
 import './ProviderCard.scss';
 
 export interface ProviderCardProps {
-  provider: MediaProvider;
+  provider: MediaProvider | AuthProvider;
 }
 
 /**
@@ -28,7 +28,7 @@ export function ProviderCard({ provider }: ProviderCardProps) {
       to={`./${provider}`}
       showArrow
     >
-      {mediaProviderPrettyPrint(provider)}
+      {providerPrettyPrint(provider)}
     </IconCard>
   );
   return (
@@ -37,7 +37,7 @@ export function ProviderCard({ provider }: ProviderCardProps) {
         <ProviderIcon provider={provider} />
       </div>
       <div className="ProviderCard__Center">
-        <p>{mediaProviderPrettyPrint(provider)}</p>
+        <p>{providerPrettyPrint(provider)}</p>
       </div>
       <div className="ProviderCard__Right">
         <FontAwesomeIcon icon={faChevronRight} />

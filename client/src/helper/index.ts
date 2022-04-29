@@ -40,6 +40,17 @@ export function authProviderPrettyPrint(provider: AuthProvider) {
   return prettyAuthNames[provider];
 }
 
+const prettyProviderNames = { ...prettyMediaNames, ...prettyAuthNames };
+
+/**
+ * Returns the pretty string version of the given provider enum
+ * @param provider The provider enum
+ * @returns A pretty string version of the provider
+ */
+export function providerPrettyPrint(provider: MediaProvider | AuthProvider) {
+  return prettyProviderNames[provider];
+}
+
 /**
  * Converts a time in ms to (h:m)m:ss format
  * @param time The time in ms
