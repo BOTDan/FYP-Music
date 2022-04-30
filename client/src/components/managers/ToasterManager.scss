@@ -1,0 +1,70 @@
+@import '../../styles/shared.scss';
+
+.ToasterHolder {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  user-select: none;
+  padding: 0.5em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.Toaster {
+  --accent-colour: #{$info-colour};
+  border-radius: $border-radius;
+  margin-top: 0.5em;
+  background: $toaster-bg;
+  color: $toaster-fg;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  overflow: hidden;
+  transition: opacity 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  opacity: 1;
+
+  &.fadeout {
+    opacity: 0;
+  }
+
+  .Toaster__Icon {
+    width: 2em;
+    background: var(--accent-colour);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Toaster__Content {
+    padding: 0.5em;
+
+    & > * {
+      margin: 0;
+    }
+
+    .Toaster__Content__Title {
+      font-weight: bold;
+    }
+  }
+
+  &.info {
+    --accent-colour: #{$info-colour};
+  }
+
+  &.warning {
+    --accent-colour: #{$warning-colour};
+  }
+  
+  &.success {
+    --accent-colour: #{$success-colour};
+  }
+
+  &.danger {
+    --accent-colour: #{$danger-colour};
+  }
+}
