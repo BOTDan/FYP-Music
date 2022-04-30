@@ -62,19 +62,21 @@ export function PlaybackManager() {
 
   return (
     <>
-      <div
-        className="PlaybackDisplay"
-        ref={mainDiv}
-        style={{ right: offsetX, bottom: offsetY }}
-        onPointerDown={(e) => setPointerEvent(e)}
-        onPointerMove={(e) => setPointerEvent(e)}
-        onPointerUp={(e) => setPointerEvent(e)}
-      >
-        <div className="PlaybackDisplay__Drag" />
-        <div className="PlaybackDisplay__Placeholder">
-          <p>Media content will display here when playing.</p>
+      <div className="PlaybackDisplayHolder">
+        <div
+          className="PlaybackDisplay"
+          ref={mainDiv}
+          style={{ right: offsetX, bottom: offsetY }}
+          onPointerDown={(e) => setPointerEvent(e)}
+          onPointerMove={(e) => setPointerEvent(e)}
+          onPointerUp={(e) => setPointerEvent(e)}
+        >
+          <div className="PlaybackDisplay__Drag" />
+          <div className="PlaybackDisplay__Placeholder">
+            <p>Media content will display here when playing.</p>
+          </div>
+          <div className="PlaybackDisplay__Holder" ref={contentDiv} />
         </div>
-        <div className="PlaybackDisplay__Holder" ref={contentDiv} />
       </div>
       <YouTubePlaybackManager />
       <SpotifyPlaybackManager />

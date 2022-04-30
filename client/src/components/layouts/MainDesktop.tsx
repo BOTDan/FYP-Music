@@ -4,6 +4,8 @@ import { BottomBar } from './bottombar/BottomBar';
 import { SideBar } from './sidebar/SideBar';
 import { TopBar } from './topbar/TopBar';
 import './MainDesktop.scss';
+import { ToasterManager } from '../managers/ToasterManager';
+import { PlaybackManager } from '../managers/playback/PlaybackManager';
 
 /**
  * Creates the main app layout, with outlet for main content of the page
@@ -19,9 +21,13 @@ export function MainDesktop() {
         <div className="MainLayout__Topbar">
           <TopBar />
         </div>
-        <main className="MainLayout__Content">
-          <Outlet />
-        </main>
+        <div className="MainLayout__Center">
+          <main className="MainLayout__Content">
+            <Outlet />
+          </main>
+          <ToasterManager />
+          <PlaybackManager />
+        </div>
         <div className="MainLayout__Bottombar">
           <BottomBar />
         </div>

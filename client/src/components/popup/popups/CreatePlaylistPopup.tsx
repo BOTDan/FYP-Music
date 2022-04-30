@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { createPlaylistToStore } from '../../../store/actions/playlists';
 // import { createPlaylist } from '../../../apis/playlists';
 import { useAppAuthToken, useAppDispatch } from '../../../store/helper';
+import { addErrorToaster } from '../../../store/reducers/notifications';
 import { Button } from '../../input/Button';
 import { StringInput } from '../../input/StringInput';
 import { Modal } from '../Modal';
@@ -33,6 +34,9 @@ export function CreatePlaylistPopup({ visible, onClose }: CreatePlaylistPopupPro
       }, userToken, dispatch)
         .then((playlist) => {
           navigate(`/playlists/${playlist.id}`);
+        })
+        .catch((e) => {
+          dispatch(addErrorToaster(e));
         });
       setSubmit(false);
     }
