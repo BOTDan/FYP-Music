@@ -20,11 +20,18 @@
       flex: 0 0 auto;
     }
 
-    .MainLayout__Content {
+    .MainLayout__Center {
       flex: 1;
       overflow-y: auto;
       display: flex;
       flex-flow: column nowrap;
+      position: relative;
+      overflow: hidden;
+
+      .MainLayout__Content {
+        overflow-y: auto;
+        flex: 1;
+      }
     }
 
     .MainLayout__BottomBar {
