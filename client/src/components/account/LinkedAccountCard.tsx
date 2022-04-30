@@ -4,6 +4,7 @@ import { unlinkAccount } from '../../auth';
 import { providerPrettyPrint } from '../../helper';
 import { useAppAuthToken, useAppDispatch } from '../../store/helper';
 import { removeAuthAccount } from '../../store/reducers/auth';
+import { addErrorToaster } from '../../store/reducers/notifications';
 import { AuthAccountDTO } from '../../types/public';
 import { IconCard } from '../cards/IconCard';
 import { classes, ProviderIcon } from '../icons/ProviderIcon';
@@ -26,9 +27,13 @@ export function LinkedAccountCard({ authAccount, allowUnlink }: LinkedAccountCar
   const [showPopup, setShowPopup] = useState(false);
 
   const unlink = async () => {
-    if (!userToken) { throw new Error('Tried to unlink account with no login'); }
-    await unlinkAccount(authAccount, userToken);
-    dispatch(removeAuthAccount(authAccount));
+    try {
+      if (!userToken) { throw new Error('Tried to unlink account with no login'); }
+      await unlinkAccount(authAccount, userToken);
+      dispatch(removeAuthAccount(authAccount));
+    } catch (e) {
+      dispatch(addErrorToaster(e));
+    }
   };
 
   const classList = ['LinkedAccountCard'];
