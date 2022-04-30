@@ -9,6 +9,11 @@ const preloadedState = storedData !== null
 const store = configureStore({
   reducer: rootReducer,
   preloadedState,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ['Notifications/addErrorToaster'],
+    },
+  }),
 });
 
 export default store;

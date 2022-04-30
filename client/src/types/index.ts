@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export enum StoreObjectState {
   Uninitialized = 'uninitialized',
   Loading = 'loading',
@@ -17,6 +19,22 @@ export enum PlaybackState {
   Paused = 'paused',
   Loading = 'loading',
   Finished = 'finished',
+}
+
+export enum ToasterType {
+  Info = 'info',
+  Warning = 'warning',
+  Success = 'success',
+  Danger = 'danger',
+}
+
+export interface ToasterDefinition {
+  id: number;
+  type: ToasterType;
+  title: ReactNode;
+  description?: ReactNode;
+  lifetime: number;
+  created: number;
 }
 
 // export enum MediaProvider {
