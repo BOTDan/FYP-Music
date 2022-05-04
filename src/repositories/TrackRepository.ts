@@ -38,8 +38,8 @@ export class TrackRepository extends AbstractRepository<Track> {
    * @param trackData The external track
    * @returns The created track
    */
-  async registerTrack(trackData: ExternalTrack) {
-    const artistRepo = getCustomRepository(ArtistRepository);
+  async registerTrack(trackData: ExternalTrack, connectionName?: string) {
+    const artistRepo = getCustomRepository(ArtistRepository, connectionName);
     const artistPromises = trackData.artists.map((artist) => artistRepo.findOrCreateArtist(artist));
     const artists = await Promise.all(artistPromises);
     return this.createTrack({
