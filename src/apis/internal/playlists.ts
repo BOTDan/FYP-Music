@@ -9,8 +9,8 @@ import { Playlist } from '../../entities/Playlist';
 import { TrackOnPlaylist } from '../../entities/TrackOnPlaylist';
 import { User } from '../../entities/User';
 import { NotFoundError, UnauthorizedError } from '../../errors/httpstatus';
-import { PlaylistData, PlaylistRepository } from '../../repositories/PlalistRepository';
-import { TrackOnPlaylistRepository } from '../../repositories/TrackOnPlaylistRepo';
+import { PlaylistData, PlaylistRepository } from '../../repositories/PlaylistRepository';
+import { TrackOnPlaylistRepository } from '../../repositories/TrackOnPlaylistRepository';
 import { MediaProvider, PlaylistVisibility } from '../../types/public';
 import { getOrCreateTrack } from './tracks';
 
