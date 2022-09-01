@@ -39,3 +39,29 @@ Linting is configured for this project. This can be run using `npm run lint`. Au
 Some automated tests have been set up for the server's database. These can be ran using `npm run test`.
 
 All automated tests and linting must pass for a succesful pull request. These checks will be automatically run via GitHub actions.
+
+## Screenshots
+![evaluation_fr1](https://user-images.githubusercontent.com/2904567/187913696-77bdd42b-4739-4740-98f6-862fdfe9c5e9.png)
+
+![evaluation_fr1_2](https://user-images.githubusercontent.com/2904567/187913702-a31ed48f-c7d7-4998-9702-9e51e7ce4442.png)
+
+![evaluation_fr2](https://user-images.githubusercontent.com/2904567/187913706-bb746d74-3a2c-4324-9d1e-c93ca856dbf9.png)
+
+![evaluation_fr3](https://user-images.githubusercontent.com/2904567/187913710-b67ef70b-7a6d-481e-98ee-5202ccfc694c.png)
+
+![evaluation_fr4_1](https://user-images.githubusercontent.com/2904567/187913712-1dab675f-cdb9-48ec-abac-f95a1bedda15.png)
+
+![evaluation_fr4_2](https://user-images.githubusercontent.com/2904567/187913715-4d7abbd6-573b-49d7-9d9c-90524685bab7.png)
+
+![evaluation_fr6](https://user-images.githubusercontent.com/2904567/187913718-f8d2288c-99bd-45f1-bfe2-fca8d21656dd.png)
+
+![evaluation_fr6_2](https://user-images.githubusercontent.com/2904567/187913729-ec4def1f-8d7f-403a-9093-e0871018c3ec.png)
+
+![evaluation_fr7](https://user-images.githubusercontent.com/2904567/187913735-355a36f1-34fa-4fb9-b414-affa024e2f6d.png)
+
+![evaluation_fr8](https://user-images.githubusercontent.com/2904567/187913738-18689f8a-0292-40c7-b6a4-b952d71f6cc2.png)
+
+![evaluation_fr8_2](https://user-images.githubusercontent.com/2904567/187913740-36f9e463-fe41-4805-a950-dc6f96002e5e.png)
+
+![evaluation_fr9](https://user-images.githubusercontent.com/2904567/187913744-524212b8-4364-4fb5-9563-533ca21a387d.png)
+
